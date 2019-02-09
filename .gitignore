@@ -1,1 +1,9 @@
 /build
+/.vs
+/Debug
+/CMakeSettings.json
+/x64/Debug
+/cpp-bridge-v5.sln
+/cpp-bridge-v5.vcxproj
+/cpp-bridge-v5.vcxproj.filters
+/cpp-bridge-v5.vcxproj.user

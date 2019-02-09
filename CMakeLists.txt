@@ -11,9 +11,9 @@ include_directories(${GTEST_INCLUDE_DIRS})
 include_directories(./include)
 
 # Bulding and Compiling sources
-file(GLOB SOURCES "src/*.cpp")
+file(GLOB_RECURSE SOURCES "src/*.cpp")
 
-add_library(cpp_bridge_v5_app_library ${SOURCES})
+add_library(cpp_bridge_v5_app_library ${SOURCES} )
 
 add_executable (cpp_bridge_v5_app_executable "src/main.cpp")
 
