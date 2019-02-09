@@ -4,7 +4,6 @@ project(cpp-bridge-v5)
 
 #use CMAKE_PREFIX_PATH environment variable to specify path location wtih all necessary dependencies
 find_package(GTest REQUIRED)
-
 enable_testing()
 
 # Make your header file accessible to the compiler
@@ -18,7 +17,14 @@ add_library(cpp_bridge_v5_app_library ${SOURCES})
 
 add_executable (cpp_bridge_v5_app_executable "src/main.cpp")
 
-target_link_libraries (cpp_bridge_v5_app_executable cpp_bridge_v5_app_library)		
+find_package(OpenGL REQUIRED)
+find_package(glfw3 CONFIG REQUIRED)
+find_package(GLEW REQUIRED)
+
+target_link_libraries(cpp_bridge_v5_app_executable PRIVATE GLEW::GLEW)
+target_link_libraries(cpp_bridge_v5_app_executable PRIVATE glfw)
+target_link_libraries(cpp_bridge_v5_app_executable PRIVATE OpenGL32)
+target_link_libraries (cpp_bridge_v5_app_executable PRIVATE cpp_bridge_v5_app_library)		
 
 
 # Running unit tests with gtest
