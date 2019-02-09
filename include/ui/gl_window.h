@@ -1,14 +1,16 @@
 #ifndef GL_WINDOW_H
 #define GL_WINDOW_H
 
-class GLFWwindow;
+struct GLFWwindow;
 
 class GLWindow
 {
 	GLFWwindow* window = 0;
+	bool active = false;
+
 protected:
 	virtual void draw() = 0;
-	bool active;
+	
 
 public:
 	GLWindow();

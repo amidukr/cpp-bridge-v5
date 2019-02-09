@@ -1,5 +1,5 @@
 #include<myholderclass.hpp>
 
 const char* MyHolderClass::GetHoldVariable() {
-	return "MyHoldVariable of MyHolderClass111";
+	return "MyHoldVariable of MyHolderClass";
 };

@@ -9,9 +9,13 @@ GLWindow::GLWindow() {
 
 }
 
+GLWindow::~GLWindow() {
+	close();
+}
+
 bool GLWindow::create() {
 	if (this->window) {
-		return true;
+		return this->active;
 	}
 
 	glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
@@ -50,7 +54,7 @@ bool GLWindow::loop() {
 }
 
 bool GLWindow::close() {
-	if (this->window) {
+	if (!this->window) {
 		return false;
 	}
 
@@ -67,6 +71,3 @@ bool GLWindow::is_active() {
 	return this->active;
 }
 
-GLWindow::~GLWindow() {
-	close();
-}

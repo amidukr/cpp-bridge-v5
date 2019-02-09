@@ -21,9 +21,9 @@ find_package(OpenGL REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(GLEW REQUIRED)
 
-target_link_libraries(cpp_bridge_v5_app_executable PRIVATE GLEW::GLEW)
-target_link_libraries(cpp_bridge_v5_app_executable PRIVATE glfw)
-target_link_libraries(cpp_bridge_v5_app_executable PRIVATE OpenGL32)
+target_link_libraries(cpp_bridge_v5_app_library PRIVATE GLEW::GLEW)
+target_link_libraries(cpp_bridge_v5_app_library PRIVATE glfw)
+target_link_libraries(cpp_bridge_v5_app_library PRIVATE OpenGL32)
 target_link_libraries (cpp_bridge_v5_app_executable PRIVATE cpp_bridge_v5_app_library)		
 
 
