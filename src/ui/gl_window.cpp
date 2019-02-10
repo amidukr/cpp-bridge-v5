@@ -21,7 +21,7 @@ bool GLWindow::create() {
 	glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
 
 	// Open a window and create its OpenGL context
-	this->window = glfwCreateWindow(1024, 768, "GL Window", NULL, NULL);
+	this->window = glfwCreateWindow(this->size[0], this->size[1], "GL Window", NULL, NULL);
 	if (this->window == NULL) {
 		fprintf(stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n");
 		return false;
@@ -69,3 +69,6 @@ bool GLWindow::is_active() {
 	return this->active;
 }
 
+std::array<double, 2> GLWindow::get_size() {
+	return this->size;
+}

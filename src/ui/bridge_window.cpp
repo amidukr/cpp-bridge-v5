@@ -31,7 +31,22 @@ void BridgeWindow::init() {
 									 center[0] + max_size,
 									 center[1] + max_size};
 
-	glViewport(128, 0, 768, 768);
+	std::array<double, 2> window_size = this->get_size();
+	
+
+	double window_min_dimension = std::min(window_size[0], window_size[1]);
+
+	std::array<double, 2> viewport_shift;
+	double viewport_shift_offset = std::abs(window_size[0] - window_size[1])/2;
+
+	
+	if (window_size[0] > window_size[1]) {
+		viewport_shift = { viewport_shift_offset, 0 };
+	} else {
+		viewport_shift = { 0, viewport_shift_offset };
+	};
+
+	glViewport(viewport_shift[0], viewport_shift[1], window_min_dimension, window_min_dimension);
 	glMatrixMode(GL_PROJECTION); // projection matrix defines the properties of the camera that views the objects in the world coordinate frame. Here you typically set the zoom factor, aspect ratio and the near and far clipping planes
 	glLoadIdentity(); // replace the current matrix with the identity matrix and starts us a fresh because matrix transforms such as glOrpho and glRotate cumulate, basically puts us at (0, 0, 0)
 	glOrtho(screen[0], screen[2] , screen[1] , screen[3] , 0, 1); // essentially set coordinate system
