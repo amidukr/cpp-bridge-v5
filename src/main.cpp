@@ -21,7 +21,7 @@ std::shared_ptr<BridgeModel> create_bridge() {
 
 	Junction& junction_bl = bridge_model->add_junction(20, 20);
 	Junction& junction_br = bridge_model->add_junction(40, 20);
-	Junction& junction_tl = bridge_model->add_junction(20, 40);
+	Junction& junction_tl = bridge_model->add_hard_junction(20, 40);
 	Junction& junction_tr = bridge_model->add_junction(40, 40);
 
 	bridge_model->add_girder(junction_bl, junction_br);

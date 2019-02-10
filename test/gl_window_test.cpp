@@ -10,6 +10,7 @@ namespace {
 
 	class MockGlWindow : public GLWindow {
 	protected:
+		void init() {}
 		void draw() {}
 	};
 

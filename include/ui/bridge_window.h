@@ -10,9 +10,11 @@ class BridgeWindow :
 	public GLWindow
 {
 	std::shared_ptr<BridgeModel> bridge_model;
+	double point_size = 0;
 public:
 	BridgeWindow(std::shared_ptr<BridgeModel> bridge_model);
 protected:
+	void init();
 	void draw();
 };
 
