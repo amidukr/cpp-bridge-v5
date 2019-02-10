@@ -82,15 +82,15 @@ namespace {
 		MockGlWindow window;
 
 
-		ASSERT_EQ(false, window.loop());
+		ASSERT_EQ(false, window.update());
 
 		ASSERT_EQ(true, window.create());
 
-		ASSERT_EQ(true, window.loop());
-		ASSERT_EQ(true, window.loop());
+		ASSERT_EQ(true, window.update());
+		ASSERT_EQ(true, window.update());
 
 		ASSERT_EQ(true, window.close());
 
-		ASSERT_EQ(false, window.loop());
+		ASSERT_EQ(false, window.update());
 	}
 }

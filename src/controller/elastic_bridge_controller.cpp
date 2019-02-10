@@ -1,24 +1,21 @@
+#include "controller/elastic_bridge_controller.h"
+
 #include <chrono>
 #include <thread>
 
 #include"model/bridge_model.h"
 #include "model/simulation_model.h"
-#include"controller/controller.h"
 #include"controller/arguments/controller_action.h"
 
-Controller::Controller(std::shared_ptr<BridgeModel> bridge_model, std::shared_ptr<SimulationModel> simulation_model) {
-	this->bridge_model = bridge_model;
-	this->simulation_model = simulation_model;
-}
+void ElasticBridgeController::update(ControllerAction& action) {
 
-void Controller::update(ControllerAction& action) {
-	BridgeModel& bridge_model = *this->bridge_model;
-	SimulationModel& simulation_model = *this->simulation_model;
+	BridgeModel& bridge_model = this->get_bridge_model();
+	SimulationModel& simulation_model = this->get_simulation_model();
 
 	if (simulation_model.get_iteration_delay() != 0) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(simulation_model.get_iteration_delay()));
 	}
-	
+
 
 	const Eigen::Vector2d G = simulation_model.get_gravity();
 	const double K = simulation_model.get_spring_characteristic();
@@ -64,7 +61,7 @@ void Controller::update(ControllerAction& action) {
 
 		junction.set_velocity(junction.get_velocity() * Q);
 	}
-	
+
 	for (int i = 0; i < junctions_len; i++) {
 		Junction& junction = bridge_model.get_junction(i);
 		junction.set_coordinate(junction.get_coordinate() + junction.get_velocity() * elapsed_time);

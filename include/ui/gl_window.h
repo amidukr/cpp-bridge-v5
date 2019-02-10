@@ -29,7 +29,7 @@ public:
 
 	bool is_active();
 	bool create();
-	bool loop();
+	bool update();
 	bool close();
 
 	virtual ~GLWindow();

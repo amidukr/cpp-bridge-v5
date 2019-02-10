@@ -12,8 +12,10 @@
 
 #include "model/bridge_model.h"
 #include "ui/bridge_window.h"
-#include "controller/arguments/controller_action.h"
-#include "controller/controller.h"
+
+#include "controller/bridge_controller.h"
+#include "factory/bridge_controller_factory.h"
+
 #include "model/sample_data_model.h"
 #include "context/bridge_simulation_context.h"
 #include<model/simulation_model.h>
@@ -22,14 +24,19 @@
 #include <gtest/gtest.h>
 #endif
 
-std::unique_ptr<BridgeSimulationContext> create_simulation_context(std::string bridge_model_name, std::string simulation_model_name) {
+std::unique_ptr<BridgeSimulationContext> create_simulation_context(std::string controller_type, std::string bridge_model_name, std::string simulation_model_name) {
 	SampleDataModel sample_data_model;
+	BridgeControllerFactory bridge_controller_factory;
+
 
 	std::shared_ptr<BridgeModel> bridge_model = sample_data_model.load_bridge_model(bridge_model_name);
 	std::shared_ptr<SimulationModel> simulation_model = sample_data_model.load_simulation_model(simulation_model_name);
 
 	std::unique_ptr<BridgeWindow> bridge_window(new BridgeWindow(bridge_model));
-	std::unique_ptr<Controller> bridge_controller(new Controller(bridge_model, simulation_model));
+	std::unique_ptr<BridgeController> bridge_controller = bridge_controller_factory.create_controller(controller_type);
+
+	bridge_controller->set_bridge_model(bridge_model);
+	bridge_controller->set_simulation_model(simulation_model);
 
 	return std::unique_ptr<BridgeSimulationContext>(new BridgeSimulationContext(std::move(bridge_window), std::move(bridge_controller)));
 }
@@ -37,14 +44,14 @@ std::unique_ptr<BridgeSimulationContext> create_simulation_context(std::string b
 std::vector<std::unique_ptr<BridgeSimulationContext>> create_simulations() {
 	std::vector<std::unique_ptr<BridgeSimulationContext>> simulations;
 
-	simulations.push_back(create_simulation_context(SampleDataModel::LINE_DIAGONAL, SampleDataModel::TEN_TIME_FACTOR_SIMULATION));
-	simulations.push_back(create_simulation_context(SampleDataModel::LINE_DIAGONAL, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
-	simulations.push_back(create_simulation_context(SampleDataModel::HEART_BRIDGE, SampleDataModel::TEN_TIME_FACTOR_SIMULATION));
-	simulations.push_back(create_simulation_context(SampleDataModel::HEART_BRIDGE, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
-	simulations.push_back(create_simulation_context(SampleDataModel::TRIANGLE_GRID, SampleDataModel::TEN_TIME_FACTOR_SIMULATION));
-	simulations.push_back(create_simulation_context(SampleDataModel::TRIANGLE_GRID, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
-	simulations.push_back(create_simulation_context(SampleDataModel::SQUARE_BRIDGE, SampleDataModel::TEN_TIME_FACTOR_SIMULATION));
-	simulations.push_back(create_simulation_context(SampleDataModel::SQUARE_BRIDGE, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
+	simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::TEN_TIME_FACTOR_SIMULATION));
+	simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
+	simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::HEART_BRIDGE, SampleDataModel::TEN_TIME_FACTOR_SIMULATION));
+	simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::HEART_BRIDGE, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
+	simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::TRIANGLE_GRID, SampleDataModel::TEN_TIME_FACTOR_SIMULATION));
+	simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::TRIANGLE_GRID, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
+	simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::SQUARE_BRIDGE, SampleDataModel::TEN_TIME_FACTOR_SIMULATION));
+	simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::SQUARE_BRIDGE, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
 	
 	return simulations;
 }
@@ -96,7 +103,7 @@ void start_simulation(std::vector< std::unique_ptr<BridgeSimulationContext>>& si
 		for (int i = 0; i < simulations.size(); i++) {
 			auto& simulation = simulations.at(i);
 
-			if (!simulation->loop(elapsed_time)) {
+			if (!simulation->update(elapsed_time)) {
 				return;
 			}
 		}

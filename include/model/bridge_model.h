@@ -9,7 +9,7 @@
 
 class BridgeModel {
 
-	double prefered_scale_out_factor = 5;//
+	double prefered_scale_out_factor = 5;
 	std::vector<std::unique_ptr<Junction>> junctions;
 	std::vector<std::unique_ptr<Girder>> girders;
 

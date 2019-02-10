@@ -5,19 +5,19 @@
 #include <chrono>
 
 class BridgeWindow;
-class Controller;
+class BridgeController;
 
 class BridgeSimulationContext {
 
 	std::unique_ptr<BridgeWindow> bridge_window;
-	std::unique_ptr<Controller> controller;
+	std::unique_ptr<BridgeController> bridge_controller;
 public:
-	BridgeSimulationContext(std::unique_ptr<BridgeWindow> bridge_window, std::unique_ptr<Controller> controller);
+	BridgeSimulationContext(std::unique_ptr<BridgeWindow> bridge_window, std::unique_ptr<BridgeController> bridge_controller);
 
 	BridgeWindow& get_window();
 
 	bool init();
-	bool loop(const std::chrono::microseconds elapsed_time);
+	bool update(const std::chrono::microseconds elapsed_time);
 
 private:
 	// Disable copy constructor

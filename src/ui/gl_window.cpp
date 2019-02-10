@@ -36,7 +36,7 @@ bool GLWindow::create() {
 	return true;
 }
 
-bool GLWindow::loop() {
+bool GLWindow::update() {
 	if (!this->active) return false;
 
 	glfwMakeContextCurrent(this->window); // Initialize GLEW
