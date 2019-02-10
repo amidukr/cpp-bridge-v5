@@ -1,6 +1,7 @@
 #include <GL/glew.h>
 #include <algorithm>
 
+#include "utils/viewport_utils.h"
 #include "ui/bridge_window.h"
 #include "model/entity/junction.h"
 #include "model/bridge_model.h"
@@ -12,44 +13,20 @@ BridgeWindow::BridgeWindow(std::shared_ptr<BridgeModel> bridge_model) {
 }
 
 void BridgeWindow::init() {
-	double SCREEN_WIDTH = 640;
-	double SCREEN_HEIGHT = 480;
 
-	auto bounds = this->bridge_model->get_bounds();
-
-	double width = bounds[2] - bounds[0];
-	double height = bounds[3] - bounds[1];
-
-	double max_size = std::max(width, height);
-	std::array<double, 2> center = { (bounds[0] + bounds[2]) / 2.0,
-						 (bounds[1] + bounds[3]) / 2.0, };
-
-	this->point_size = max_size / 100;
-
-	std::array<double, 4> screen = { center[0] - max_size,
-									 center[1] - max_size,
-									 center[0] + max_size,
-									 center[1] + max_size};
-
+	std::array<double, 4> bounds = this->bridge_model->get_bounds();
 	std::array<double, 2> window_size = this->get_size();
+
+	Viewport viewport = ViewportUtil::calculate_viewport(window_size[0], window_size[1], bounds[0], bounds[1], bounds[2], bounds[3], 2);
 	
+	this->point_size = viewport.get_point_size();
+	std::array<double, 4> viewport_matrix = viewport.get_viewport_matrix();
+	std::array<double, 4> orhto_matrix = viewport.get_ortho_matrix();
 
-	double window_min_dimension = std::min(window_size[0], window_size[1]);
-
-	std::array<double, 2> viewport_shift;
-	double viewport_shift_offset = std::abs(window_size[0] - window_size[1])/2;
-
-	
-	if (window_size[0] > window_size[1]) {
-		viewport_shift = { viewport_shift_offset, 0 };
-	} else {
-		viewport_shift = { 0, viewport_shift_offset };
-	};
-
-	glViewport(viewport_shift[0], viewport_shift[1], window_min_dimension, window_min_dimension);
+	glViewport(viewport_matrix[0], viewport_matrix[1], viewport_matrix[2], viewport_matrix[3]);
 	glMatrixMode(GL_PROJECTION); // projection matrix defines the properties of the camera that views the objects in the world coordinate frame. Here you typically set the zoom factor, aspect ratio and the near and far clipping planes
 	glLoadIdentity(); // replace the current matrix with the identity matrix and starts us a fresh because matrix transforms such as glOrpho and glRotate cumulate, basically puts us at (0, 0, 0)
-	glOrtho(screen[0], screen[2] , screen[1] , screen[3] , 0, 1); // essentially set coordinate system
+	glOrtho(orhto_matrix[0], orhto_matrix[1], orhto_matrix[2], orhto_matrix[3], 0, 1); // essentially set coordinate system
 }
 
 void draw_circle(float x, float y, float radius)
