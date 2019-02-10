@@ -1,14 +1,20 @@
 #include <algorithm>
 
 #include "model/bridge_model.h"
-#include "model/entity/junction.h"
-#include "model/entity/girder.h"
-
 
 
 BridgeModel::BridgeModel() {
-
+	
 }
+
+double BridgeModel::get_prefered_scale_out_factor() {
+	return this->prefered_scale_out_factor;
+}
+
+void BridgeModel::set_prefered_scale_out_factor(double prefered_scale_out_factor) {
+	this->prefered_scale_out_factor = prefered_scale_out_factor;
+}
+
 
 Junction& BridgeModel::add_junction(bool hard, double x, double y) {
 	Junction* junction = new Junction(this->junctions.size(), hard, x, y);
@@ -28,7 +34,9 @@ Junction& BridgeModel::add_hard_junction(double x, double y) {
 
 
 Girder& BridgeModel::add_girder(Junction& junction1, Junction& junction2) {
-	Girder* girder = new Girder(this->girders.size(), junction1.get_index(), junction2.get_index());
+	double original_size = (junction2.get_coordinate() - junction1.get_coordinate()).norm();
+
+	Girder* girder = new Girder(this->girders.size(), original_size, junction1.get_index(), junction2.get_index());
 
 	this->girders.push_back(std::unique_ptr<Girder>(girder));
 
@@ -55,12 +63,12 @@ std::array<double, 4> BridgeModel::get_bounds() {
 	std::array<double, 4> result = {0, 0, 0, 0};
 
 	if (this->get_junctions_len() > 0) {
-		std::array<double, 2> coordinate = this->get_junction(0).get_coordinate();
+		Eigen::Vector2d coordinate = this->get_junction(0).get_coordinate();
 		result = { coordinate[0], coordinate[1], coordinate[0], coordinate[1] };
 	}
 
 	for (int i = 1; i < this->get_junctions_len(); i++) {
-		std::array<double, 2> coordinate = this->get_junction(i).get_coordinate();
+		Eigen::Vector2d coordinate = this->get_junction(i).get_coordinate();
 
 		result[0] = std::min(result[0], coordinate[0]);
 		result[1] = std::min(result[1], coordinate[1]);

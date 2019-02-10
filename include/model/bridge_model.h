@@ -4,11 +4,12 @@
 #include<vector>
 #include<memory>
 
-#include<model/entity/girder.h>
-#include<model/entity/junction.h>
+#include<model/bridge/girder.h>
+#include<model/bridge/junction.h>
 
 class BridgeModel {
 
+	double prefered_scale_out_factor = 10;
 	std::vector<std::unique_ptr<Junction>> junctions;
 	std::vector<std::unique_ptr<Girder>> girders;
 
@@ -21,6 +22,9 @@ public:
 	Girder& add_girder(Junction& junction1, Junction& junction2);
 	Junction& get_junction(int i);
 	Girder& get_girder(int i);
+
+	double get_prefered_scale_out_factor();
+	void set_prefered_scale_out_factor(double prefered_scale_out_factor);
 
 	int get_girder_len();
 	int get_junctions_len();

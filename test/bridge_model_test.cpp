@@ -1,7 +1,5 @@
 #include<gtest/gtest.h>
 #include "model/bridge_model.h"
-#include "model/entity/girder.h"
-#include "model/entity/junction.h"
 
 TEST(BridgeModelTest, test_bridge_model) {
 	BridgeModel bridge;

@@ -3,7 +3,6 @@
 
 #include "utils/viewport_utils.h"
 #include "ui/bridge_window.h"
-#include "model/entity/junction.h"
 #include "model/bridge_model.h"
 
 #define DEG2RAD 3.14159/180.0
@@ -15,9 +14,10 @@ BridgeWindow::BridgeWindow(std::shared_ptr<BridgeModel> bridge_model) {
 void BridgeWindow::init() {
 
 	std::array<double, 4> bounds = this->bridge_model->get_bounds();
+	double scale_out_factor = this->bridge_model->get_prefered_scale_out_factor();
 	std::array<double, 2> window_size = this->get_size();
 
-	Viewport viewport = ViewportUtil::calculate_viewport(window_size[0], window_size[1], bounds[0], bounds[1], bounds[2], bounds[3], 2);
+	Viewport viewport = ViewportUtil::calculate_viewport(window_size[0], window_size[1], bounds[0], bounds[1], bounds[2], bounds[3], scale_out_factor);
 	
 	this->point_size = viewport.get_point_size();
 	std::array<double, 4> viewport_matrix = viewport.get_viewport_matrix();

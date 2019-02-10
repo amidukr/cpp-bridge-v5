@@ -1,4 +1,4 @@
-#include <model/entity/junction.h>
+#include <model/bridge/junction.h>
 
 Junction::Junction(int index, bool hard, double x, double y) {
 	this->index = index;
@@ -10,7 +10,19 @@ int Junction::get_index() {
 	return this->index;
 }
 
-std::array<double, 2> Junction::get_coordinate() {
+Eigen::Vector2d Junction::get_velocity() {
+	return this->velocity;
+}
+
+void Junction::set_velocity(Eigen::Vector2d velocity) {
+	this->velocity = velocity;
+}
+
+void Junction::set_coordinate(Eigen::Vector2d coordinate) {
+	this->coordinate = coordinate;
+}
+
+Eigen::Vector2d Junction::get_coordinate() {
 	return this->coordinate;
 }
 
