@@ -14,28 +14,28 @@ BridgeModel::BridgeModel() {
 
 }
 
-std::shared_ptr<Junction> BridgeModel::add_junction(double x, double y) {
-	std::shared_ptr<Junction> junction(new Junction(this->junctions.size(), x, y));
+Junction& BridgeModel::add_junction(double x, double y) {
+	Junction* junction = new Junction(this->junctions.size(), x, y);
+	
+	this->junctions.push_back(std::unique_ptr<Junction>(junction));
 
-	this->junctions.push_back(junction);
-
-	return junction;
+	return *junction;
 }
 
-std::shared_ptr<Girder> BridgeModel::add_girder(std::shared_ptr<Junction> junction1, std::shared_ptr<Junction> junction2) {
-	std::shared_ptr<Girder> girder(new Girder(this->girders.size(), junction1->get_index(), junction2->get_index()));
+Girder& BridgeModel::add_girder(Junction& junction1, Junction& junction2) {
+	Girder* girder = new Girder(this->girders.size(), junction1.get_index(), junction2.get_index());
 
-	this->girders.push_back(girder);
+	this->girders.push_back(std::unique_ptr<Girder>(girder));
 
-	return girder;
+	return *girder;
 }
 
-std::shared_ptr<Junction> BridgeModel::get_junction(int index) {
-	return this->junctions.at(index);
+Junction& BridgeModel::get_junction(int index) {
+	return *this->junctions.at(index);
 }
 
-std::shared_ptr<Girder> BridgeModel::get_girder(int index) {
-	return this->girders.at(index);
+Girder& BridgeModel::get_girder(int index) {
+	return *this->girders.at(index);
 }
 
 int BridgeModel::get_girder_len() {
