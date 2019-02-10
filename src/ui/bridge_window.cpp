@@ -15,7 +15,7 @@ void BridgeWindow::init() {
 
 	std::array<double, 4> bounds = this->bridge_model->get_bounds();
 	double scale_out_factor = this->bridge_model->get_prefered_scale_out_factor();
-	std::array<double, 2> window_size = this->get_size();
+	std::array<int, 2> window_size = this->get_size();
 
 	Viewport viewport = ViewportUtil::calculate_viewport(window_size[0], window_size[1], bounds[0], bounds[1], bounds[2], bounds[3], scale_out_factor);
 	

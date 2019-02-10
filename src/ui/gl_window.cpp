@@ -22,6 +22,8 @@ bool GLWindow::create() {
 
 	// Open a window and create its OpenGL context
 	this->window = glfwCreateWindow(this->size[0], this->size[1], "GL Window", NULL, NULL);
+	glfwSetWindowPos(this->window, this->position[0], this->position[1]);
+
 	if (this->window == NULL) {
 		fprintf(stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n");
 		return false;
@@ -69,6 +71,18 @@ bool GLWindow::is_active() {
 	return this->active;
 }
 
-std::array<double, 2> GLWindow::get_size() {
+void GLWindow::set_position(std::array<int, 2> position) {
+	this->position = position;
+}
+
+std::array<int, 2> GLWindow::get_position() {
+	return this->position;
+}
+
+void GLWindow::set_size(std::array<int, 2> size) {
+	this->size = size;
+}
+
+std::array<int, 2> GLWindow::get_size() {
 	return this->size;
 }

@@ -20,10 +20,12 @@ public:
 	static const std::string LINE_UP;
 	static const std::string LINE_DIAGONAL;
 
+	static const std::string TRIANGLE_GRID;
+
 	SampleDataModel();
 
-	std::shared_ptr<BridgeModel> load_bridge_model(std::string model_name);
-	std::shared_ptr<SimulationModel> load_simulation_model(std::string model_name);
+	std::unique_ptr<BridgeModel> load_bridge_model(std::string model_name);
+	std::unique_ptr<SimulationModel> load_simulation_model(std::string model_name);
 
 private:
 	// Disable copy constructor

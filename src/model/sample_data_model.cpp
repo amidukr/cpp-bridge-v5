@@ -9,6 +9,8 @@ const std::string SampleDataModel::SQUARE_BRIDGE = "square";
 const std::string SampleDataModel::HEART_BRIDGE = "heart";
 const std::string SampleDataModel::LINE_UP = "line-up";
 const std::string SampleDataModel::LINE_DIAGONAL = "line-diagonal";
+const std::string SampleDataModel::TRIANGLE_GRID = "triangle-grid";
+
 
 SampleDataModel::SampleDataModel() {
 
@@ -16,8 +18,8 @@ SampleDataModel::SampleDataModel() {
 
 //-------------- Simulation Settings --------------
 
-std::shared_ptr<SimulationModel> create_optimal_with_delay() {
-	std::shared_ptr<SimulationModel> simulation_model(new SimulationModel());
+std::unique_ptr<SimulationModel> create_optimal_with_delay() {
+	std::unique_ptr<SimulationModel> simulation_model(new SimulationModel());
 
 	simulation_model->set_iteration_delay(10);
 	simulation_model->set_time_factor(1);
@@ -25,13 +27,13 @@ std::shared_ptr<SimulationModel> create_optimal_with_delay() {
 	simulation_model->set_gravity(Eigen::Vector2d(0, -9.8));
 
 	simulation_model->set_spring_characteristic(1.0);
-	simulation_model->set_dumping_ration(0.999);
+	simulation_model->set_dumping_ration(0.9);
 
 	return simulation_model;
 }
 
-std::shared_ptr<SimulationModel> create_ten_time_factor() {
-	std::shared_ptr<SimulationModel> simulation_model(new SimulationModel());
+std::unique_ptr<SimulationModel> create_ten_time_factor() {
+	std::unique_ptr<SimulationModel> simulation_model(new SimulationModel());
 
 	simulation_model->set_iteration_delay(10);
 	simulation_model->set_time_factor(10);
@@ -39,13 +41,13 @@ std::shared_ptr<SimulationModel> create_ten_time_factor() {
 	simulation_model->set_gravity(Eigen::Vector2d(0, -9.8));
 
 	simulation_model->set_spring_characteristic(1.0);
-	simulation_model->set_dumping_ration(0.95);
+	simulation_model->set_dumping_ration(0.5);
 
 	return simulation_model;
 }
 
 
-std::shared_ptr<SimulationModel> SampleDataModel::load_simulation_model(std::string model_name) {
+std::unique_ptr<SimulationModel> SampleDataModel::load_simulation_model(std::string model_name) {
 	if (model_name == SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION) {
 		return create_optimal_with_delay();
 	}
@@ -59,8 +61,8 @@ std::shared_ptr<SimulationModel> SampleDataModel::load_simulation_model(std::str
 
 //-------------- Brdige Model --------------
 
-std::shared_ptr<BridgeModel> create_square_bridge() {
-	std::shared_ptr<BridgeModel> bridge_model(new BridgeModel());
+std::unique_ptr<BridgeModel> create_square_bridge() {
+	std::unique_ptr<BridgeModel> bridge_model(new BridgeModel());
 
 	Junction& junction_bl = bridge_model->add_junction(20, 20);
 	Junction& junction_br = bridge_model->add_junction(40, 20);
@@ -75,8 +77,8 @@ std::shared_ptr<BridgeModel> create_square_bridge() {
 	return bridge_model;
 }
 
-std::shared_ptr<BridgeModel> create_heart_bridge() {
-	std::shared_ptr<BridgeModel> bridge_model(new BridgeModel());
+std::unique_ptr<BridgeModel> create_heart_bridge() {
+	std::unique_ptr<BridgeModel> bridge_model(new BridgeModel());
 
 	Junction& junction_hard = bridge_model->add_hard_junction(0, 0);
 	Junction& junction_l1 = bridge_model->add_junction(-5, 5);
@@ -99,8 +101,8 @@ std::shared_ptr<BridgeModel> create_heart_bridge() {
 	return bridge_model;
 }
 
-std::shared_ptr<BridgeModel> create_line_up() {
-	std::shared_ptr<BridgeModel> bridge_model(new BridgeModel());
+std::unique_ptr<BridgeModel> create_line_up() {
+	std::unique_ptr<BridgeModel> bridge_model(new BridgeModel());
 
 	bridge_model->set_prefered_scale_out_factor(10);
 
@@ -118,8 +120,8 @@ std::shared_ptr<BridgeModel> create_line_up() {
 	return bridge_model;
 }
 
-std::shared_ptr<BridgeModel> create_line_diagonal() {
-	std::shared_ptr<BridgeModel> bridge_model(new BridgeModel());
+std::unique_ptr<BridgeModel> create_line_diagonal() {
+	std::unique_ptr<BridgeModel> bridge_model(new BridgeModel());
 
 	bridge_model->set_prefered_scale_out_factor(10);
 
@@ -137,8 +139,43 @@ std::shared_ptr<BridgeModel> create_line_diagonal() {
 	return bridge_model;
 }
 
+std::unique_ptr<BridgeModel> create_triangle_grid() {
+	std::unique_ptr<BridgeModel> bridge_model(new BridgeModel());
 
-std::shared_ptr<BridgeModel> SampleDataModel::load_bridge_model(std::string model_name) {
+	//bridge_model->set_prefered_scale_out_factor(5);
+	
+	const int N = 3;
+
+	Junction* junctions[N][N];
+	Junction& hard = bridge_model->add_hard_junction(0, 0);
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			junctions[i][j] = &bridge_model->add_junction(i - N/2, j + 1);
+		}
+	}
+
+	for (int i = 1; i < N; i++) {
+		for (int j = 1; j < N; j++) {
+			bridge_model->add_girder(*junctions[i][j], *junctions[i-1][j]);
+			bridge_model->add_girder(*junctions[i][j], *junctions[i][j-1]);
+			bridge_model->add_girder(*junctions[i-1][j-1], *junctions[i-1][j]);
+			bridge_model->add_girder(*junctions[i-1][j-1], *junctions[i][j-1]);
+
+			bridge_model->add_girder(*junctions[i][j], *junctions[i-1][j-1]);
+			bridge_model->add_girder(*junctions[i-1][j], *junctions[i][j - 1]);
+		}
+	}
+
+	for (int i = 0; i < N; i++) {
+		bridge_model->add_girder(*junctions[i][0], hard);
+	}
+
+	return bridge_model;
+}
+
+
+std::unique_ptr<BridgeModel> SampleDataModel::load_bridge_model(std::string model_name) {
 	if (model_name == SampleDataModel::HEART_BRIDGE) {
 		return create_heart_bridge();
 	}
@@ -153,6 +190,10 @@ std::shared_ptr<BridgeModel> SampleDataModel::load_bridge_model(std::string mode
 
 	if (model_name == SampleDataModel::LINE_DIAGONAL) {
 		return create_line_diagonal();
+	}
+
+	if (model_name == SampleDataModel::TRIANGLE_GRID) {
+		return create_triangle_grid();
 	}
 
 	throw "bridge model not found";

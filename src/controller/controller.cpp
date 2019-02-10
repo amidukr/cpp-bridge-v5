@@ -64,7 +64,7 @@ void Controller::update(ControllerAction& action) {
 
 		junction.set_velocity(junction.get_velocity() * Q);
 	}
-
+	
 	for (int i = 0; i < junctions_len; i++) {
 		Junction& junction = bridge_model.get_junction(i);
 		junction.set_coordinate(junction.get_coordinate() + junction.get_velocity() * elapsed_time);

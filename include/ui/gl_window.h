@@ -10,7 +10,8 @@ class GLWindow
 	GLFWwindow* window = 0;
 	bool active = false;
 
-	const std::array<double, 2> size = { 1024, 768 };
+	std::array<int, 2> position = { 100, 100 };
+	std::array<int, 2> size = { 1024, 768 };
 
 protected:
 	virtual void init() = 0;
@@ -20,7 +21,11 @@ protected:
 public:
 	GLWindow();
 
-	std::array<double, 2> get_size();
+	void set_position(std::array<int, 2> position);
+	std::array<int, 2> get_position();
+
+	void set_size(std::array<int, 2> size);
+	std::array<int, 2> get_size();
 
 	bool is_active();
 	bool create();
