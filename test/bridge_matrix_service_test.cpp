@@ -3,6 +3,18 @@
 #include "model/bridge_model.h"
 #include "model/simulation_model.h"
 
+#include <iostream>
+
+bool compare_matrices(Eigen::MatrixXd& actual, Eigen::MatrixXd expected) {
+	bool approx = actual == expected;
+	if (!approx) {
+		std::cout << actual << std::endl << "doesn't equal to expected" << std::endl << expected << std::endl;
+		std::cout << "difference is following: " << std::endl << (expected - actual) << std::endl;
+	}
+
+	return approx;
+}
+
 TEST(BridgeMatrixService, test_pendulum) {
 	BridgeModel bridge_model;
 	SimulationModel simulation_model;
@@ -16,6 +28,8 @@ TEST(BridgeMatrixService, test_pendulum) {
 
 	std::unique_ptr<MatrixEquation> matrix_equation = BridgeMatrixService::create_bridge_equation(bridge_model, simulation_model, 100);
 
+	std::cout << matrix_equation->roots << std::endl;
+
 	Eigen::MatrixXd matrix_expected(6, 6);
 	matrix_expected << 
 	// F1X F1Y F12X F12Y dV1X  dV1Y
@@ -25,12 +39,12 @@ TEST(BridgeMatrixService, test_pendulum) {
 		0,   0,   0,   0,   4,   -2,
 		100, 0,   0,   0,  -1,    0,
 		0, 100,   0,   0,   0,   -1;
-	 
-	Eigen::Vector2d right_side_exptected;
+
+	Eigen::VectorXd right_side_exptected(6);
 
 	right_side_exptected << 20, 30, 0, 0, 0, 0;
 
-	ASSERT_EQ(matrix_expected, matrix_equation->left);
+	ASSERT_TRUE(compare_matrices(matrix_equation->left, matrix_expected));
 	ASSERT_EQ(right_side_exptected, matrix_equation->right);
 }
 
@@ -59,11 +73,11 @@ TEST(BridgeMatrixService, test_free_fall_junction) {
 		    0,   0,   0, 100,   0,   0,   0,  -1;
 		
 
-	Eigen::Vector2d right_side_exptected;
+	Eigen::VectorXd right_side_exptected(8);
 
 	right_side_exptected << 20, 30, 20, 30, 0, 0, 0, 0;
 
-	ASSERT_EQ(matrix_expected, matrix_equation->left);
+	ASSERT_TRUE(compare_matrices(matrix_equation->left, matrix_expected));
 	ASSERT_EQ(right_side_exptected, matrix_equation->right);
 }
 
@@ -82,23 +96,23 @@ TEST(BridgeMatrixService, test_free_fall_girder) {
 
 	Eigen::MatrixXd matrix_expected(10, 10);
 	matrix_expected <<
-		//F1X  F1Y  F2X  F2Y  F12X  F12Y  dV1X  dV1Y  dV2X  dV2Y
-		    1,   0,  0,    0,   -1,   0,     0,    0,    0,    0,
-		    0,   1,  0,    0,    0,  -1,     0,    0,    0,    0,
-		    0,   0,  1,    0,    1,   0,     0,    0,    0,    0,
-		    0,   0,  0,    1,    0,   1,     0,    0,    0,    0,
-		    0,   0,  0,    0,    4,  -2,     0,    0,    0,    0,
-		    0,   0,  0,    0,    0,   0,     2,    4,    0,    0,
-		    0,   0,  0,    0,    0,   0,     0,    0,    2,    4,
-		  100,   0,  0,    0,    0,   0,    -1,    0,    0,    0,
-		    0, 100,  0,    0,    0,   0,     0,   -1,    0,    0;
+		//F1X  F1Y  F2X   F2Y  F12X  F12Y  dV1X  dV1Y  dV2X  dV2Y
+		    1,   0,   0,    0,   -1,   0,     0,    0,    0,    0,
+		    0,   1,   0,    0,    0,  -1,     0,    0,    0,    0,
+		    0,   0,   1,    0,    1,   0,     0,    0,    0,    0,
+		    0,   0,   0,    1,    0,   1,     0,    0,    0,    0,
+		    0,   0,   0,    0,    4,  -2,     0,    0,    0,    0,
+		    0,   0,   0,    0,    0,   0,     2,    4,    2,    4,
+		  100,   0,   0,    0,    0,   0,    -1,    0,    0,    0,
+		    0, 100,   0,    0,    0,   0,     0,   -1,    0,    0,
+		    0,   0, 100,    0,    0,   0,     0,    0,   -1,    0,
+		    0,   0,   0,  100,    0,   0,     0,    0,    0,   -1;
 
-
-	Eigen::Vector2d right_side_exptected;
+	Eigen::VectorXd right_side_exptected(10);
 
 	right_side_exptected << 20, 30, 20, 30, 0, 0, 0, 0, 0, 0;
 
-	ASSERT_EQ(matrix_expected, matrix_equation->left);
+	ASSERT_TRUE(compare_matrices(matrix_equation->left, matrix_expected));
 	ASSERT_EQ(right_side_exptected, matrix_equation->right);
 }
 
@@ -116,9 +130,9 @@ TEST(BridgeMatrixService, test_hard_junction) {
 	std::unique_ptr<MatrixEquation> matrix_equation = BridgeMatrixService::create_bridge_equation(bridge_model, simulation_model, 100);
 
 	Eigen::MatrixXd matrix_expected(0, 0);
-	Eigen::Vector2d right_side_exptected;
+	Eigen::VectorXd right_side_exptected;
 
-	ASSERT_EQ(matrix_expected, matrix_equation->left);
+	ASSERT_TRUE(compare_matrices(matrix_equation->left, matrix_expected));
 	ASSERT_EQ(right_side_exptected, matrix_equation->right);
 }
 
@@ -142,14 +156,14 @@ TEST(BridgeMatrixService, test_triangle) {
 	matrix_expected <<
 		//F2X  F2Y  F3X  F3Y  F12X  F12Y  F23X  F23Y  F31X  F31Y  dV2X  dV2Y  dV3X  dV3Y
 		    1,   0,   0,   0,    1,    0,  -1,    0,    0,    0,    0,    0,   0,     0,
-		    0,   1,   0,   0,    0,    1,  -1,    0,    0,    0,    0,    0,   0,     0,
+		    0,   1,   0,   0,    0,    1,   0,   -1,    0,    0,    0,    0,   0,     0,
 		    0,   0,   1,   0,    0,    0,   1,    0,   -1,    0,    0,    0,   0,     0,
-		    0,   0,   0,   1,    0,    0,   0,    1,   -1,    0,    0,    0,   0,     0,
+		    0,   0,   0,   1,    0,    0,   0,    1,    0,   -1,    0,    0,   0,     0,
 		    0,   0,   0,   0,   -2,   -2,   0,    0,    0,    0,    0,    0,   0,     0,
 		    0,   0,   0,   0,    0,    0,  -1,    5,    0,    0,    0,    0,   0,     0,
 		    0,   0,   0,   0,    0,    0,   0,    0,    3,   -3,    0,    0,   0,     0,
 		    0,   0,   0,   0,    0,    0,   0,    0,    0,    0,    2,   -2,   0,     0,
-		    0,   0,   0,   0,    0,    0,   0,    0,    0,    0,   -5,   -1,   5,     1,
+		    0,   0,   0,   0,    0,    0,   0,    0,    0,    0,   -5,   -1,  -5,    -1,
 		    0,   0,   0,   0,    0,    0,   0,    0,    0,    0,    0,    0,   3,     3,
 		   15,   0,   0,   0,    0,    0,   0,    0,    0,    0,   -1,    0,   0,     0,
 		    0,  15,   0,   0,    0,    0,   0,    0,    0,    0,    0,   -1,   0,     0,
@@ -157,10 +171,10 @@ TEST(BridgeMatrixService, test_triangle) {
 		    0,   0,   0,  15,    0,    0,   0,    0,    0,    0,    0,    0,   0,    -1;
 
 
-	Eigen::Vector2d right_side_exptected;
+	Eigen::VectorXd right_side_exptected(14);
 
 	right_side_exptected << 40, 50, 40, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
 
-	ASSERT_EQ(matrix_expected, matrix_equation->left);
+	ASSERT_TRUE(compare_matrices(matrix_equation->left, matrix_expected));
 	ASSERT_EQ(right_side_exptected, matrix_equation->right);
 }

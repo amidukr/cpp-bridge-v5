@@ -20,6 +20,7 @@ Junction& BridgeModel::add_junction(bool hard, double x, double y) {
 	Junction* junction = new Junction(this->junctions.size(), hard, x, y);
 	
 	this->junctions.push_back(std::unique_ptr<Junction>(junction));
+	junction_girders.push_back(std::vector<Girder*>());
 
 	return *junction;
 }
@@ -39,6 +40,8 @@ Girder& BridgeModel::add_girder(Junction& junction1, Junction& junction2) {
 	Girder* girder = new Girder(this->girders.size(), original_size, junction1.get_index(), junction2.get_index());
 
 	this->girders.push_back(std::unique_ptr<Girder>(girder));
+	junction_girders[junction1.get_index()].push_back(girder);
+	junction_girders[junction2.get_index()].push_back(girder);
 
 	return *girder;
 }
@@ -80,3 +83,6 @@ std::array<double, 4> BridgeModel::get_bounds() {
 	return result;
 }
 
+const std::vector<Girder*>& BridgeModel::get_junction_girders(Junction& junction) {
+	return junction_girders.at(junction.get_index());
+}

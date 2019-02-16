@@ -20,6 +20,10 @@
 #include "context/bridge_simulation_context.h"
 #include<model/simulation_model.h>
 
+
+#include <chrono>
+#include <thread>
+
 #ifdef RUN_GTEST_FROM_MAIN
 #include <gtest/gtest.h>
 #endif
@@ -44,14 +48,27 @@ std::unique_ptr<BridgeSimulationContext> create_simulation_context(std::string c
 std::vector<std::unique_ptr<BridgeSimulationContext>> create_simulations() {
 	std::vector<std::unique_ptr<BridgeSimulationContext>> simulations;
 
-	simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::TEN_TIME_FACTOR_SIMULATION));
-	simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
-	simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::HEART_BRIDGE, SampleDataModel::TEN_TIME_FACTOR_SIMULATION));
-	simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::HEART_BRIDGE, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
-	simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::TRIANGLE_GRID, SampleDataModel::TEN_TIME_FACTOR_SIMULATION));
-	simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::TRIANGLE_GRID, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
-	simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::SQUARE_BRIDGE, SampleDataModel::TEN_TIME_FACTOR_SIMULATION));
-	simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::SQUARE_BRIDGE, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
+	//simulations.push_back(create_simulation_context(BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER, SampleDataModel::PANDULUM_BRIDGE, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
+	//simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::PANDULUM_BRIDGE, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
+	//simulations.push_back(create_simulation_context(BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER, SampleDataModel::PANDULUM_BRIDGE, SampleDataModel::TEN_TIME_FACTOR_SIMULATION));
+	//simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::PANDULUM_BRIDGE, SampleDataModel::TEN_TIME_FACTOR_SIMULATION));
+
+	simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::SWING_BRIDGE, SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION));
+	simulations.push_back(create_simulation_context(BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER, SampleDataModel::SWING_BRIDGE, SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION));
+
+	//simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
+	//simulations.push_back(create_simulation_context(BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
+
+	//simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
+	//simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::HEART_BRIDGE, SampleDataModel::TEN_TIME_FACTOR_SIMULATION));
+	//simulations.push_back(create_simulation_context(BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER, SampleDataModel::HEART_BRIDGE, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
+	//simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::TRIANGLE_GRID, SampleDataModel::TEN_TIME_FACTOR_SIMULATION));
+
+	//simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::TRIANGLE_GRID, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
+	//simulations.push_back(create_simulation_context(BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER, SampleDataModel::TRIANGLE_GRID, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
+
+	//simulations.push_back(create_simulation_context(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::SQUARE_BRIDGE, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
+	//simulations.push_back(create_simulation_context(BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER, SampleDataModel::SQUARE_BRIDGE, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION));
 	
 	return simulations;
 }
@@ -97,8 +114,15 @@ void start_simulation(std::vector< std::unique_ptr<BridgeSimulationContext>>& si
 
 	while (simulations.size() > 0)
 	{
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
 		auto current = std::chrono::high_resolution_clock::now();
 		std::chrono::microseconds elapsed_time = std::chrono::duration_cast<std::chrono::microseconds>(current - prev);
+
+		if (elapsed_time > std::chrono::seconds(1)) {
+			elapsed_time = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::seconds(1));
+		}
+
 		prev = current;
 		for (int i = 0; i < simulations.size(); i++) {
 			auto& simulation = simulations.at(i);
@@ -113,8 +137,14 @@ void start_simulation(std::vector< std::unique_ptr<BridgeSimulationContext>>& si
 int main(int argc, char* argv[]) {
 
 	#ifdef RUN_GTEST_FROM_MAIN
-	::testing::InitGoogleTest(&argc, argv);
-	RUN_ALL_TESTS();
+	try {
+		::testing::InitGoogleTest(&argc, argv);
+		RUN_ALL_TESTS();
+	}
+	catch (...) {
+		fprintf(stderr, "Exception during unit test run\n");
+	}
+	
 	#endif
 
 	glewExperimental = true; // Needed for core profile

@@ -9,8 +9,6 @@ class Junction {
 
 	int index;
 	bool hard = false;
-	
-	
 
 	Eigen::Vector2d coordinate;
 	Eigen::Vector2d velocity = {0, 0};

@@ -4,12 +4,17 @@
 
 const std::string SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION = "optimal-with-delay";
 const std::string SampleDataModel::TEN_TIME_FACTOR_SIMULATION = "10x-time-factor";
+const std::string SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION = "100x-time-factor";
 
+const std::string SampleDataModel::SWING_BRIDGE = "swing";
+const std::string SampleDataModel::PANDULUM_BRIDGE = "pandulum";
 const std::string SampleDataModel::SQUARE_BRIDGE = "square";
 const std::string SampleDataModel::HEART_BRIDGE = "heart";
 const std::string SampleDataModel::LINE_UP = "line-up";
 const std::string SampleDataModel::LINE_DIAGONAL = "line-diagonal";
 const std::string SampleDataModel::TRIANGLE_GRID = "triangle-grid";
+
+
 
 
 SampleDataModel::SampleDataModel() {
@@ -21,13 +26,13 @@ SampleDataModel::SampleDataModel() {
 std::unique_ptr<SimulationModel> create_optimal_with_delay() {
 	std::unique_ptr<SimulationModel> simulation_model(new SimulationModel());
 
-	simulation_model->set_iteration_delay(10);
-	simulation_model->set_time_factor(1);
+	simulation_model->set_iteration_delay(1);
+	simulation_model->set_time_factor(0.1);
 
 	simulation_model->set_gravity(Eigen::Vector2d(0, -9.8));
 
 	simulation_model->set_spring_characteristic(1.0);
-	simulation_model->set_dumping_ration(0.9);
+	simulation_model->set_dumping_ration(0.99);
 
 	return simulation_model;
 }
@@ -46,6 +51,14 @@ std::unique_ptr<SimulationModel> create_ten_time_factor() {
 	return simulation_model;
 }
 
+std::unique_ptr<SimulationModel> create_hundred_time_factor() {
+	std::unique_ptr<SimulationModel> simulation_model = create_optimal_with_delay();
+
+	simulation_model->set_time_factor(simulation_model->get_time_factor() * 100);
+
+	return simulation_model;
+}
+
 
 std::unique_ptr<SimulationModel> SampleDataModel::load_simulation_model(std::string model_name) {
 	if (model_name == SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION) {
@@ -56,10 +69,41 @@ std::unique_ptr<SimulationModel> SampleDataModel::load_simulation_model(std::str
 		return create_ten_time_factor();
 	}
 
+	if (model_name == SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION) {
+		return create_hundred_time_factor();
+	}
+
 	throw "simulation setting not found";
 }
 
 //-------------- Brdige Model --------------
+
+std::unique_ptr<BridgeModel> create_swing_bridge() {
+	std::unique_ptr<BridgeModel> bridge_model(new BridgeModel());
+
+	Junction& left_hard = bridge_model->add_hard_junction(0, 0);
+	Junction& right_hard = bridge_model->add_hard_junction(10, 0);
+
+	Junction& left_soft = bridge_model->add_junction(-5, 5);
+	Junction& right_soft = bridge_model->add_junction(5, 5);
+
+	bridge_model->add_girder(left_hard, left_soft);
+	bridge_model->add_girder(left_soft, right_soft);
+	bridge_model->add_girder(right_soft, right_hard);
+
+	return bridge_model;
+}
+
+std::unique_ptr<BridgeModel> create_pandulum_bridge() {
+	std::unique_ptr<BridgeModel> bridge_model(new BridgeModel());
+
+	Junction& hard = bridge_model->add_hard_junction(0, 0);
+	Junction& soft = bridge_model->add_junction(4, -4);
+
+	bridge_model->add_girder(hard, soft);
+
+	return bridge_model;
+}
 
 std::unique_ptr<BridgeModel> create_square_bridge() {
 	std::unique_ptr<BridgeModel> bridge_model(new BridgeModel());
@@ -123,13 +167,13 @@ std::unique_ptr<BridgeModel> create_line_up() {
 std::unique_ptr<BridgeModel> create_line_diagonal() {
 	std::unique_ptr<BridgeModel> bridge_model(new BridgeModel());
 
-	bridge_model->set_prefered_scale_out_factor(10);
+	bridge_model->set_prefered_scale_out_factor(5);
 
 	Junction& bottom = bridge_model->add_hard_junction(0, 0);
 
 	Junction* prev = &bottom;
-	for (int i = 0; i < 20; i++) {
-		Junction& p = bridge_model->add_junction(i, i);
+	for (int i = 1; i < 20; i++) {
+		Junction& p = bridge_model->add_junction(20*i, 20 * i);
 
 		bridge_model->add_girder(*prev, p);
 
@@ -142,16 +186,16 @@ std::unique_ptr<BridgeModel> create_line_diagonal() {
 std::unique_ptr<BridgeModel> create_triangle_grid() {
 	std::unique_ptr<BridgeModel> bridge_model(new BridgeModel());
 
-	//bridge_model->set_prefered_scale_out_factor(5);
+	bridge_model->set_prefered_scale_out_factor(7);
 	
-	const int N = 3;
+	const int N = 5;
 
 	Junction* junctions[N][N];
 	Junction& hard = bridge_model->add_hard_junction(0, 0);
 
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++) {
-			junctions[i][j] = &bridge_model->add_junction(i - N/2, j + 1);
+			junctions[i][j] = &bridge_model->add_junction(i, j + 1);
 		}
 	}
 
@@ -176,6 +220,15 @@ std::unique_ptr<BridgeModel> create_triangle_grid() {
 
 
 std::unique_ptr<BridgeModel> SampleDataModel::load_bridge_model(std::string model_name) {
+
+	if (model_name == SampleDataModel::SWING_BRIDGE) {
+		return create_swing_bridge();
+	}
+		
+	if (model_name == SampleDataModel::PANDULUM_BRIDGE) {
+		return create_pandulum_bridge();
+	}
+
 	if (model_name == SampleDataModel::HEART_BRIDGE) {
 		return create_heart_bridge();
 	}
