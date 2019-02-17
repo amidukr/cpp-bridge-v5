@@ -33,7 +33,8 @@ void ElasticBridgeController::update(ControllerAction& action) {
 	for (int i = 0; i < junctions_len; i++) {
 		Junction& junction = bridge_model.get_junction(i);
 		if (!junction.is_hard()) {
-			bridge_model.get_junction(i).set_coordinate(junction.get_coordinate() + junction.get_velocity() * Q + G * elapsed_time);
+			junction.set_velocity(junction.get_velocity() + G);
+			bridge_model.get_junction(i).set_coordinate(junction.get_coordinate() + elapsed_time * junction.get_velocity() * Q);
 		}
 	}
 
@@ -64,7 +65,7 @@ void ElasticBridgeController::update(ControllerAction& action) {
 		Junction& junction = bridge_model.get_junction(i);
 
 		if (!junction.is_hard()) {
-			junction.set_velocity(junction.get_coordinate() - old_pos[i]);
+			junction.set_velocity((junction.get_coordinate() - old_pos[i])/elapsed_time);
 		}	
 	}
 }
