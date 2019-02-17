@@ -13,6 +13,8 @@ class GLWindow
 	std::array<int, 2> position = { 100, 100 };
 	std::array<int, 2> size = { 1024, 768 };
 
+	std::string title;
+
 protected:
 	virtual void init() = 0;
 	virtual void draw() = 0;
@@ -20,6 +22,8 @@ protected:
 
 public:
 	GLWindow();
+
+	void set_title(std::string titile);
 
 	void set_position(std::array<int, 2> position);
 	std::array<int, 2> get_position();

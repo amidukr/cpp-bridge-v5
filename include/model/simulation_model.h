@@ -8,7 +8,7 @@ class SimulationModel {
 	double spring_characteristic = 0;
 	double time_factor = 0;
 	long iteration_delay = 0;
-	double dumping_ration = 0;
+	double dumping_ratio = 0;
 
 public:
 	SimulationModel();
@@ -25,8 +25,8 @@ public:
 	void set_iteration_delay(long iteration_delay);
 	long get_iteration_delay();
 
-	void set_dumping_ration(double dumping_ration);
-	double get_dumping_ration();
+	void set_dumping_ratio(double dumping_ratio);
+	double get_dumping_ratio();
 };
 
 #endif SIMULATION_SETTINGS_MODEL_H

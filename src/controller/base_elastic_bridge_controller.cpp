@@ -1,4 +1,4 @@
-#include "controller/elastic_bridge_controller.h"
+#include "controller/base_elastic_bridge_controller.h"
 
 #include <chrono>
 #include <thread>
@@ -8,7 +8,7 @@
 #include"controller/arguments/controller_action.h"
 
 
-void ElasticBridgeController::update(ControllerAction& action) {
+void BaseElasticBridgeController::update(ControllerAction& action) {
 
 	BridgeModel& bridge_model = this->get_bridge_model();
 	SimulationModel& simulation_model = this->get_simulation_model();
@@ -17,7 +17,7 @@ void ElasticBridgeController::update(ControllerAction& action) {
 
 	const Eigen::Vector2d G = simulation_model.get_gravity();
 	const double K = simulation_model.get_spring_characteristic();
-	double Q = simulation_model.get_dumping_ration();
+	double Q = simulation_model.get_dumping_ratio();
 	
 	int junctions_len = bridge_model.get_junctions_len();
 	int girder_len = bridge_model.get_girder_len();
@@ -30,34 +30,35 @@ void ElasticBridgeController::update(ControllerAction& action) {
 		old_pos[i] = bridge_model.get_junction(i).get_coordinate();
 	}
 
+	this->updateJunctionsVelocity(elapsed_time);
+
 	for (int i = 0; i < junctions_len; i++) {
 		Junction& junction = bridge_model.get_junction(i);
 		if (!junction.is_hard()) {
-			junction.set_velocity(junction.get_velocity() + G);
 			bridge_model.get_junction(i).set_coordinate(junction.get_coordinate() + elapsed_time * junction.get_velocity() * Q);
 		}
 	}
+	for (int n = 0; n < 5; n++) {
 
-	for (int i = 0; i < girder_len; i++) {
-		Girder& girder = bridge_model.get_girder(i);
-		Junction& junction1 = bridge_model.get_junction(girder.get_junction1_id());
-		Junction& junction2 = bridge_model.get_junction(girder.get_junction2_id());
+		for (int i = 0; i < girder_len; i++) {
+			Girder& girder = bridge_model.get_girder(i);
+			Junction& junction1 = bridge_model.get_junction(girder.get_junction1_id());
+			Junction& junction2 = bridge_model.get_junction(girder.get_junction2_id());
 
-		Eigen::Vector2d force_direction = junction2.get_coordinate() - junction1.get_coordinate();
-		Eigen::Vector2d force_direction_norm = force_direction;
+			Eigen::Vector2d r12 = junction2.get_coordinate() - junction1.get_coordinate();
+			Eigen::Vector2d r12_norm = r12;
 
-		force_direction_norm.normalize();
+			r12_norm.normalize();
 
-		double current_size = force_direction.norm();
-		double original_size = girder.get_original_size();
-		double force = (original_size - current_size)*0.5;
+			double force = (r12.norm() - girder.get_original_size()) * 0.5;
 
-		if (!junction2.is_hard()) {
-			junction2.set_coordinate(junction2.get_coordinate() + force_direction_norm * force);
-		}
+			if (!junction2.is_hard()) {
+				junction2.set_coordinate(junction2.get_coordinate() - r12_norm * force);
+			}
 
-		if (!junction1.is_hard()) {
-			junction1.set_coordinate(junction1.get_coordinate() - force_direction_norm * force);
+			if (!junction1.is_hard()) {
+				junction1.set_coordinate(junction1.get_coordinate() + r12_norm * force);
+			}
 		}
 	}
 	

@@ -36,10 +36,10 @@ long SimulationModel::get_iteration_delay() {
 	return this->iteration_delay;
 }
 
-void SimulationModel::set_dumping_ration(double dumping_ration) {
-	this->dumping_ration = dumping_ration;
+void SimulationModel::set_dumping_ratio(double dumping_ratio) {
+	this->dumping_ratio = dumping_ratio;
 }
 
-double SimulationModel::get_dumping_ration() {
-	return this->dumping_ration = dumping_ration;
+double SimulationModel::get_dumping_ratio() {
+	return this->dumping_ratio = dumping_ratio;
 }

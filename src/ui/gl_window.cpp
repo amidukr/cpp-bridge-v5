@@ -3,7 +3,7 @@
 #include <GLFW/glfw3.h>
 
 
-#include "ui/bridge_window.h"
+#include "ui/gl_window.h"
 
 GLWindow::GLWindow() {
 
@@ -21,7 +21,7 @@ bool GLWindow::create() {
 	glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
 
 	// Open a window and create its OpenGL context
-	this->window = glfwCreateWindow(this->size[0], this->size[1], "GL Window", NULL, NULL);
+	this->window = glfwCreateWindow(this->size[0], this->size[1], this->title.c_str(), NULL, NULL);
 	glfwSetWindowPos(this->window, this->position[0], this->position[1]);
 
 	if (this->window == NULL) {
@@ -85,4 +85,8 @@ void GLWindow::set_size(std::array<int, 2> size) {
 
 std::array<int, 2> GLWindow::get_size() {
 	return this->size;
+}
+
+void GLWindow::set_title(std::string title) {
+	this->title = title;
 }

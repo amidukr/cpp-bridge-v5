@@ -8,7 +8,8 @@ class BridgeController;
 
 class BridgeControllerFactory {
 public:
-	static const std::string ELASTIC_BRIDGE_CONTROLLER; 
+	static const std::string ELASTIC_BRIDGE_CONTROLLER;
+	static const std::string MATRIX_ELASTIC_BRIDGE_CONTROLLER;
 	static const std::string MATRIX_BRIDGE_CONTROLLER;
 
 	BridgeControllerFactory();

@@ -17,7 +17,7 @@ void MatrixBridgeController::update(ControllerAction& action) {
 	double elapsed_time = action.get_elapsed_time_seconds() * simulation_model.get_time_factor();
 
 	const Eigen::Vector2d G = simulation_model.get_gravity();
-	double Q = simulation_model.get_dumping_ration();
+	double Q = simulation_model.get_dumping_ratio();
 	
 	int junctions_len = bridge_model.get_junctions_len();
 

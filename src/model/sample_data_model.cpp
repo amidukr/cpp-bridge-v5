@@ -3,6 +3,7 @@
 #include "model/sample_data_model.h"
 
 const std::string SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION = "optimal-with-delay";
+const std::string SampleDataModel::TEN_TIME_LOW_DUMPING = "10x-low-dumping";
 const std::string SampleDataModel::TEN_TIME_FACTOR_SIMULATION = "10x-time-factor";
 const std::string SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION = "100x-time-factor";
 
@@ -32,21 +33,25 @@ std::unique_ptr<SimulationModel> create_optimal_with_delay() {
 	simulation_model->set_gravity(Eigen::Vector2d(0, -9.8));
 
 	simulation_model->set_spring_characteristic(1.0);
-	simulation_model->set_dumping_ration(0.99);
+	simulation_model->set_dumping_ratio(1);
 
 	return simulation_model;
 }
 
+std::unique_ptr<SimulationModel> create_ten_time_low_dumping() {
+	std::unique_ptr<SimulationModel> simulation_model = create_optimal_with_delay();
+
+	simulation_model->set_time_factor(100);
+	simulation_model->set_dumping_ratio(0.99);
+
+	return simulation_model;
+}
+
+
 std::unique_ptr<SimulationModel> create_ten_time_factor() {
-	std::unique_ptr<SimulationModel> simulation_model(new SimulationModel());
+	std::unique_ptr<SimulationModel> simulation_model = create_optimal_with_delay();
 
-	simulation_model->set_iteration_delay(10);
 	simulation_model->set_time_factor(10);
-
-	simulation_model->set_gravity(Eigen::Vector2d(0, -9.8));
-
-	simulation_model->set_spring_characteristic(1.0);
-	simulation_model->set_dumping_ration(0.5);
 
 	return simulation_model;
 }
@@ -54,7 +59,7 @@ std::unique_ptr<SimulationModel> create_ten_time_factor() {
 std::unique_ptr<SimulationModel> create_hundred_time_factor() {
 	std::unique_ptr<SimulationModel> simulation_model = create_optimal_with_delay();
 
-	simulation_model->set_time_factor(simulation_model->get_time_factor() * 100);
+	simulation_model->set_time_factor(100);
 
 	return simulation_model;
 }
@@ -63,6 +68,10 @@ std::unique_ptr<SimulationModel> create_hundred_time_factor() {
 std::unique_ptr<SimulationModel> SampleDataModel::load_simulation_model(std::string model_name) {
 	if (model_name == SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION) {
 		return create_optimal_with_delay();
+	}
+
+	if (model_name == SampleDataModel::TEN_TIME_LOW_DUMPING) {
+		return create_ten_time_low_dumping();
 	}
 
 	if (model_name == SampleDataModel::TEN_TIME_FACTOR_SIMULATION) {
