@@ -95,9 +95,10 @@ simulations_vector create_simulations() {
 
 	demo_simulations(simulations);
 
-	//all_controllers_all_speeds(simulations, SampleDataModel::TRIANGLE_GRID);
+	//all_controllers_all_speeds(simulations, SampleDataModel::ROPE_BRIDGE);
 
-	
+	//add_simulation(simulations, BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::ROPE_BRIDGE, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION);
+	//add_simulation(simulations, BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::ROPE_BRIDGE, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION);
 
 	//add_simulation(simulations, BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::TRIANGLE_GRID, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION);
 	//add_simulation(simulations, BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::TRIANGLE_GRID, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION);

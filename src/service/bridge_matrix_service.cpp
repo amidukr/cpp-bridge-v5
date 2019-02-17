@@ -74,9 +74,6 @@ std::unique_ptr<MatrixEquation> BridgeMatrixService::create_bridge_equation(Brid
 		matrix_equation->left(row_f.x_index(i), col_dv.x_index(i)) = 1;
 		matrix_equation->left(row_f.y_index(i), col_dv.y_index(i)) = 1;
 
-		//matrix_equation->left(row_f.x_index(i), col_dv.x_index(i)) = 1;
-		//matrix_equation->left(row_f.y_index(i), col_dv.y_index(i)) = 1;
-
 		matrix_equation->right[row_f.x_index(i)] = simulation_model.get_gravity()[0];
 		matrix_equation->right[row_f.y_index(i)] = simulation_model.get_gravity()[1];
 	}

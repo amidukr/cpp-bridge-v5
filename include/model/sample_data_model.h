@@ -16,6 +16,7 @@ public:
 	static const std::string TEN_TIME_FACTOR_SIMULATION;
 	static const std::string HUNDRED_TIME_FACTOR_SIMULATION;
 	
+	static const std::string ROPE_BRIDGE;
 	static const std::string SWING_BRIDGE;
 	static const std::string PANDULUM_BRIDGE;
 	static const std::string SQUARE_BRIDGE;

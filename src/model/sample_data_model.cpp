@@ -7,6 +7,7 @@ const std::string SampleDataModel::TEN_TIME_LOW_DUMPING = "10x-low-dumping";
 const std::string SampleDataModel::TEN_TIME_FACTOR_SIMULATION = "10x-time-factor";
 const std::string SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION = "100x-time-factor";
 
+const std::string SampleDataModel::ROPE_BRIDGE = "rope";
 const std::string SampleDataModel::SWING_BRIDGE = "swing";
 const std::string SampleDataModel::PANDULUM_BRIDGE = "pandulum";
 const std::string SampleDataModel::SQUARE_BRIDGE = "square";
@@ -86,6 +87,25 @@ std::unique_ptr<SimulationModel> SampleDataModel::load_simulation_model(std::str
 }
 
 //-------------- Brdige Model --------------
+
+std::unique_ptr<BridgeModel> create_rope_bridge() {
+
+	std::unique_ptr<BridgeModel> bridge_model(new BridgeModel());
+
+	Junction& left_hard = bridge_model->add_hard_junction(0, 0);
+	Junction& right_hard = bridge_model->add_hard_junction(10, 0);
+
+	Junction* prev = &left_hard;
+	for (int i = 1; i < 10; i++) {
+		Junction& j = bridge_model->add_junction(i, 0);
+		bridge_model->add_girder(*prev, j);
+		prev = &j;
+	}
+
+	bridge_model->add_girder(*prev, right_hard);
+
+	return bridge_model;
+}
 
 std::unique_ptr<BridgeModel> create_swing_bridge() {
 	std::unique_ptr<BridgeModel> bridge_model(new BridgeModel());
@@ -229,6 +249,10 @@ std::unique_ptr<BridgeModel> create_triangle_grid() {
 
 
 std::unique_ptr<BridgeModel> SampleDataModel::load_bridge_model(std::string model_name) {
+
+	if (model_name == SampleDataModel::ROPE_BRIDGE) {
+		return create_rope_bridge();
+	}
 
 	if (model_name == SampleDataModel::SWING_BRIDGE) {
 		return create_swing_bridge();
