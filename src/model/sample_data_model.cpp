@@ -92,17 +92,17 @@ std::unique_ptr<BridgeModel> create_rope_bridge() {
 
 	std::unique_ptr<BridgeModel> bridge_model(new BridgeModel());
 
-	Junction& left_hard = bridge_model->add_hard_junction(0, 0);
-	Junction& right_hard = bridge_model->add_hard_junction(10, 0);
+	Junction& left_fixed = bridge_model->add_fixed_junction(0, 0);
+	Junction& right_fixed = bridge_model->add_fixed_junction(10, 0);
 
-	Junction* prev = &left_hard;
+	Junction* prev = &left_fixed;
 	for (int i = 1; i < 10; i++) {
 		Junction& j = bridge_model->add_junction(i, 0);
 		bridge_model->add_girder(*prev, j);
 		prev = &j;
 	}
 
-	bridge_model->add_girder(*prev, right_hard);
+	bridge_model->add_girder(*prev, right_fixed);
 
 	return bridge_model;
 }
@@ -110,15 +110,15 @@ std::unique_ptr<BridgeModel> create_rope_bridge() {
 std::unique_ptr<BridgeModel> create_swing_bridge() {
 	std::unique_ptr<BridgeModel> bridge_model(new BridgeModel());
 
-	Junction& left_hard = bridge_model->add_hard_junction(0, 0);
-	Junction& right_hard = bridge_model->add_hard_junction(10, 0);
+	Junction& left_fixed = bridge_model->add_fixed_junction(0, 0);
+	Junction& right_fixed = bridge_model->add_fixed_junction(10, 0);
 
-	Junction& left_soft = bridge_model->add_junction(-5, 5);
-	Junction& right_soft = bridge_model->add_junction(5, 5);
+	Junction& left_floating = bridge_model->add_junction(-5, 5);
+	Junction& right_floating = bridge_model->add_junction(5, 5);
 
-	bridge_model->add_girder(left_hard, left_soft);
-	bridge_model->add_girder(left_soft, right_soft);
-	bridge_model->add_girder(right_soft, right_hard);
+	bridge_model->add_girder(left_fixed, left_floating);
+	bridge_model->add_girder(left_floating, right_floating);
+	bridge_model->add_girder(right_floating, right_fixed);
 
 	return bridge_model;
 }
@@ -126,10 +126,10 @@ std::unique_ptr<BridgeModel> create_swing_bridge() {
 std::unique_ptr<BridgeModel> create_pandulum_bridge() {
 	std::unique_ptr<BridgeModel> bridge_model(new BridgeModel());
 
-	Junction& hard = bridge_model->add_hard_junction(0, 0);
-	Junction& soft = bridge_model->add_junction(4, -4);
+	Junction& fixed = bridge_model->add_fixed_junction(0, 0);
+	Junction& floating = bridge_model->add_junction(4, -4);
 
-	bridge_model->add_girder(hard, soft);
+	bridge_model->add_girder(fixed, floating);
 
 	return bridge_model;
 }
@@ -139,7 +139,7 @@ std::unique_ptr<BridgeModel> create_square_bridge() {
 
 	Junction& junction_bl = bridge_model->add_junction(20, 20);
 	Junction& junction_br = bridge_model->add_junction(40, 20);
-	Junction& junction_tl = bridge_model->add_hard_junction(20, 40);
+	Junction& junction_tl = bridge_model->add_fixed_junction(20, 40);
 	Junction& junction_tr = bridge_model->add_junction(40, 40);
 
 	bridge_model->add_girder(junction_bl, junction_br);
@@ -153,7 +153,7 @@ std::unique_ptr<BridgeModel> create_square_bridge() {
 std::unique_ptr<BridgeModel> create_heart_bridge() {
 	std::unique_ptr<BridgeModel> bridge_model(new BridgeModel());
 
-	Junction& junction_hard = bridge_model->add_hard_junction(0, 0);
+	Junction& junction_fixed = bridge_model->add_fixed_junction(0, 0);
 	Junction& junction_l1 = bridge_model->add_junction(-5, 5);
 	Junction& junction_r1 = bridge_model->add_junction(5, 5);
 	Junction& junction_l2 = bridge_model->add_junction(-10, 0);
@@ -162,8 +162,8 @@ std::unique_ptr<BridgeModel> create_heart_bridge() {
 
 
 
-	bridge_model->add_girder(junction_hard, junction_l1);
-	bridge_model->add_girder(junction_hard, junction_r1);
+	bridge_model->add_girder(junction_fixed, junction_l1);
+	bridge_model->add_girder(junction_fixed, junction_r1);
 
 	bridge_model->add_girder(junction_l1, junction_l2);
 	bridge_model->add_girder(junction_r1, junction_r2);
@@ -179,7 +179,7 @@ std::unique_ptr<BridgeModel> create_line_up() {
 
 	bridge_model->set_prefered_scale_out_factor(10);
 
-	Junction& bottom = bridge_model->add_hard_junction(0, 0);
+	Junction& bottom = bridge_model->add_fixed_junction(0, 0);
 
 	Junction* prev = &bottom;
 	for (int i = 0; i < 20; i++) {
@@ -198,7 +198,7 @@ std::unique_ptr<BridgeModel> create_line_diagonal() {
 
 	bridge_model->set_prefered_scale_out_factor(5);
 
-	Junction& bottom = bridge_model->add_hard_junction(0, 0);
+	Junction& bottom = bridge_model->add_fixed_junction(0, 0);
 
 	Junction* prev = &bottom;
 	for (int i = 1; i < 20; i++) {
@@ -220,7 +220,7 @@ std::unique_ptr<BridgeModel> create_triangle_grid() {
 	const int N = 5;
 
 	Junction* junctions[N][N];
-	Junction& hard = bridge_model->add_hard_junction(0, 0);
+	Junction& fixed = bridge_model->add_fixed_junction(0, 0);
 
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++) {
@@ -241,7 +241,7 @@ std::unique_ptr<BridgeModel> create_triangle_grid() {
 	}
 
 	for (int i = 0; i < N; i++) {
-		bridge_model->add_girder(*junctions[i][0], hard);
+		bridge_model->add_girder(*junctions[i][0], fixed);
 	}
 
 	return bridge_model;

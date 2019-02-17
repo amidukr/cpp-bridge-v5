@@ -34,7 +34,7 @@ void BaseElasticBridgeController::update(ControllerAction& action) {
 
 	for (int i = 0; i < junctions_len; i++) {
 		Junction& junction = bridge_model.get_junction(i);
-		if (!junction.is_hard()) {
+		if (!junction.is_fixed()) {
 			bridge_model.get_junction(i).set_coordinate(junction.get_coordinate() + elapsed_time * junction.get_velocity() * Q);
 		}
 	}
@@ -52,11 +52,11 @@ void BaseElasticBridgeController::update(ControllerAction& action) {
 
 			double force = (r12.norm() - girder.get_original_size()) * 0.5;
 
-			if (!junction2.is_hard()) {
+			if (!junction2.is_fixed()) {
 				junction2.set_coordinate(junction2.get_coordinate() - r12_norm * force);
 			}
 
-			if (!junction1.is_hard()) {
+			if (!junction1.is_fixed()) {
 				junction1.set_coordinate(junction1.get_coordinate() + r12_norm * force);
 			}
 		}
@@ -65,7 +65,7 @@ void BaseElasticBridgeController::update(ControllerAction& action) {
 	for (int i = 0; i < junctions_len; i++) {
 		Junction& junction = bridge_model.get_junction(i);
 
-		if (!junction.is_hard()) {
+		if (!junction.is_fixed()) {
 			junction.set_velocity((junction.get_coordinate() - old_pos[i])/elapsed_time);
 		}	
 	}

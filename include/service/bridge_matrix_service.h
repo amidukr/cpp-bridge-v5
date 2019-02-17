@@ -18,7 +18,7 @@ struct MatrixEquation {
 
 	VectorIndex col_dv;
 
-	std::unique_ptr<std::vector<Junction*>> soft_junctions;
+	std::unique_ptr<std::vector<Junction*>> floating_junctions;
 
 	Eigen::Vector2d get_junction_dv(int i);
 

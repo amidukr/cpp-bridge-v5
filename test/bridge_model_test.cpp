@@ -55,19 +55,19 @@ TEST(BridgeModelTest, test_junction_model) {
 	BridgeModel bridge;
 
 	Junction& junction1 = bridge.add_junction(25.0, 30.0);
-	Junction& junction2 = bridge.add_hard_junction(80.0, 19.0);
+	Junction& junction2 = bridge.add_fixed_junction(80.0, 19.0);
 
 	ASSERT_EQ(junction1.get_x(), 25.0);
 	ASSERT_EQ(junction1.get_y(), 30.0);
 	ASSERT_EQ(junction1.get_coordinate()[0], 25.0);
 	ASSERT_EQ(junction1.get_coordinate()[1], 30.0);
-	ASSERT_EQ(junction1.is_hard(), false);
+	ASSERT_EQ(junction1.is_fixed(), false);
 
 	ASSERT_EQ(junction2.get_x(), 80.0);
 	ASSERT_EQ(junction2.get_y(), 19.0);
 	ASSERT_EQ(junction2.get_coordinate()[0], 80.0);
 	ASSERT_EQ(junction2.get_coordinate()[1], 19.0);
-	ASSERT_EQ(junction2.is_hard(), true);
+	ASSERT_EQ(junction2.is_fixed(), true);
 }
 
 

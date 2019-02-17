@@ -72,7 +72,7 @@ void BridgeWindow::draw() {
 	for (int i = 0; i < bridge_model.get_junctions_len(); i++) {
 		Junction& junction = bridge_model.get_junction(i);
 
-		if (junction.is_hard()) {
+		if (junction.is_fixed()) {
 			glColor3d(0.7, 0.7, 0.7);
 		}
 		else {

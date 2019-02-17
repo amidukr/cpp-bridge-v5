@@ -31,10 +31,10 @@ TEST(BridgeMatrixService, test_pendulum) {
 
 	simulation_model.set_gravity(Eigen::Vector2d(20, 30));
 
-	Junction& hard = bridge_model.add_hard_junction(20, 10);
-	Junction& soft = bridge_model.add_junction(24, 7);
+	Junction& fixed = bridge_model.add_fixed_junction(20, 10);
+	Junction& floating = bridge_model.add_junction(24, 7);
 
-	bridge_model.add_girder(hard, soft);
+	bridge_model.add_girder(fixed, floating);
 
 	std::unique_ptr<MatrixEquation> matrix_equation = BridgeMatrixService::create_bridge_equation(bridge_model, simulation_model, 100);
 
@@ -61,7 +61,7 @@ TEST(BridgeMatrixService, test_free_fall_junction) {
 
 	simulation_model.set_gravity(Eigen::Vector2d(20, 30));
 
-	bridge_model.add_hard_junction(1, 2);
+	bridge_model.add_fixed_junction(1, 2);
 	bridge_model.add_junction(3, 4);
 	bridge_model.add_junction(5, 6);
 
@@ -117,14 +117,14 @@ TEST(BridgeMatrixService, test_free_fall_girder) {
 	ASSERT_TRUE(compare(Eigen::Vector2d(20, 30), matrix_equation->get_junction_dv(1)));
 }
 
-TEST(BridgeMatrixService, test_hard_junction) {
+TEST(BridgeMatrixService, test_fixed_junction) {
 	BridgeModel bridge_model;
 	SimulationModel simulation_model;
 
 	simulation_model.set_gravity(Eigen::Vector2d(20, 30));
 
-	Junction& j1 = bridge_model.add_hard_junction(10, 20);
-	Junction& j2 = bridge_model.add_hard_junction(12, 24);
+	Junction& j1 = bridge_model.add_fixed_junction(10, 20);
+	Junction& j2 = bridge_model.add_fixed_junction(12, 24);
 
 	bridge_model.add_girder(j1, j2);
 
@@ -143,7 +143,7 @@ TEST(BridgeMatrixService, test_triangle) {
 
 	simulation_model.set_gravity(Eigen::Vector2d(40, 50));
 
-	Junction& j1 = bridge_model.add_hard_junction(10, 20);
+	Junction& j1 = bridge_model.add_fixed_junction(10, 20);
 	Junction& j2 = bridge_model.add_junction(12, 16);
 	Junction& j3 = bridge_model.add_junction(6, 17);
 

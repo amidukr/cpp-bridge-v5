@@ -10,7 +10,7 @@ void ElasticController::updateJunctionsVelocity(double elapsed_time) {
 
 	for (int i = 0; i < junctions_len; i++) {
 		Junction& junction = bridge_model.get_junction(i);
-		if (!junction.is_hard()) {
+		if (!junction.is_fixed()) {
 			junction.set_velocity(junction.get_velocity() + G);
 		}
 	}

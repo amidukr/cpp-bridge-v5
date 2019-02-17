@@ -8,7 +8,7 @@
 class Junction {
 
 	int index;
-	bool hard = false;
+	bool fixed = false;
 
 	Eigen::Vector2d coordinate;
 	Eigen::Vector2d velocity = {0, 0};
@@ -16,7 +16,7 @@ class Junction {
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-	Junction(int index, bool hard, double x, double y);
+	Junction(int index, bool fixed, double x, double y);
 
 	Eigen::Vector2d get_velocity();
 	void set_velocity(Eigen::Vector2d velocity);
@@ -26,7 +26,7 @@ public:
 	double get_x();
 	double get_y();
 
-	bool is_hard();
+	bool is_fixed();
 
 	int get_index();
 

@@ -16,8 +16,8 @@ void BridgeModel::set_prefered_scale_out_factor(double prefered_scale_out_factor
 }
 
 
-Junction& BridgeModel::add_junction(bool hard, double x, double y) {
-	Junction* junction = new Junction(this->junctions.size(), hard, x, y);
+Junction& BridgeModel::add_junction(bool fixed, double x, double y) {
+	Junction* junction = new Junction(this->junctions.size(), fixed, x, y);
 	
 	this->junctions.push_back(std::unique_ptr<Junction>(junction));
 	junction_girders.push_back(std::vector<Girder*>());
@@ -29,7 +29,7 @@ Junction& BridgeModel::add_junction(double x, double y) {
 	return this->add_junction(false, x, y);
 }
 
-Junction& BridgeModel::add_hard_junction(double x, double y) {
+Junction& BridgeModel::add_fixed_junction(double x, double y) {
 	return this->add_junction(true, x, y);
 }
 

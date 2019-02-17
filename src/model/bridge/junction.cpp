@@ -1,8 +1,8 @@
 #include <model/bridge/junction.h>
 
-Junction::Junction(int index, bool hard, double x, double y) {
+Junction::Junction(int index, bool fixed, double x, double y) {
 	this->index = index;
-	this->hard = hard;
+	this->fixed = fixed;
 	this->coordinate = { x, y };
 }
 
@@ -34,6 +34,6 @@ double Junction::get_y() {
 	return this->coordinate[1];
 }
 
-bool Junction::is_hard() {
-	return this->hard;
+bool Junction::is_fixed() {
+	return this->fixed;
 }

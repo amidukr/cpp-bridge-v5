@@ -9,10 +9,10 @@ void MatrixElasticController::updateJunctionsVelocity(double elapsed_time) {
 
 	std::unique_ptr<MatrixEquation> matrix_equation = BridgeMatrixService::create_bridge_equation(bridge_model, simulation_model, elapsed_time);
 
-	std::vector<Junction*>& soft_junctions = *matrix_equation->soft_junctions.get();
+	std::vector<Junction*>& floating_junctions = *matrix_equation->floating_junctions.get();
 
-	for (int i = 0; i < soft_junctions.size(); i++) {
-		Junction& junction = *soft_junctions.at(i);
+	for (int i = 0; i < floating_junctions.size(); i++) {
+		Junction& junction = *floating_junctions.at(i);
 
 		Eigen::Vector2d dv = matrix_equation->get_junction_dv(i);
 

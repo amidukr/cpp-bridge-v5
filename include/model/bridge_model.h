@@ -16,13 +16,13 @@ class BridgeModel {
 	std::vector<std::vector<Girder*>> junction_girders;
 
 
-	Junction& BridgeModel::add_junction(bool hard, double x, double y);
+	Junction& BridgeModel::add_junction(bool fixed, double x, double y);
 
 public:
 	BridgeModel();
 
 	Junction& add_junction(double x, double y);
-	Junction& add_hard_junction(double x, double y);
+	Junction& add_fixed_junction(double x, double y);
 	Girder& add_girder(Junction& junction1, Junction& junction2);
 	Junction& get_junction(int i);
 	Girder& get_girder(int i);
