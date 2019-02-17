@@ -6,10 +6,20 @@
 #include <iostream>
 
 bool compare_matrices(Eigen::MatrixXd& actual, Eigen::MatrixXd expected) {
-	bool approx = actual == expected;
+	
+	bool approx = actual.rows() == expected.rows() && actual.cols() == expected.cols();
+	approx = approx && actual == expected;
+
 	if (!approx) {
 		std::cout << actual << std::endl << "doesn't equal to expected" << std::endl << expected << std::endl;
-		std::cout << "difference is following: " << std::endl << (expected - actual) << std::endl;
+
+		if (actual.rows() == expected.rows() && actual.cols() == expected.cols()) {
+			std::cout << "difference is following: " << std::endl << (expected - actual) << std::endl;
+		}
+		else {
+			std::cout << "difference in matrix sizes" << std::endl;
+		}
+		
 	}
 
 	return approx;
@@ -40,12 +50,15 @@ TEST(BridgeMatrixService, test_pendulum) {
 		100, 0,   0,   0,  -1,    0,
 		0, 100,   0,   0,   0,   -1;
 
+
 	Eigen::VectorXd right_side_exptected(6);
 
 	right_side_exptected << 20, 30, 0, 0, 0, 0;
 
+	
 	ASSERT_TRUE(compare_matrices(matrix_equation->left, matrix_expected));
 	ASSERT_EQ(right_side_exptected, matrix_equation->right);
+	ASSERT_EQ(matrix_equation->get_junction_dv(0), Eigen::Vector2d(-2, -4));
 }
 
 TEST(BridgeMatrixService, test_free_fall_junction) {
