@@ -1,29 +1,14 @@
 #include<gtest/gtest.h>
+
+#include "utils/compare_matrices_utils.h"
+
 #include "service/bridge_matrix_service.h"
 #include "model/bridge_model.h"
 #include "model/simulation_model.h"
 
-#include <iostream>
 
-template <class M> bool compare(M& actual, M& expected) {
-	
-	bool approx = actual.rows() == expected.rows() && actual.cols() == expected.cols();
-	approx = approx && actual.isApprox(expected, 0.00001);
 
-	if (!approx) {
-		std::cout << actual << std::endl << "doesn't equal to expected" << std::endl << expected << std::endl;
 
-		if (actual.rows() == expected.rows() && actual.cols() == expected.cols()) {
-			std::cout << "difference is following: " << std::endl << (expected - actual) << std::endl;
-		}
-		else {
-			std::cout << "difference in matrix sizes" << std::endl;
-		}
-		
-	}
-
-	return approx;
-}
 
 TEST(BridgeMatrixService, test_pendulum) {
 	BridgeModel bridge_model;
@@ -50,9 +35,9 @@ TEST(BridgeMatrixService, test_pendulum) {
 
 	right_side_exptected << 20, 30, 0;
 	
-	ASSERT_TRUE(compare(matrix_equation->left, matrix_expected));
-	ASSERT_TRUE(compare(right_side_exptected, matrix_equation->right));
-	ASSERT_TRUE(compare(matrix_equation->get_junction_dv(0), Eigen::Vector2d(36 * 3.0 / 5 , 36 * 4.0 / 5)));
+	ASSERT_TRUE(compare_matrices(matrix_equation->left, matrix_expected));
+	ASSERT_TRUE(compare_matrices(right_side_exptected, matrix_equation->right));
+	ASSERT_TRUE(compare_matrices(matrix_equation->get_junction_dv(0), Eigen::Vector2d(36 * 3.0 / 5 , 36 * 4.0 / 5)));
 }
 
 TEST(BridgeMatrixService, test_free_fall_junction) {
@@ -79,10 +64,10 @@ TEST(BridgeMatrixService, test_free_fall_junction) {
 
 	right_side_exptected << 20, 30, 20, 30;
 
-	ASSERT_TRUE(compare(matrix_equation->left, matrix_expected));
-	ASSERT_TRUE(compare(right_side_exptected, matrix_equation->right));
-	ASSERT_TRUE(compare(Eigen::Vector2d(20, 30), matrix_equation->get_junction_dv(0)));
-	ASSERT_TRUE(compare(Eigen::Vector2d(20, 30), matrix_equation->get_junction_dv(1)));
+	ASSERT_TRUE(compare_matrices(matrix_equation->left, matrix_expected));
+	ASSERT_TRUE(compare_matrices(right_side_exptected, matrix_equation->right));
+	ASSERT_TRUE(compare_matrices(Eigen::Vector2d(20, 30), matrix_equation->get_junction_dv(0)));
+	ASSERT_TRUE(compare_matrices(Eigen::Vector2d(20, 30), matrix_equation->get_junction_dv(1)));
 }
 
 TEST(BridgeMatrixService, test_free_fall_girder) {
@@ -111,10 +96,10 @@ TEST(BridgeMatrixService, test_free_fall_girder) {
 
 	right_side_exptected << 20, 30, 20, 30, 0;
 
-	ASSERT_TRUE(compare(matrix_equation->left, matrix_expected));
-	ASSERT_TRUE(compare(right_side_exptected, matrix_equation->right));
-	ASSERT_TRUE(compare(Eigen::Vector2d(20, 30), matrix_equation->get_junction_dv(0)));
-	ASSERT_TRUE(compare(Eigen::Vector2d(20, 30), matrix_equation->get_junction_dv(1)));
+	ASSERT_TRUE(compare_matrices(matrix_equation->left, matrix_expected));
+	ASSERT_TRUE(compare_matrices(right_side_exptected, matrix_equation->right));
+	ASSERT_TRUE(compare_matrices(Eigen::Vector2d(20, 30), matrix_equation->get_junction_dv(0)));
+	ASSERT_TRUE(compare_matrices(Eigen::Vector2d(20, 30), matrix_equation->get_junction_dv(1)));
 }
 
 TEST(BridgeMatrixService, test_fixed_junction) {
@@ -133,8 +118,8 @@ TEST(BridgeMatrixService, test_fixed_junction) {
 	Eigen::MatrixXd matrix_expected(0, 0);
 	Eigen::VectorXd right_side_exptected;
 
-	ASSERT_TRUE(compare(matrix_equation->left, matrix_expected));
-	ASSERT_TRUE(compare(right_side_exptected, matrix_equation->right));
+	ASSERT_TRUE(compare_matrices(matrix_equation->left, matrix_expected));
+	ASSERT_TRUE(compare_matrices(right_side_exptected, matrix_equation->right));
 }
 
 TEST(BridgeMatrixService, test_triangle) {
@@ -175,8 +160,8 @@ TEST(BridgeMatrixService, test_triangle) {
 	Eigen::Vector2d expected_dv2 = 4 * Eigen::Vector2d(4,  2);
 	Eigen::Vector2d expected_dv3 = 4 * Eigen::Vector2d(3, -4);
 
-	ASSERT_TRUE(compare(matrix_equation->left, matrix_expected));
-	ASSERT_TRUE(compare(right_side_exptected, matrix_equation->right));
-	ASSERT_TRUE(compare(expected_dv2, matrix_equation->get_junction_dv(0)));
-	ASSERT_TRUE(compare(expected_dv3, matrix_equation->get_junction_dv(1)));
+	ASSERT_TRUE(compare_matrices(matrix_equation->left, matrix_expected));
+	ASSERT_TRUE(compare_matrices(right_side_exptected, matrix_equation->right));
+	ASSERT_TRUE(compare_matrices(expected_dv2, matrix_equation->get_junction_dv(0)));
+	ASSERT_TRUE(compare_matrices(expected_dv3, matrix_equation->get_junction_dv(1)));
 }

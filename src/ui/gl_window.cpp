@@ -90,3 +90,7 @@ std::array<int, 2> GLWindow::get_size() {
 void GLWindow::set_title(std::string title) {
 	this->title = title;
 }
+
+const std::string& GLWindow::get_title() {
+	return this->title;
+}

@@ -7,3 +7,5 @@
 /cpp-bridge-v5.vcxproj
 /cpp-bridge-v5.vcxproj.filters
 /cpp-bridge-v5.vcxproj.user
+/CoverageReport-*
+/LastCoverageResults.log

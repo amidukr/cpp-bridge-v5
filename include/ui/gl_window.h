@@ -23,6 +23,7 @@ protected:
 public:
 	GLWindow();
 
+	const std::string& get_title();
 	void set_title(std::string titile);
 
 	void set_position(std::array<int, 2> position);

@@ -4,8 +4,8 @@
 #include<string>
 #include<memory>
 
-class BridgeModel;
-class SimulationModel;
+#include "model/simulation_model.h"
+#include "model/bridge_model.h"
 
 class SampleDataModel {
 

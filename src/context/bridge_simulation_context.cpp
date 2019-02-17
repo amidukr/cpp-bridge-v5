@@ -4,12 +4,12 @@
 #include "controller/bridge_controller.h"
 #include "controller/arguments/controller_action.h"
 
-BridgeSimulationContext::BridgeSimulationContext(std::unique_ptr<BridgeWindow> bridge_window, std::unique_ptr<BridgeController> bridge_controller) {
+BridgeSimulationContext::BridgeSimulationContext(std::unique_ptr<GLWindow> bridge_window, std::unique_ptr<BridgeController> bridge_controller) {
 	this->bridge_window = std::move(bridge_window);
 	this->bridge_controller = std::move(bridge_controller);
 }
 
-BridgeWindow& BridgeSimulationContext::get_window() {
+GLWindow& BridgeSimulationContext::get_window() {
 	return *this->bridge_window;
 }
 

@@ -4,17 +4,17 @@
 #include <memory>
 #include <chrono>
 
-class BridgeWindow;
+class GLWindow;
 class BridgeController;
 
 class BridgeSimulationContext {
 
-	std::unique_ptr<BridgeWindow> bridge_window;
+	std::unique_ptr<GLWindow> bridge_window;
 	std::unique_ptr<BridgeController> bridge_controller;
 public:
-	BridgeSimulationContext(std::unique_ptr<BridgeWindow> bridge_window, std::unique_ptr<BridgeController> bridge_controller);
+	BridgeSimulationContext(std::unique_ptr<GLWindow> bridge_window, std::unique_ptr<BridgeController> bridge_controller);
 
-	BridgeWindow& get_window();
+	GLWindow& get_window();
 
 	bool init();
 	bool update(const std::chrono::microseconds elapsed_time);

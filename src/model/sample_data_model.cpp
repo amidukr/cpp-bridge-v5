@@ -1,5 +1,6 @@
 #include "model/bridge_model.h"
 #include "model/simulation_model.h"
+
 #include "model/sample_data_model.h"
 
 const std::string SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION = "optimal-with-delay";

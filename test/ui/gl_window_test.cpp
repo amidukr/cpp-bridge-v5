@@ -93,4 +93,20 @@ namespace {
 
 		ASSERT_EQ(false, window.update());
 	}
+
+	TEST_F(GLWindowTest, test_properties)
+	{
+		MockGlWindow window;
+
+		window.set_size({ 1, 2 });
+		window.set_position({ 3, 4 });
+		window.set_title("some_title");
+
+		std::array<int, 2> expeced_size = { 1, 2 };
+		std::array<int, 2> expeced_position = { 3, 4 };
+
+		ASSERT_EQ(window.get_size(), expeced_size);
+		ASSERT_EQ(window.get_position(), expeced_position);
+		ASSERT_EQ(window.get_title(), "some_title");
+	}
 }

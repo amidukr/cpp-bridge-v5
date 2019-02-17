@@ -20,7 +20,6 @@
 #include "context/bridge_simulation_context.h"
 #include<model/simulation_model.h>
 
-
 #include <chrono>
 #include <thread>
 
