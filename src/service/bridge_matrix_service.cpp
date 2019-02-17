@@ -32,7 +32,6 @@ std::unique_ptr<MatrixEquation> BridgeMatrixService::create_bridge_equation(Brid
 	}
 
 	std::vector<Girder*> floating_girders;
-	std::vector<int> floating_girder_index;
 
 	for (int i = 0; i < bridge_model.get_girder_len(); i++) {
 		Girder& girder = bridge_model.get_girder(i);
@@ -40,11 +39,9 @@ std::unique_ptr<MatrixEquation> BridgeMatrixService::create_bridge_equation(Brid
 		Junction& r = bridge_model.get_junction(girder.get_junction2_id());
 
 		if (l.is_fixed() && r.is_fixed()) {
-			floating_girder_index.push_back(-1);
 			continue;
 		}
 		else {
-			floating_girder_index.push_back(floating_girders.size());
 			floating_girders.push_back(&girder);
 		}
 	}
