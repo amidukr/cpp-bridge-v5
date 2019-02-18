@@ -118,14 +118,12 @@ simulations_vector create_simulations() {
 void layout_windows(std::vector<std::shared_ptr<BridgeSimulationContext>>& simulations) {
 	if (simulations.size() == 0) return;
 
-	GLFWvidmode return_struct;
-
 	const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
 	int work_area_width = mode->width - 200;
 	int work_area_height = mode->height - 200;
 
-	int columns = sqrt(simulations.size());
+	int columns = (int)sqrt(simulations.size());
 
 	if (columns*columns != simulations.size()) {
 		columns++;
@@ -184,7 +182,6 @@ int main(int argc, char* argv[]) {
 	try {
 		::testing::InitGoogleTest(&argc, argv);
 		RUN_ALL_TESTS();
-		return 1;
 	}
 	catch (...) {
 		fprintf(stderr, "Exception during unit test run\n");

@@ -2,7 +2,7 @@
 /.vs
 /Debug
 /CMakeSettings.json
-/x64/Debug
+/x64/
 /cpp-bridge-v5.sln
 /cpp-bridge-v5.vcxproj
 /cpp-bridge-v5.vcxproj.filters
