@@ -19,29 +19,29 @@ void BaseElasticBridgeController::update(ControllerAction& action) {
 	const double K = simulation_model.get_spring_characteristic();
 	double Q = simulation_model.get_dumping_ratio();
 	
-	int junctions_len = bridge_model.get_junctions_len();
-	int girder_len = bridge_model.get_girder_len();
+	const std::vector<Junction*>& junctions = bridge_model.get_floating_junctions();
+	const std::vector<Girder*>& girders = bridge_model.get_floating_girders();
+
+	int junctions_len = junctions.size();
+	int girder_len = girders.size();
 
 	std::vector<Eigen::Vector2d> old_pos(junctions_len);
 
 	for (int i = 0; i < junctions_len; i++) {
-		Junction& junction = bridge_model.get_junction(i);
-
-		old_pos[i] = bridge_model.get_junction(i).get_coordinate();
+		old_pos[i] = junctions.at(i)->get_coordinate();
 	}
 
 	this->updateJunctionsVelocity(elapsed_time);
 
 	for (int i = 0; i < junctions_len; i++) {
-		Junction& junction = bridge_model.get_junction(i);
-		if (!junction.is_fixed()) {
-			bridge_model.get_junction(i).set_coordinate(junction.get_coordinate() + elapsed_time * junction.get_velocity() * Q);
-		}
+		Junction& junction = *junctions.at(i);
+
+		junction.set_coordinate(junction.get_coordinate() + elapsed_time * junction.get_velocity() * Q);
 	}
 	for (int n = 0; n < 5; n++) {
 
 		for (int i = 0; i < girder_len; i++) {
-			Girder& girder = bridge_model.get_girder(i);
+			Girder& girder = *girders.at(i);
 			Junction& junction1 = bridge_model.get_junction(girder.get_junction1_id());
 			Junction& junction2 = bridge_model.get_junction(girder.get_junction2_id());
 
@@ -63,10 +63,7 @@ void BaseElasticBridgeController::update(ControllerAction& action) {
 	}
 	
 	for (int i = 0; i < junctions_len; i++) {
-		Junction& junction = bridge_model.get_junction(i);
-
-		if (!junction.is_fixed()) {
-			junction.set_velocity((junction.get_coordinate() - old_pos[i])/elapsed_time);
-		}	
+		Junction& junction = *junctions.at(i);
+		junction.set_velocity((junction.get_coordinate() - old_pos[i]) / elapsed_time);
 	}
 }

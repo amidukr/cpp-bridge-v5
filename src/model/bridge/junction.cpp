@@ -1,13 +1,19 @@
 #include <model/bridge/junction.h>
 
-Junction::Junction(int index, bool fixed, double x, double y) {
+Junction::Junction(int index, int floating_index, bool fixed, double x, double y) {
 	this->index = index;
+	this->floating_index = floating_index;
+
 	this->fixed = fixed;
 	this->coordinate = { x, y };
 }
 
 int Junction::get_index() {
 	return this->index;
+}
+
+int Junction::get_floating_index() {
+	return this->floating_index;
 }
 
 Eigen::Vector2d Junction::get_velocity() {

@@ -17,10 +17,17 @@ void BridgeModel::set_prefered_scale_out_factor(double prefered_scale_out_factor
 
 
 Junction& BridgeModel::add_junction(bool fixed, double x, double y) {
-	Junction* junction = new Junction(this->junctions.size(), fixed, x, y);
+	int index = this->junctions.size();
+	int floating_index = fixed ? -1 : this->floating_junctions.size();
+
+	Junction* junction = new Junction(index, floating_index, fixed, x, y);
 	
 	this->junctions.push_back(std::unique_ptr<Junction>(junction));
 	junction_girders.push_back(std::vector<Girder*>());
+
+	if (!fixed) {
+		this->floating_junctions.push_back(junction);
+	}
 
 	return *junction;
 }
@@ -36,14 +43,30 @@ Junction& BridgeModel::add_fixed_junction(double x, double y) {
 
 Girder& BridgeModel::add_girder(Junction& junction1, Junction& junction2) {
 	double original_size = (junction2.get_coordinate() - junction1.get_coordinate()).norm();
+	bool fixed = junction1.is_fixed() && junction2.is_fixed();
 
-	Girder* girder = new Girder(this->girders.size(), original_size, junction1.get_index(), junction2.get_index());
+	int index = this->girders.size();
+	int floating_index = fixed ? -1 : this->floating_girders.size();
+
+	Girder* girder = new Girder(index, floating_index, original_size, junction1.get_index(), junction2.get_index());
 
 	this->girders.push_back(std::unique_ptr<Girder>(girder));
 	junction_girders[junction1.get_index()].push_back(girder);
 	junction_girders[junction2.get_index()].push_back(girder);
 
+	if (!fixed) {
+		this->floating_girders.push_back(girder);
+	}
+
 	return *girder;
+}
+
+const std::vector<Junction*>& BridgeModel::get_floating_junctions() {
+	return this->floating_junctions;
+}
+
+const std::vector<Girder*>& BridgeModel::get_floating_girders() {
+	return this->floating_girders;
 }
 
 Junction& BridgeModel::get_junction(int index) {

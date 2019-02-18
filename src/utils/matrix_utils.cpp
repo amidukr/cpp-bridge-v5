@@ -5,17 +5,17 @@ ScalarIndex::ScalarIndex(int n) {
 	this->n = n;
 }
 
-ScalarIndex::ScalarIndex(MatrixIndex& matrix_index, int n) {
+ScalarIndex::ScalarIndex(const MatrixIndex& matrix_index, int n) {
 	this->start = matrix_index.get_end_offset();
 	this->n = n;
 }
 
-ScalarIndex::ScalarIndex(ScalarIndex& scalar_index) {
+ScalarIndex::ScalarIndex(const ScalarIndex& scalar_index) {
 	this->start = scalar_index.start;
 	this->n = scalar_index.n;
 }
 
-int ScalarIndex::get_end_offset() {
+int ScalarIndex::get_end_offset() const {
 	return this->start + this->n;
 }
 
@@ -27,7 +27,7 @@ int ScalarIndex::index(int i) {
 	return this->start + i;
 }
 
-VectorIndex::VectorIndex(VectorIndex& vector_index)
+VectorIndex::VectorIndex(const VectorIndex& vector_index)
 	: scalar_index(vector_index.scalar_index)
 {
 	
@@ -37,7 +37,7 @@ VectorIndex::VectorIndex(int n)
 	: scalar_index(2*n)
 {}
 
-VectorIndex::VectorIndex(MatrixIndex& matrix_index, int n) 
+VectorIndex::VectorIndex(const MatrixIndex& matrix_index, int n)
 	: scalar_index(matrix_index, 2*n)
 {}
 
@@ -49,6 +49,10 @@ int VectorIndex::y_index(int i) {
 	return this->scalar_index.index(2 * i + 1);
 }
 
-int VectorIndex::get_end_offset() {
+int VectorIndex::get_end_offset() const {
 	return this->scalar_index.get_end_offset();
+}
+
+const ScalarIndex& VectorIndex::to_scalar_index() const {
+	return this->scalar_index;
 }

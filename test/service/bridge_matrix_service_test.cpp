@@ -21,7 +21,7 @@ TEST(BridgeMatrixService, test_pendulum) {
 
 	bridge_model.add_girder(fixed, floating);
 
-	std::unique_ptr<MatrixEquation> matrix_equation = BridgeMatrixService::create_bridge_equation(bridge_model, simulation_model, 100);
+	std::unique_ptr<MatrixEquation> matrix_equation = BridgeMatrixService::create_floating_junctions_equation(bridge_model, simulation_model, 100);
 
 	Eigen::MatrixXd matrix_expected(3, 3);
 	matrix_expected <<
@@ -35,9 +35,9 @@ TEST(BridgeMatrixService, test_pendulum) {
 
 	right_side_exptected << 20, 30, 0;
 	
-	ASSERT_TRUE(compare_matrices(matrix_equation->left, matrix_expected));
-	ASSERT_TRUE(compare_matrices(right_side_exptected, matrix_equation->right));
-	ASSERT_TRUE(compare_matrices(matrix_equation->get_junction_dv(0), Eigen::Vector2d(36 * 3.0 / 5 , 36 * 4.0 / 5)));
+	ASSERT_TRUE(compare_matrices(matrix_equation->get_left(), matrix_expected));
+	ASSERT_TRUE(compare_matrices(matrix_equation->get_right(), right_side_exptected));
+	ASSERT_TRUE(compare_matrices(matrix_equation->get_indexed_root_vector(0), Eigen::Vector2d(36 * 3.0 / 5 , 36 * 4.0 / 5)));
 }
 
 TEST(BridgeMatrixService, test_free_fall_junction) {
@@ -50,7 +50,7 @@ TEST(BridgeMatrixService, test_free_fall_junction) {
 	bridge_model.add_junction(3, 4);
 	bridge_model.add_junction(5, 6);
 
-	std::unique_ptr<MatrixEquation> matrix_equation = BridgeMatrixService::create_bridge_equation(bridge_model, simulation_model, 100);
+	std::unique_ptr<MatrixEquation> matrix_equation = BridgeMatrixService::create_floating_junctions_equation(bridge_model, simulation_model, 100);
 
 	Eigen::MatrixXd matrix_expected(4, 4);
 	matrix_expected <<
@@ -64,10 +64,10 @@ TEST(BridgeMatrixService, test_free_fall_junction) {
 
 	right_side_exptected << 20, 30, 20, 30;
 
-	ASSERT_TRUE(compare_matrices(matrix_equation->left, matrix_expected));
-	ASSERT_TRUE(compare_matrices(right_side_exptected, matrix_equation->right));
-	ASSERT_TRUE(compare_matrices(Eigen::Vector2d(20, 30), matrix_equation->get_junction_dv(0)));
-	ASSERT_TRUE(compare_matrices(Eigen::Vector2d(20, 30), matrix_equation->get_junction_dv(1)));
+	ASSERT_TRUE(compare_matrices(matrix_equation->get_left(), matrix_expected));
+	ASSERT_TRUE(compare_matrices(matrix_equation->get_right(), right_side_exptected));
+	ASSERT_TRUE(compare_matrices(Eigen::Vector2d(20, 30), matrix_equation->get_indexed_root_vector(0)));
+	ASSERT_TRUE(compare_matrices(Eigen::Vector2d(20, 30), matrix_equation->get_indexed_root_vector(1)));
 }
 
 TEST(BridgeMatrixService, test_free_fall_girder) {
@@ -81,7 +81,7 @@ TEST(BridgeMatrixService, test_free_fall_girder) {
 
 	bridge_model.add_girder(j1, j2);
 
-	std::unique_ptr<MatrixEquation> matrix_equation = BridgeMatrixService::create_bridge_equation(bridge_model, simulation_model, 100);
+	std::unique_ptr<MatrixEquation> matrix_equation = BridgeMatrixService::create_floating_junctions_equation(bridge_model, simulation_model, 100);
 
 	Eigen::MatrixXd matrix_expected(5, 5);
 	matrix_expected <<
@@ -96,10 +96,10 @@ TEST(BridgeMatrixService, test_free_fall_girder) {
 
 	right_side_exptected << 20, 30, 20, 30, 0;
 
-	ASSERT_TRUE(compare_matrices(matrix_equation->left, matrix_expected));
-	ASSERT_TRUE(compare_matrices(right_side_exptected, matrix_equation->right));
-	ASSERT_TRUE(compare_matrices(Eigen::Vector2d(20, 30), matrix_equation->get_junction_dv(0)));
-	ASSERT_TRUE(compare_matrices(Eigen::Vector2d(20, 30), matrix_equation->get_junction_dv(1)));
+	ASSERT_TRUE(compare_matrices(matrix_equation->get_left(), matrix_expected));
+	ASSERT_TRUE(compare_matrices(matrix_equation->get_right(), right_side_exptected));
+	ASSERT_TRUE(compare_matrices(Eigen::Vector2d(20, 30), matrix_equation->get_indexed_root_vector(0)));
+	ASSERT_TRUE(compare_matrices(Eigen::Vector2d(20, 30), matrix_equation->get_indexed_root_vector(1)));
 }
 
 TEST(BridgeMatrixService, test_fixed_junction) {
@@ -113,13 +113,13 @@ TEST(BridgeMatrixService, test_fixed_junction) {
 
 	bridge_model.add_girder(j1, j2);
 
-	std::unique_ptr<MatrixEquation> matrix_equation = BridgeMatrixService::create_bridge_equation(bridge_model, simulation_model, 100);
+	std::unique_ptr<MatrixEquation> matrix_equation = BridgeMatrixService::create_floating_junctions_equation(bridge_model, simulation_model, 100);
 
 	Eigen::MatrixXd matrix_expected(0, 0);
 	Eigen::VectorXd right_side_exptected;
 
-	ASSERT_TRUE(compare_matrices(matrix_equation->left, matrix_expected));
-	ASSERT_TRUE(compare_matrices(right_side_exptected, matrix_equation->right));
+	ASSERT_TRUE(compare_matrices(matrix_equation->get_left(), matrix_expected));
+	ASSERT_TRUE(compare_matrices(matrix_equation->get_right(), right_side_exptected));
 }
 
 TEST(BridgeMatrixService, test_triangle) {
@@ -136,7 +136,7 @@ TEST(BridgeMatrixService, test_triangle) {
 	bridge_model.add_girder(j2, j3);
 	bridge_model.add_girder(j3, j1);
 
-	std::unique_ptr<MatrixEquation> matrix_equation = BridgeMatrixService::create_bridge_equation(bridge_model, simulation_model, 15);
+	std::unique_ptr<MatrixEquation> matrix_equation = BridgeMatrixService::create_floating_junctions_equation(bridge_model, simulation_model, 15);
 
 	Eigen::Vector2d r23 = Eigen::Vector2d(6 - 12, 17 - 16);
 	r23.normalize();
@@ -160,8 +160,8 @@ TEST(BridgeMatrixService, test_triangle) {
 	Eigen::Vector2d expected_dv2 = 4 * Eigen::Vector2d(4,  2);
 	Eigen::Vector2d expected_dv3 = 4 * Eigen::Vector2d(3, -4);
 
-	ASSERT_TRUE(compare_matrices(matrix_equation->left, matrix_expected));
-	ASSERT_TRUE(compare_matrices(right_side_exptected, matrix_equation->right));
-	ASSERT_TRUE(compare_matrices(expected_dv2, matrix_equation->get_junction_dv(0)));
-	ASSERT_TRUE(compare_matrices(expected_dv3, matrix_equation->get_junction_dv(1)));
+	ASSERT_TRUE(compare_matrices(matrix_equation->get_left(), matrix_expected));
+	ASSERT_TRUE(compare_matrices(matrix_equation->get_right(), right_side_exptected));
+	ASSERT_TRUE(compare_matrices(expected_dv2, matrix_equation->get_indexed_root_vector(0)));
+	ASSERT_TRUE(compare_matrices(expected_dv3, matrix_equation->get_indexed_root_vector(1)));
 }

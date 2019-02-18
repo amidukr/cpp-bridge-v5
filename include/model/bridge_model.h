@@ -10,8 +10,12 @@
 class BridgeModel {
 
 	double prefered_scale_out_factor = 5;
+
 	std::vector<std::unique_ptr<Junction>> junctions;
 	std::vector<std::unique_ptr<Girder>> girders;
+
+	std::vector<Junction*> floating_junctions;
+	std::vector<Girder*> floating_girders;
 
 	std::vector<std::vector<Girder*>> junction_girders;
 
@@ -26,6 +30,9 @@ public:
 	Girder& add_girder(Junction& junction1, Junction& junction2);
 	Junction& get_junction(int i);
 	Girder& get_girder(int i);
+		
+	const std::vector<Junction*>& get_floating_junctions();
+	const std::vector<Girder*>& get_floating_girders();
 
 	const std::vector<Girder*>& get_junction_girders(Junction& junction);
 

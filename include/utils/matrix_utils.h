@@ -3,7 +3,7 @@
 
 class MatrixIndex {
 public:
-	virtual int get_end_offset() = 0;
+	virtual int get_end_offset() const = 0;
 };
 
 class ScalarIndex : public MatrixIndex {
@@ -12,10 +12,10 @@ class ScalarIndex : public MatrixIndex {
 
 public:
 	ScalarIndex(int n);
-	ScalarIndex(MatrixIndex& matrix_index, int n);
-	ScalarIndex(ScalarIndex& scalar_index);
+	ScalarIndex(const MatrixIndex& matrix_index, int n);
+	ScalarIndex(const ScalarIndex& scalar_index);
 
-	int get_end_offset() override;
+	int get_end_offset() const override;
 
 	int index(int i);
 };
@@ -25,13 +25,15 @@ class VectorIndex : public MatrixIndex {
 
 public:
 	VectorIndex(int n);
-	VectorIndex(MatrixIndex&, int n);
-	VectorIndex(VectorIndex&);
+	VectorIndex(const MatrixIndex&, int n);
+	VectorIndex(const VectorIndex&);
 
-	int get_end_offset() override;
+	int get_end_offset() const override;
 
 	int x_index(int i);
 	int y_index(int i);
+
+	const ScalarIndex& to_scalar_index() const;
 };
 
 #endif __MATRIX_UTILS_H

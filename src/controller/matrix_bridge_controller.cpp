@@ -21,14 +21,14 @@ void MatrixBridgeController::update(ControllerAction& action) {
 	
 	int junctions_len = bridge_model.get_junctions_len();
 
-	std::unique_ptr<MatrixEquation> matrix_equation = BridgeMatrixService::create_bridge_equation(bridge_model, simulation_model, elapsed_time);
+	std::unique_ptr<MatrixEquation> matrix_equation = BridgeMatrixService::create_floating_junctions_equation(bridge_model, simulation_model, elapsed_time);
 
-	std::vector<Junction*>& floating_junctions = *matrix_equation->floating_junctions.get();
+	const std::vector<Junction*>& floating_junctions = bridge_model.get_floating_junctions();
 
 	for (int i = 0; i < floating_junctions.size(); i++) {
 		Junction& junction = *floating_junctions.at(i);
 
-		Eigen::Vector2d dv = matrix_equation->get_junction_dv(i);
+		Eigen::Vector2d dv = matrix_equation->get_indexed_root_vector(i);
 
 		junction.set_velocity(junction.get_velocity() + dv);
 	}

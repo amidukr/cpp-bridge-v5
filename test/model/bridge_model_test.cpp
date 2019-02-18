@@ -116,3 +116,60 @@ TEST(BridgeModelTest, test_brider_empty_model_bounds) {
 	ASSERT_EQ(bounds[2], 0);
 	ASSERT_EQ(bounds[3], 0);
 }
+
+TEST(BridgeModelTest, test_floating_index) {
+	BridgeModel bridge;
+
+	Junction& j1 = bridge.add_fixed_junction(0, 0);
+	Junction& j2 = bridge.add_junction(0, 0);
+	Junction& j3 = bridge.add_junction(0, 0);
+	Junction& j4 = bridge.add_fixed_junction(0, 0);
+	Junction& j5 = bridge.add_junction(0, 0);
+
+	Girder& g1 = bridge.add_girder(j1, j4);
+	Girder& g2 = bridge.add_girder(j1, j2);
+	Girder& g3 = bridge.add_girder(j4, j1);
+	Girder& g4 = bridge.add_girder(j2, j3);
+	Girder& g5 = bridge.add_girder(j4, j3);
+
+	ASSERT_EQ(j1.get_index(), 0);
+	ASSERT_EQ(j2.get_index(), 1);
+	ASSERT_EQ(j3.get_index(), 2);
+	ASSERT_EQ(j4.get_index(), 3);
+	ASSERT_EQ(j5.get_index(), 4);
+
+	ASSERT_EQ(j1.get_floating_index(), -1);
+	ASSERT_EQ(j2.get_floating_index(),  0);
+	ASSERT_EQ(j3.get_floating_index(),  1);
+	ASSERT_EQ(j4.get_floating_index(), -1);
+	ASSERT_EQ(j5.get_floating_index(),  2);
+	
+
+	ASSERT_EQ(g1.get_index(), 0);
+	ASSERT_EQ(g2.get_index(), 1);
+	ASSERT_EQ(g3.get_index(), 2);
+	ASSERT_EQ(g4.get_index(), 3);
+	ASSERT_EQ(g5.get_index(), 4);
+
+	ASSERT_EQ(g1.get_floating_index(), -1);
+	ASSERT_EQ(g2.get_floating_index(),  0);
+	ASSERT_EQ(g3.get_floating_index(), -1);
+	ASSERT_EQ(g4.get_floating_index(),  1);
+	ASSERT_EQ(g5.get_floating_index(),  2);
+
+	std::vector<Junction*> expected_floating_junctions;
+
+	expected_floating_junctions.push_back(&j2);
+	expected_floating_junctions.push_back(&j3);
+	expected_floating_junctions.push_back(&j5);
+
+	ASSERT_EQ(bridge.get_floating_junctions(), expected_floating_junctions);
+
+	std::vector<Girder*> expected_floating_girders;
+
+	expected_floating_girders.push_back(&g2);
+	expected_floating_girders.push_back(&g4);
+	expected_floating_girders.push_back(&g5);
+
+	ASSERT_EQ(bridge.get_floating_girders(), expected_floating_girders);
+}

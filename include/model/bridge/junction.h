@@ -8,6 +8,8 @@
 class Junction {
 
 	int index;
+	int floating_index;
+
 	bool fixed = false;
 
 	Eigen::Vector2d coordinate;
@@ -16,7 +18,7 @@ class Junction {
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-	Junction(int index, bool fixed, double x, double y);
+	Junction(int index, int floating_index, bool fixed, double x, double y);
 
 	Eigen::Vector2d get_velocity();
 	void set_velocity(Eigen::Vector2d velocity);
@@ -29,6 +31,7 @@ public:
 	bool is_fixed();
 
 	int get_index();
+	int get_floating_index();
 
 private:
 	// Disable copy constructor
