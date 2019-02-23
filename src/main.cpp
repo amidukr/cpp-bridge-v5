@@ -94,7 +94,12 @@ simulations_vector create_simulations() {
 
 	demo_simulations(simulations);
 
-	//all_controllers_all_speeds(simulations, SampleDataModel::ROPE_BRIDGE);
+	//all_controllers_all_speeds(simulations, SampleDataModel::TRIANGLE_GRID);
+	//all_matrix_all_speeds(simulations, SampleDataModel::TRIANGLE_GRID);
+
+	//add_simulation(simulations, BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::TRIANGLE_GRID, SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION);
+	//add_simulation(simulations, BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER, SampleDataModel::TRIANGLE_GRID, SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION);
+	//add_simulation(simulations, BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::TRIANGLE_GRID, SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION);
 
 	//add_simulation(simulations, BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::ROPE_BRIDGE, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION);
 	//add_simulation(simulations, BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::ROPE_BRIDGE, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION);
@@ -165,6 +170,8 @@ void start_simulation(std::vector<std::shared_ptr<BridgeSimulationContext>>& sim
 			elapsed_time = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::seconds(1));
 		}
 
+		elapsed_time = std::chrono::microseconds(10000);
+
 		prev = current;
 		for (int i = 0; i < simulations.size(); i++) {
 			auto& simulation = simulations.at(i);
@@ -179,13 +186,13 @@ void start_simulation(std::vector<std::shared_ptr<BridgeSimulationContext>>& sim
 int main(int argc, char* argv[]) {
 
 	#ifdef RUN_GTEST_FROM_MAIN
-	try {
+	/*try {
 		::testing::InitGoogleTest(&argc, argv);
 		RUN_ALL_TESTS();
 	}
 	catch (...) {
 		fprintf(stderr, "Exception during unit test run\n");
-	}
+	}*/
 	
 	#endif
 

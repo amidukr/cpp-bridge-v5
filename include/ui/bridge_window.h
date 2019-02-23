@@ -4,6 +4,9 @@
 #include <memory>
 #include "ui/gl_window.h"
 
+#include <opencv\cv.h>
+#include "opencv2\opencv.hpp"
+
 class BridgeModel;
 
 class BridgeWindow :
@@ -11,8 +14,13 @@ class BridgeWindow :
 {
 	std::shared_ptr<BridgeModel> bridge_model;
 	double point_size = 0;
+
+	cv::VideoWriter outputVideo;
+
 public:
 	BridgeWindow(std::shared_ptr<BridgeModel> bridge_model);
+	~BridgeWindow();
+
 protected:
 	void init();
 	void draw();
