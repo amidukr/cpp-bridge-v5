@@ -54,13 +54,8 @@ template <class T> void insert_vector_to_vector(std::vector<T>& dest, std::vecto
 	dest.insert(dest.end(), src.begin(), src.end());
 }
 
-typedef std::vector<std::shared_ptr<BridgeSimulationContext>> simulations_vector;
-
 void add_simulation(ApplicationContext& context, const std::string& controller_type, const std::string& bridge_model, const std::string& simulation_type) {
 	std::vector<std::shared_ptr<BridgeSimulationContext>>& simulations = context.get_bridge_simulation_context();
-
-
-
 	simulations.push_back(create_simulation_context(context, controller_type, bridge_model, simulation_type));
 }
 
