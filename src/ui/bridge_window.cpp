@@ -47,7 +47,8 @@ void BridgeWindow::init() {
 		this->outputVideo.set(cv::VIDEOWRITER_PROP_QUALITY, 100.0);
 
 		//int fourcc = CV_FOURCC('M', 'S', 'V', 'C'); //Microspoft Video 1;
-		int fourcc = CV_FOURCC('X', '2', '6', '4'); //Microspoft Video 1;
+		//int fourcc = CV_FOURCC('X', '2', '6', '4'); //Microspoft Video 1;
+		int fourcc = CV_FOURCC('M', 'J', 'P', 'G'); 
 		//int fourcc = -1;
 
 		this->outputVideo.open(filename.c_str(), fourcc, 20.00f, cv::Size(window_size[0], window_size[1]), true);
