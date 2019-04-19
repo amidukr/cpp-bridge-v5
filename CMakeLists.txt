@@ -20,12 +20,26 @@ add_executable (cpp_bridge_v5_app_executable "src/main.cpp")
 find_package(OpenGL REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(GLEW REQUIRED)
+find_package(Eigen3 3.3  REQUIRED NO_MODULE)
+find_package(OpenCV REQUIRED)
+find_package(cxxopts CONFIG REQUIRED)
 
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+
+#include_directories( "/usr/include/opencv/" )
+#include_directories( "/usr/include/" )
+
+message (opencv-include = ${OpenCV_INCLUDE_DIRS} )
+
+target_link_libraries(cpp_bridge_v5_app_library PRIVATE ${OpenCV_LIBS} )
 target_link_libraries(cpp_bridge_v5_app_library PRIVATE GLEW::GLEW)
 target_link_libraries(cpp_bridge_v5_app_library PRIVATE glfw)
-target_link_libraries(cpp_bridge_v5_app_library PRIVATE OpenGL32)
-target_link_libraries (cpp_bridge_v5_app_executable PRIVATE cpp_bridge_v5_app_library)		
+target_link_libraries(cpp_bridge_v5_app_library PRIVATE OpenGL)
+target_link_libraries (cpp_bridge_v5_app_library PRIVATE Eigen3::Eigen)
+target_link_libraries (cpp_bridge_v5_app_executable PRIVATE cpp_bridge_v5_app_library)
+target_link_libraries(cpp_bridge_v5_app_executable PRIVATE cxxopts::cxxopts)
 
+target_link_libraries(cpp_bridge_v5_app_executable PRIVATE ${GTEST_BOTH_LIBRARIES} ${PTHREAD_LIB_PATH})		
 
 # Running unit tests with gtest
 file(GLOB TEST_SRC_FILES ${PROJECT_SOURCE_DIR}/test/*.cpp)

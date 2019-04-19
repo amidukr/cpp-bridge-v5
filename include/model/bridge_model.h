@@ -7,10 +7,12 @@
 #include<model/bridge/girder.h>
 #include<model/bridge/junction.h>
 
+
+
 class BridgeModel {
-
+    
 	double prefered_scale_out_factor = 5;
-
+        
 	std::vector<std::unique_ptr<Junction>> junctions;
 	std::vector<std::unique_ptr<Girder>> girders;
 
@@ -20,7 +22,7 @@ class BridgeModel {
 	std::vector<std::vector<Girder*>> junction_girders;
 
 
-	Junction& BridgeModel::add_junction(bool fixed, double x, double y);
+	Junction& add_junction(bool fixed, double x, double y);
 
 public:
 	BridgeModel();
@@ -42,7 +44,7 @@ public:
 	int get_girder_len();
 	int get_junctions_len();
 
-	std::array<double, 4> BridgeModel::get_bounds();
+	std::array<double, 4> get_bounds();
 
 private:
 	// Disable copy constructor

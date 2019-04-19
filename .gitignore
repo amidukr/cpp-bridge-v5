@@ -10,3 +10,11 @@
 /CoverageReport-*
 /LastCoverageResults.log
 /Release
+/.cproject
+/.project
+/.settings/language.settings.xml
+/CMakeCache.txt
+/CMakeFiles
+/cmake-build
+/recordings
+/nbproject

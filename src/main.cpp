@@ -5,6 +5,7 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <algorithm>
 
 #include <GL/glew.h>
 
@@ -23,11 +24,13 @@
 #include <chrono>
 #include <thread>
 
-#ifdef RUN_GTEST_FROM_MAIN
-#include <gtest/gtest.h>
-#endif
+#include "model/aplication_configuration.h"
 
-std::unique_ptr<BridgeSimulationContext> create_simulation_context(std::string controller_type, std::string bridge_model_name, std::string simulation_model_name) {
+#include <gtest/gtest.h>
+
+#include <context/application_context.h>
+
+std::unique_ptr<BridgeSimulationContext> create_simulation_context(ApplicationContext& context, std::string controller_type, std::string bridge_model_name, std::string simulation_model_name) {
 	SampleDataModel sample_data_model;
 	BridgeControllerFactory bridge_controller_factory;
 
@@ -35,7 +38,7 @@ std::unique_ptr<BridgeSimulationContext> create_simulation_context(std::string c
 	std::shared_ptr<BridgeModel> bridge_model = sample_data_model.load_bridge_model(bridge_model_name);
 	std::shared_ptr<SimulationModel> simulation_model = sample_data_model.load_simulation_model(simulation_model_name);
 
-	std::unique_ptr<BridgeWindow> bridge_window(new BridgeWindow(bridge_model));
+	std::unique_ptr<BridgeWindow> bridge_window(new BridgeWindow(bridge_model, context.get_application_configuration()));
 
 	bridge_window->set_title(std::string("GL Window: ") + controller_type.substr(0, 15) + " " +simulation_model_name  + " " + bridge_model_name);
 
@@ -53,46 +56,49 @@ template <class T> void insert_vector_to_vector(std::vector<T>& dest, std::vecto
 
 typedef std::vector<std::shared_ptr<BridgeSimulationContext>> simulations_vector;
 
-void add_simulation(simulations_vector& simulations, const std::string& controller_type, const std::string& bridge_model, const std::string& simulation_type) {
-	simulations.push_back(create_simulation_context(controller_type, bridge_model, simulation_type));
+void add_simulation(ApplicationContext& context, const std::string& controller_type, const std::string& bridge_model, const std::string& simulation_type) {
+	std::vector<std::shared_ptr<BridgeSimulationContext>>& simulations = context.get_bridge_simulation_context();
+
+
+
+	simulations.push_back(create_simulation_context(context, controller_type, bridge_model, simulation_type));
 }
 
-void all_speeds(simulations_vector& simulations, const std::string& controller_type, const std::string& bridge_model) {
-	add_simulation(simulations, controller_type, bridge_model, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION);
-	add_simulation(simulations, controller_type, bridge_model, SampleDataModel::TEN_TIME_FACTOR_SIMULATION);
-	add_simulation(simulations, controller_type, bridge_model, SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION);
+void all_speeds(ApplicationContext& context, const std::string& controller_type, const std::string& bridge_model) {
+	add_simulation(context, controller_type, bridge_model, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION);
+	add_simulation(context, controller_type, bridge_model, SampleDataModel::TEN_TIME_FACTOR_SIMULATION);
+	add_simulation(context, controller_type, bridge_model, SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION);
 }
 
-void all_matrix_all_speeds(simulations_vector& simulations, const std::string& bridge_model) {
-	all_speeds(simulations, BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER, bridge_model);
-	all_speeds(simulations, BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER, bridge_model);
+void all_matrix_all_speeds(ApplicationContext& context, const std::string& bridge_model) {
+	all_speeds(context, BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER, bridge_model);
+	all_speeds(context, BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER, bridge_model);
 }
 
-void all_controllers_all_speeds(simulations_vector& simulations, const std::string& bridge_model) {
-	all_speeds(simulations, BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER, bridge_model);
-	all_speeds(simulations, BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER, bridge_model);
-	all_speeds(simulations, BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, bridge_model);
+void all_controllers_all_speeds(ApplicationContext& context, const std::string& bridge_model) {
+	all_speeds(context, BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER, bridge_model);
+	all_speeds(context, BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER, bridge_model);
+	all_speeds(context, BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, bridge_model);
 }
 
-void all_controlers(simulations_vector& simulations, const std::string& bridge_model, const std::string& simulation_type) {
-	add_simulation(simulations, BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER ,bridge_model, simulation_type);
-	add_simulation(simulations, BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER, bridge_model, simulation_type);
-	add_simulation(simulations, BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER, bridge_model, simulation_type);
+void all_controlers(ApplicationContext& context, const std::string& bridge_model, const std::string& simulation_type) {
+	add_simulation(context, BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER ,bridge_model, simulation_type);
+	add_simulation(context, BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER, bridge_model, simulation_type);
+	add_simulation(context, BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER, bridge_model, simulation_type);
 }
 
-void demo_simulations(simulations_vector& simulations) {
-	add_simulation(simulations, BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION);
-	add_simulation(simulations, BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION);
+void demo_simulations(ApplicationContext& context) {
+	add_simulation(context, BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION);
+	add_simulation(context, BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION);
 
-	add_simulation(simulations, BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::TEN_TIME_FACTOR_SIMULATION);
-	add_simulation(simulations, BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::TEN_TIME_FACTOR_SIMULATION);
+	add_simulation(context, BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::TEN_TIME_FACTOR_SIMULATION);
+	add_simulation(context, BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::TEN_TIME_FACTOR_SIMULATION);
 }
 
 
-simulations_vector create_simulations() {
-	std::vector<std::shared_ptr<BridgeSimulationContext>> simulations;
+void create_simulations(ApplicationContext& context) {
 
-	demo_simulations(simulations);
+	demo_simulations(context);
 
 	//all_controllers_all_speeds(simulations, SampleDataModel::TRIANGLE_GRID);
 	//all_matrix_all_speeds(simulations, SampleDataModel::TRIANGLE_GRID);
@@ -116,11 +122,11 @@ simulations_vector create_simulations() {
 
 	//add_simulation(simulations, BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::PANDULUM_BRIDGE, SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION);
 	//all_controlers(simulations, SampleDataModel::HEART_BRIDGE, SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION);
-
-	return simulations;
 }
 
-void layout_windows(std::vector<std::shared_ptr<BridgeSimulationContext>>& simulations) {
+void layout_windows(ApplicationContext& context) {
+	std::vector<std::shared_ptr<BridgeSimulationContext>>& simulations = context.get_bridge_simulation_context();
+
 	if (simulations.size() == 0) return;
 
 	const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -152,8 +158,10 @@ void layout_windows(std::vector<std::shared_ptr<BridgeSimulationContext>>& simul
 	}
 }
 
-void start_simulation(std::vector<std::shared_ptr<BridgeSimulationContext>>& simulations) {
-	for each (auto& simulation in simulations) {
+void start_simulation(ApplicationContext& context) {
+	std::vector<std::shared_ptr<BridgeSimulationContext>>& simulations = context.get_bridge_simulation_context();
+
+	for (auto& simulation : simulations) {
 		simulation->init();
 	}
 
@@ -170,7 +178,7 @@ void start_simulation(std::vector<std::shared_ptr<BridgeSimulationContext>>& sim
 			elapsed_time = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::seconds(1));
 		}
 
-		elapsed_time = std::chrono::microseconds(10000);
+		elapsed_time = std::min(elapsed_time, std::chrono::microseconds(10000));
 
 		prev = current;
 		for (int i = 0; i < simulations.size(); i++) {
@@ -183,18 +191,27 @@ void start_simulation(std::vector<std::shared_ptr<BridgeSimulationContext>>& sim
 	}
 }
 
+
+
 int main(int argc, char* argv[]) {
 
-	#ifdef RUN_GTEST_FROM_MAIN
-	/*try {
-		::testing::InitGoogleTest(&argc, argv);
-		RUN_ALL_TESTS();
+	ApplicationContext context;
+
+	ApplicationConfiguration& application_configuration = *context.get_application_configuration();
+
+	if (application_configuration.parse_arguments(argc, argv)) {
+		return 1;
 	}
-	catch (...) {
-		fprintf(stderr, "Exception during unit test run\n");
-	}*/
-	
-	#endif
+
+	if (application_configuration.get_run_test_flag()) {
+		try {
+			::testing::InitGoogleTest(&argc, argv);
+			RUN_ALL_TESTS();
+		}
+		catch (...) {
+			fprintf(stderr, "Exception during unit test run\n");
+		}
+	}
 
 	glewExperimental = true; // Needed for core profile
 	if (!glfwInit())
@@ -203,9 +220,9 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
-	auto simulations = create_simulations();
-	layout_windows(simulations);
-	start_simulation(simulations);
+	create_simulations(context);
+	layout_windows(context);
+	start_simulation(context);
 
 	glfwTerminate();
 	

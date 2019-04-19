@@ -4,6 +4,7 @@
 class MatrixIndex {
 public:
 	virtual int get_end_offset() const = 0;
+	virtual ~MatrixIndex();
 };
 
 class ScalarIndex : public MatrixIndex {
@@ -36,4 +37,4 @@ public:
 	const ScalarIndex& to_scalar_index() const;
 };
 
-#endif __MATRIX_UTILS_H
+#endif /*__MATRIX_UTILS_H*/

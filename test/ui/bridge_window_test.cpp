@@ -1,10 +1,14 @@
 #include <gtest/gtest.h>
 
+#include<memory>
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 #include "ui/bridge_window.h"
 #include "model/bridge_model.h"
+#include "model/aplication_configuration.h"
+
 
 class BridgeWindowTest : public ::testing::Test {
 
@@ -28,7 +32,7 @@ TEST_F(BridgeWindowTest, bridge_window_test) {
 	bridge_model->add_girder(j1, j2);
 
 
-	BridgeWindow window{ bridge_model };
+	BridgeWindow window{ bridge_model, std::shared_ptr<ApplicationConfiguration>(new ApplicationConfiguration()) };
 
 	ASSERT_FALSE(window.is_active());
 	ASSERT_TRUE(window.create());

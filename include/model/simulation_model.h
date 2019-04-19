@@ -29,4 +29,4 @@ public:
 	double get_dumping_ratio();
 };
 
-#endif SIMULATION_SETTINGS_MODEL_H
+#endif /*SIMULATION_SETTINGS_MODEL_H*/

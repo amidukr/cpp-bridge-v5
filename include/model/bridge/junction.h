@@ -16,7 +16,6 @@ class Junction {
 	Eigen::Vector2d velocity = {0, 0};
 
 public:
-	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
 	Junction(int index, int floating_index, bool fixed, double x, double y);
 

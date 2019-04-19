@@ -4,10 +4,10 @@
 #include <memory>
 #include "ui/gl_window.h"
 
-#include <opencv\cv.h>
-#include "opencv2\opencv.hpp"
+#include "opencv2/opencv.hpp"
 
 class BridgeModel;
+class ApplicationConfiguration;
 
 class BridgeWindow :
 	public GLWindow
@@ -16,9 +16,10 @@ class BridgeWindow :
 	double point_size = 0;
 
 	cv::VideoWriter outputVideo;
+	std::shared_ptr<ApplicationConfiguration> application_configuration;
 
 public:
-	BridgeWindow(std::shared_ptr<BridgeModel> bridge_model);
+	BridgeWindow(std::shared_ptr<BridgeModel> bridge_model, std::shared_ptr<ApplicationConfiguration> application_configuration);
 	~BridgeWindow();
 
 protected:

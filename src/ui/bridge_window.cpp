@@ -1,14 +1,19 @@
 #include <GL/glew.h>
 #include <algorithm>
 
+#include <iostream>
+
 #include "utils/viewport_utils.h"
 #include "ui/bridge_window.h"
 #include "model/bridge_model.h"
 
+#include "model/aplication_configuration.h"
+
 #define DEG2RAD 3.14159/180.0
 
-BridgeWindow::BridgeWindow(std::shared_ptr<BridgeModel> bridge_model) {
+BridgeWindow::BridgeWindow(std::shared_ptr<BridgeModel> bridge_model, std::shared_ptr<ApplicationConfiguration> application_configuration) {
 	this->bridge_model = bridge_model;
+	this->application_configuration = application_configuration;
 }
 
 void BridgeWindow::init() {
@@ -28,18 +33,25 @@ void BridgeWindow::init() {
 	glLoadIdentity(); // replace the current matrix with the identity matrix and starts us a fresh because matrix transforms such as glOrpho and glRotate cumulate, basically puts us at (0, 0, 0)
 	glOrtho(orhto_matrix[0], orhto_matrix[1], orhto_matrix[2], orhto_matrix[3], 0, 1); // essentially set coordinate system
 
+	if (this->application_configuration->get_write_video_flag()) {
+		std::string filename = "./";
 
-	std::string filename = this->get_title();
+		filename += this->get_title();
 
-	std::replace(filename.begin(), filename.end(), ':', '-');
+		std::replace(filename.begin(), filename.end(), ':', '-');
 
-	filename += ".avi";
+		filename += ".avi";
 
-	this->outputVideo.set(cv::VIDEOWRITER_PROP_QUALITY, 100.0);
-		
-	int fourcc = CV_FOURCC('M', 'S', 'V', 'C'); //Microspoft Video 1;
+		std::cout << "Started writting video to '" << filename << "'" << std::endl;
 
-	this->outputVideo.open(filename.c_str(), fourcc, 20.00f, cv::Size(window_size[0], window_size[1]), true);
+		this->outputVideo.set(cv::VIDEOWRITER_PROP_QUALITY, 100.0);
+
+		//int fourcc = CV_FOURCC('M', 'S', 'V', 'C'); //Microspoft Video 1;
+		int fourcc = CV_FOURCC('X', '2', '6', '4'); //Microspoft Video 1;
+		//int fourcc = -1;
+
+		this->outputVideo.open(filename.c_str(), fourcc, 20.00f, cv::Size(window_size[0], window_size[1]), true);
+	}
 }
 
 void draw_circle(float x, float y, float radius)
@@ -95,23 +107,26 @@ void BridgeWindow::draw() {
 
 		draw_circle(junction.get_x(), junction.get_y(), this->point_size*2);
 	}
+	
+	if (this->application_configuration->get_write_video_flag()) {
 
-	std::array<int, 2> window_size = this->get_size();
+		std::array<int, 2> window_size = this->get_size();
 
-	int width = window_size[0];
-	int height = window_size[1];
+		int width = window_size[0];
+		int height = window_size[1];
 
-	cv::Mat pixels(height, width, CV_8UC3);
-	glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixels.data);
-	cv::Mat cv_pixels(height, width, CV_8UC3);
-	for (int y = 0; y < height; y++) for (int x = 0; x < width; x++)
-	{
-		cv_pixels.at<cv::Vec3b>(y, x)[2] = pixels.at<cv::Vec3b>(height - y - 1, x)[0];
-		cv_pixels.at<cv::Vec3b>(y, x)[1] = pixels.at<cv::Vec3b>(height - y - 1, x)[1];
-		cv_pixels.at<cv::Vec3b>(y, x)[0] = pixels.at<cv::Vec3b>(height - y - 1, x)[2];
+		cv::Mat pixels(height, width, CV_8UC3);
+		glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixels.data);
+		cv::Mat cv_pixels(height, width, CV_8UC3);
+		for (int y = 0; y < height; y++) for (int x = 0; x < width; x++)
+		{
+			cv_pixels.at<cv::Vec3b>(y, x)[2] = pixels.at<cv::Vec3b>(height - y - 1, x)[0];
+			cv_pixels.at<cv::Vec3b>(y, x)[1] = pixels.at<cv::Vec3b>(height - y - 1, x)[1];
+			cv_pixels.at<cv::Vec3b>(y, x)[0] = pixels.at<cv::Vec3b>(height - y - 1, x)[2];
+		}
+
+		this->outputVideo << cv_pixels;
 	}
-
-	this->outputVideo << cv_pixels;
 }
 
 BridgeWindow::~BridgeWindow() {

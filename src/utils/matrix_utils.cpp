@@ -1,5 +1,9 @@
 #include "utils/matrix_utils.h"
 
+MatrixIndex::~MatrixIndex() {
+
+}
+
 ScalarIndex::ScalarIndex(int n) {
 	this->start = 0;
 	this->n = n;
