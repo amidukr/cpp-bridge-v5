@@ -2,8 +2,8 @@
 
 #include "model/simulation_model.h"
 #include "model/bridge_model.h"
-#include "controller/base_elastic_bridge_controller.h"
-#include "controller/arguments/controller_action.h"
+#include "controller/simulation/base_elastic_bridge_controller.h"
+#include "controller/simulation/arguments/controller_action.h"
 
 class MockedElasticBridgeController : public BaseElasticBridgeController {
 double last_elapsed_time_seconds = -1;

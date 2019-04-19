@@ -1,7 +1,7 @@
 #ifndef MATRIX_BRIDGE_CONTROLLER_H
 #define MATRIX_BRIDGE_CONTROLLER_H
 
-#include "controller/bridge_controller.h"
+#include "controller/simulation/bridge_controller.h"
 
 class MatrixBridgeController : public BridgeController {
 public:

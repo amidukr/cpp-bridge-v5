@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "controller/arguments/controller_action.h"
+#include "controller/simulation/arguments/controller_action.h"
 
 TEST(ControllerActionTest, test_elapsed_time) {
 	ControllerAction controller_action;

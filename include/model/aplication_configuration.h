@@ -14,9 +14,10 @@ public:
 	ApplicationConfiguration();
 
 	bool get_write_video_flag() const;
-	bool get_run_test_flag() const;
+	void set_write_video_flag(bool write_video_flag);
 
-	int parse_arguments(int argc, char* argv[]);
+	bool get_run_test_flag() const;
+	void set_run_test_flag(bool run_test_flag);
 
 private:
 	// Disable copy constructor

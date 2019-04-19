@@ -14,21 +14,22 @@
 #include "model/bridge_model.h"
 #include "ui/bridge_window.h"
 
-#include "controller/bridge_controller.h"
+#include "controller/simulation/bridge_controller.h"
 #include "factory/bridge_controller_factory.h"
 
 #include "model/sample_data_model.h"
 #include "context/bridge_simulation_context.h"
-#include<model/simulation_model.h>
+#include "model/simulation_model.h"
 
 #include <chrono>
 #include <thread>
 
+#include "controller/command_line_controller.h"
 #include "model/aplication_configuration.h"
 
 #include <gtest/gtest.h>
 
-#include <context/application_context.h>
+#include "context/application_context.h"
 
 std::unique_ptr<BridgeSimulationContext> create_simulation_context(ApplicationContext& context, std::string controller_type, std::string bridge_model_name, std::string simulation_model_name) {
 	SampleDataModel sample_data_model;
@@ -52,7 +53,7 @@ std::unique_ptr<BridgeSimulationContext> create_simulation_context(ApplicationCo
 
 template <class T> void insert_vector_to_vector(std::vector<T>& dest, std::vector<T>& src) {
 	dest.insert(dest.end(), src.begin(), src.end());
-}
+}	
 
 void add_simulation(ApplicationContext& context, const std::string& controller_type, const std::string& bridge_model, const std::string& simulation_type) {
 	std::vector<std::shared_ptr<BridgeSimulationContext>>& simulations = context.get_bridge_simulation_context();
@@ -192,11 +193,11 @@ int main(int argc, char* argv[]) {
 
 	ApplicationContext context;
 
-	ApplicationConfiguration& application_configuration = *context.get_application_configuration();
-
-	if (application_configuration.parse_arguments(argc, argv)) {
+	if (context.get_command_line_controller()->parse_arguments(argc, argv)) {
 		return 1;
 	}
+
+	ApplicationConfiguration& application_configuration = *context.get_application_configuration();
 
 	if (application_configuration.get_run_test_flag()) {
 		try {

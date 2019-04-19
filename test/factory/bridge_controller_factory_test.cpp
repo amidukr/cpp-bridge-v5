@@ -2,9 +2,9 @@
 
 #include "factory/bridge_controller_factory.h"
 
-#include <controller/elastic_controller.h>
-#include <controller/matrix_bridge_controller.h>
-#include <controller/matrix_elastic_controller.h>
+#include <controller/simulation/elastic_controller.h>
+#include <controller/simulation/matrix_bridge_controller.h>
+#include <controller/simulation/matrix_elastic_controller.h>
 
 class ElasticController;
 class MatrixBridgeController;

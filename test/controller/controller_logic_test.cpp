@@ -6,11 +6,11 @@
 #include "model/simulation_model.h"
 #include "model/simulation_model.h"
 
-#include "controller/arguments/controller_action.h"
+#include "controller/simulation/arguments/controller_action.h"
 
-#include "controller/elastic_controller.h"
-#include "controller/matrix_bridge_controller.h"
-#include "controller/matrix_elastic_controller.h"
+#include "controller/simulation/elastic_controller.h"
+#include "controller/simulation/matrix_bridge_controller.h"
+#include "controller/simulation/matrix_elastic_controller.h"
 
 std::shared_ptr<BridgeModel> create_free_fall_bridge_model() {
 	std::shared_ptr<BridgeModel> bridge_model{ new BridgeModel{} };

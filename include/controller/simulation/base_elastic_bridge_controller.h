@@ -1,7 +1,7 @@
 #ifndef __BASE_ELASTIC_BRIDGE_CONTROLLER_H
 #define __BASE_ELASTIC_BRIDGE_CONTROLLER_H
 
-#include "controller/bridge_controller.h"
+#include "controller/simulation/bridge_controller.h"
 
 class BaseElasticBridgeController : public BridgeController {
 

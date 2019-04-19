@@ -1,7 +1,7 @@
 #include "factory/bridge_controller_factory.h"
-#include "controller/elastic_controller.h"
-#include "controller/matrix_elastic_controller.h"
-#include "controller/matrix_bridge_controller.h"
+#include "controller/simulation/elastic_controller.h"
+#include "controller/simulation/matrix_elastic_controller.h"
+#include "controller/simulation/matrix_bridge_controller.h"
 
 const std::string BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER = "elastic-bridge-controller";
 const std::string BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER = "matrix-elastic-bridge-controller";

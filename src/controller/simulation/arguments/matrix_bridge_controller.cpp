@@ -1,11 +1,11 @@
-#include "controller/matrix_bridge_controller.h"
+#include "controller/simulation/matrix_bridge_controller.h"
 
 #include <chrono>
 #include <thread>
 
 #include "model/bridge_model.h"
 #include "model/simulation_model.h"
-#include "controller/arguments/controller_action.h"
+#include "controller/simulation/arguments/controller_action.h"
 #include "service/bridge_matrix_service.h"
 
 #include <iostream>

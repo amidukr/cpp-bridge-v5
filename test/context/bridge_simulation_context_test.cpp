@@ -3,8 +3,8 @@
 #include <chrono>
 
 #include "ui/gl_window.h"
-#include "controller/bridge_controller.h"
-#include "controller/arguments/controller_action.h"
+#include "controller/simulation/bridge_controller.h"
+#include "controller/simulation/arguments/controller_action.h"
 
 #include "context/bridge_simulation_context.h"
 
