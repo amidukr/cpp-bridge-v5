@@ -203,6 +203,7 @@ int main(int argc, char* argv[]) {
 		try {
 			::testing::InitGoogleTest(&argc, argv);
 			RUN_ALL_TESTS();
+			return 0;
 		}
 		catch (...) {
 			fprintf(stderr, "Exception during unit test run\n");

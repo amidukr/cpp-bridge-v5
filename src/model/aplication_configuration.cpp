@@ -4,6 +4,14 @@ ApplicationConfiguration::ApplicationConfiguration()
 {
 }
 
+const std::vector<std::shared_ptr<ModelOption>>& ApplicationConfiguration::get_model_options() const {
+	return this->model_options;
+}
+
+void ApplicationConfiguration::add_model_option(std::shared_ptr<ModelOption> model_option) {
+	this->model_options.push_back(model_option);
+}
+
 bool ApplicationConfiguration::get_write_video_flag() const {
 	return this->write_video_flag;
 }
