@@ -74,11 +74,12 @@ TEST(CommandLineControllerTest, test_flags) {
 } 
 
 TEST(CommandLineControllerTest, test_help) {
-	std::shared_ptr<SimulationContextFactory> simulation_context_factory;
 	std::shared_ptr<ApplicationConfiguration> application_configuration1(new ApplicationConfiguration());
 	std::shared_ptr<ApplicationConfiguration> application_configuration2(new ApplicationConfiguration());
 	std::shared_ptr<ApplicationConfiguration> application_configuration3(new ApplicationConfiguration());
 	std::shared_ptr<ApplicationConfiguration> application_configuration4(new ApplicationConfiguration());
+
+	std::shared_ptr<SimulationContextFactory> simulation_context_factory(new SimulationContextFactory(application_configuration1));
 	
 	CommandLineController command_line_controller1{ application_configuration1, simulation_context_factory };
 	CommandLineController command_line_controller2{ application_configuration2, simulation_context_factory };
