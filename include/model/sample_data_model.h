@@ -9,7 +9,9 @@
 
 class SampleDataModel {
 
-	
+	std::vector<std::string> bridge_models;
+	std::vector<std::string> simulation_types;
+
 public:
 	static const std::string OPTIMAL_WITH_DELAY_SIMULATION;
 	static const std::string TEN_TIME_LOW_DUMPING;
@@ -28,6 +30,9 @@ public:
 	static const std::string TRIANGLE_GRID;
 
 	SampleDataModel();
+
+	const std::vector<std::string>& get_bridge_models() const;
+	const std::vector<std::string>& get_simulation_types() const;
 
 	std::unique_ptr<BridgeModel> load_bridge_model(std::string model_name);
 	std::unique_ptr<SimulationModel> load_simulation_model(std::string model_name);

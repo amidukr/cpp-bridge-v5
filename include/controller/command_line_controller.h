@@ -5,12 +5,15 @@
 #include <vector>
 
 class ApplicationConfiguration;
+class SimulationContextFactory;
 
 class CommandLineController
 {
 	std::shared_ptr<ApplicationConfiguration> application_configuration;
+	std::shared_ptr<SimulationContextFactory> simulation_context_factory;
 
 	int parse_models(const std::vector<std::string>& models);
+	void print_simulation_help();
 
 public:
 	static const int SUCCESS = 0;
@@ -18,7 +21,7 @@ public:
 	static const int HELP = 2;
 	static const int ERROR = 3;
 
-	CommandLineController(std::shared_ptr<ApplicationConfiguration> application_configuration);
+	CommandLineController(std::shared_ptr<ApplicationConfiguration> application_configuration, std::shared_ptr<SimulationContextFactory> simulation_context_factory);
 
 	int parse_arguments(int argc, const char* const argv[]);
 

@@ -3,7 +3,7 @@
 #include "controller/command_line_controller.h"
 #include "model/aplication_configuration.h"
 #include "model/configuration/model_option.h"
-
+#include "factory/simulation_context_factory.h"
 
 #include <memory>
 
@@ -13,7 +13,8 @@ bool compare_application_configurations(ApplicationConfiguration& a, Application
 
 TEST(CommandLineControllerTest, test_defaults) {
 	std::shared_ptr<ApplicationConfiguration> application_configuration(new ApplicationConfiguration());
-	CommandLineController command_line_controller{ application_configuration };
+	std::shared_ptr<SimulationContextFactory> simulation_context_factory;
+	CommandLineController command_line_controller{ application_configuration, simulation_context_factory };
 
 	char* arguments[] = { "/command-executable"};
 
@@ -24,6 +25,7 @@ TEST(CommandLineControllerTest, test_defaults) {
 }
 
 TEST(CommandLineControllerTest, test_flags) {
+	std::shared_ptr<SimulationContextFactory> simulation_context_factory;
 	std::shared_ptr<ApplicationConfiguration> application_configuration1(new ApplicationConfiguration());
 	std::shared_ptr<ApplicationConfiguration> application_configuration2(new ApplicationConfiguration());
 	std::shared_ptr<ApplicationConfiguration> application_configuration3(new ApplicationConfiguration());
@@ -31,12 +33,12 @@ TEST(CommandLineControllerTest, test_flags) {
 	std::shared_ptr<ApplicationConfiguration> application_configuration5(new ApplicationConfiguration());
 	std::shared_ptr<ApplicationConfiguration> application_configuration6(new ApplicationConfiguration());
 
-	CommandLineController command_line_controller1{ application_configuration1 };
-	CommandLineController command_line_controller2{ application_configuration2 };
-	CommandLineController command_line_controller3{ application_configuration3 };
-	CommandLineController command_line_controller4{ application_configuration4 };
-	CommandLineController command_line_controller5{ application_configuration5 };
-	CommandLineController command_line_controller6{ application_configuration6 };
+	CommandLineController command_line_controller1{ application_configuration1, simulation_context_factory };
+	CommandLineController command_line_controller2{ application_configuration2, simulation_context_factory };
+	CommandLineController command_line_controller3{ application_configuration3, simulation_context_factory };
+	CommandLineController command_line_controller4{ application_configuration4, simulation_context_factory };
+	CommandLineController command_line_controller5{ application_configuration5, simulation_context_factory };
+	CommandLineController command_line_controller6{ application_configuration6, simulation_context_factory };
 
 	char* arguments1[] = { "/command-executable", "-t", "-v" };
 	char* arguments2[] = { "/command-executable", "--test", "--video" };
@@ -72,15 +74,16 @@ TEST(CommandLineControllerTest, test_flags) {
 } 
 
 TEST(CommandLineControllerTest, test_help) {
+	std::shared_ptr<SimulationContextFactory> simulation_context_factory;
 	std::shared_ptr<ApplicationConfiguration> application_configuration1(new ApplicationConfiguration());
 	std::shared_ptr<ApplicationConfiguration> application_configuration2(new ApplicationConfiguration());
 	std::shared_ptr<ApplicationConfiguration> application_configuration3(new ApplicationConfiguration());
 	std::shared_ptr<ApplicationConfiguration> application_configuration4(new ApplicationConfiguration());
 	
-	CommandLineController command_line_controller1{ application_configuration1 };
-	CommandLineController command_line_controller2{ application_configuration2 };
-	CommandLineController command_line_controller3{ application_configuration3 };
-	CommandLineController command_line_controller4{ application_configuration4 };
+	CommandLineController command_line_controller1{ application_configuration1, simulation_context_factory };
+	CommandLineController command_line_controller2{ application_configuration2, simulation_context_factory };
+	CommandLineController command_line_controller3{ application_configuration3, simulation_context_factory };
+	CommandLineController command_line_controller4{ application_configuration4, simulation_context_factory };
 	
 	char* arguments1[] = { "/command-executable", "-h" };
 	char* arguments2[] = { "/command-executable", "--help" };
@@ -106,6 +109,7 @@ TEST(CommandLineControllerTest, test_help) {
 }
 
 TEST(CommandLineControllerTest, test_options) {
+	std::shared_ptr<SimulationContextFactory> simulation_context_factory;
 	std::shared_ptr<ApplicationConfiguration> application_configuration1(new ApplicationConfiguration());
 	std::shared_ptr<ApplicationConfiguration> application_configuration2(new ApplicationConfiguration());
 	std::shared_ptr<ApplicationConfiguration> application_configuration3(new ApplicationConfiguration());
@@ -114,13 +118,13 @@ TEST(CommandLineControllerTest, test_options) {
 	std::shared_ptr<ApplicationConfiguration> application_configuration6(new ApplicationConfiguration());
 	std::shared_ptr<ApplicationConfiguration> application_configuration7(new ApplicationConfiguration());
 
-	CommandLineController command_line_controller1{ application_configuration1 };
-	CommandLineController command_line_controller2{ application_configuration2 };
-	CommandLineController command_line_controller3{ application_configuration3 };
-	CommandLineController command_line_controller4{ application_configuration4 };
-	CommandLineController command_line_controller5{ application_configuration5 };
-	CommandLineController command_line_controller6{ application_configuration6 };
-	CommandLineController command_line_controller7{ application_configuration7 };
+	CommandLineController command_line_controller1{ application_configuration1, simulation_context_factory };
+	CommandLineController command_line_controller2{ application_configuration2, simulation_context_factory };
+	CommandLineController command_line_controller3{ application_configuration3, simulation_context_factory };
+	CommandLineController command_line_controller4{ application_configuration4, simulation_context_factory };
+	CommandLineController command_line_controller5{ application_configuration5, simulation_context_factory };
+	CommandLineController command_line_controller6{ application_configuration6, simulation_context_factory };
+	CommandLineController command_line_controller7{ application_configuration7, simulation_context_factory };
 
 	char* arguments1[] = { "/command-executable", "controller:map:option" };
 	char* arguments2[] = { "/command-executable", "*:map:*" };
@@ -227,6 +231,7 @@ TEST(CommandLineControllerTest, test_options) {
 }
 
 TEST(CommandLineControllerTest, test_wrong_arguments) {
+	std::shared_ptr<SimulationContextFactory> simulation_context_factory;
 	std::shared_ptr<ApplicationConfiguration> application_configuration1(new ApplicationConfiguration());
 	std::shared_ptr<ApplicationConfiguration> application_configuration2(new ApplicationConfiguration());
 	std::shared_ptr<ApplicationConfiguration> application_configuration3(new ApplicationConfiguration());
@@ -239,17 +244,17 @@ TEST(CommandLineControllerTest, test_wrong_arguments) {
 	std::shared_ptr<ApplicationConfiguration> application_configuration10(new ApplicationConfiguration());
 	std::shared_ptr<ApplicationConfiguration> application_configuration11(new ApplicationConfiguration());
 	
-	CommandLineController command_line_controller1{ application_configuration1 };
-	CommandLineController command_line_controller2{ application_configuration2 };
-	CommandLineController command_line_controller3{ application_configuration3 };
-	CommandLineController command_line_controller4{ application_configuration4 };
-	CommandLineController command_line_controller5{ application_configuration5 };
-	CommandLineController command_line_controller6{ application_configuration6 };
-	CommandLineController command_line_controller7{ application_configuration7 };
-	CommandLineController command_line_controller8{ application_configuration8 };
-	CommandLineController command_line_controller9{ application_configuration9 };
-	CommandLineController command_line_controller10{ application_configuration10 };
-	CommandLineController command_line_controller11{ application_configuration11 };
+	CommandLineController command_line_controller1{ application_configuration1, simulation_context_factory };
+	CommandLineController command_line_controller2{ application_configuration2, simulation_context_factory };
+	CommandLineController command_line_controller3{ application_configuration3, simulation_context_factory };
+	CommandLineController command_line_controller4{ application_configuration4, simulation_context_factory };
+	CommandLineController command_line_controller5{ application_configuration5, simulation_context_factory };
+	CommandLineController command_line_controller6{ application_configuration6, simulation_context_factory };
+	CommandLineController command_line_controller7{ application_configuration7, simulation_context_factory };
+	CommandLineController command_line_controller8{ application_configuration8, simulation_context_factory };
+	CommandLineController command_line_controller9{ application_configuration9, simulation_context_factory };
+	CommandLineController command_line_controller10{ application_configuration10, simulation_context_factory };
+	CommandLineController command_line_controller11{ application_configuration11, simulation_context_factory };
 	
 	char* arguments1[] = { "/command-executable", "-w" };
 	char* arguments2[] = { "/command-executable", "--wrong-argument"};

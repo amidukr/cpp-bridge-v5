@@ -8,6 +8,13 @@ const std::string BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER = "m
 const std::string BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER = "matrix-bridge-controller";
 
 BridgeControllerFactory::BridgeControllerFactory() {
+	this->controller_types.push_back(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER);
+	this->controller_types.push_back(BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER);
+	this->controller_types.push_back(BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER);
+}
+
+const std::vector<std::string>& BridgeControllerFactory::get_controller_types() const {
+	return this->controller_types;
 }
 
 std::unique_ptr<BridgeController> BridgeControllerFactory::create_controller(std::string controller_name) {

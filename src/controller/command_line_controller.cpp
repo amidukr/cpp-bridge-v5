@@ -2,17 +2,19 @@
 
 #include "model/aplication_configuration.h"
 #include "model/configuration/model_option.h"
+#include "factory/simulation_context_factory.h"
 
 #include <iostream>
 #include <args.hxx>
 
 
-CommandLineController::CommandLineController(std::shared_ptr<ApplicationConfiguration> application_configuration)
+CommandLineController::CommandLineController(std::shared_ptr<ApplicationConfiguration> application_configuration, std::shared_ptr<SimulationContextFactory> simulation_context_factory)
 {
 	this->application_configuration = application_configuration;
+	this->simulation_context_factory = simulation_context_factory;
 }
 
-void print_simulation_help() {
+void CommandLineController::print_simulation_help() {
 	std::cout << "Simulation model help" << std::endl;
 	std::cout << std::endl;
 	std::cout << "  cpp-bridge-v5.exe [models...] {OPTIONS}" << std::endl;
@@ -21,7 +23,27 @@ void print_simulation_help() {
 	std::cout << "     Format for 'list-of-contollers'   - controller1[,controller1,..] | *" << std::endl;
 	std::cout << "     Format for 'list-of-maps'         - map1[,map2,..] | *" << std::endl;
 	std::cout << "     Format for 'list-of-options'      - option1[,option2,..] | *" << std::endl;
+	std::cout << std::endl;
 	std::cout << "  Example: *:rope,pandulum:100x" << std::endl;
+	std::cout << std::endl;
+	
+	std::cout << "  Contrllers:" << std::endl;
+	for (auto controler : this->simulation_context_factory->get_controller_types()) {
+		std::cout << "    " << controler << std::endl;
+	}
+	std::cout << std::endl;
+
+	std::cout << "  Maps:" << std::endl;
+	for (auto bridge_model: this->simulation_context_factory->get_bridge_models()) {
+		std::cout << "    " << bridge_model << std::endl;
+	}
+	std::cout << std::endl;
+
+	std::cout << "  Optons:" << std::endl;
+	for (auto simulation_type : this->simulation_context_factory->get_simulation_types()) {
+		std::cout << "    " << simulation_type << std::endl;
+	}
+	std::cout << std::endl;
 }
 
 int split_comma_string(const std::string& string, std::vector<std::string>& result) {

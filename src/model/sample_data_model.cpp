@@ -3,10 +3,10 @@
 
 #include "model/sample_data_model.h"
 
-const std::string SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION = "optimal-with-delay";
+const std::string SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION = "optimal";
 const std::string SampleDataModel::TEN_TIME_LOW_DUMPING = "10x-low-dumping";
-const std::string SampleDataModel::TEN_TIME_FACTOR_SIMULATION = "10x-time-factor";
-const std::string SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION = "100x-time-factor";
+const std::string SampleDataModel::TEN_TIME_FACTOR_SIMULATION = "10x";
+const std::string SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION = "100x";
 
 const std::string SampleDataModel::ROPE_BRIDGE = "rope";
 const std::string SampleDataModel::SWING_BRIDGE = "swing";
@@ -21,7 +21,19 @@ const std::string SampleDataModel::TRIANGLE_GRID = "triangle-grid";
 
 
 SampleDataModel::SampleDataModel() {
+	this->simulation_types.push_back(SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION);
+	this->simulation_types.push_back(SampleDataModel::TEN_TIME_LOW_DUMPING);
+	this->simulation_types.push_back(SampleDataModel::TEN_TIME_FACTOR_SIMULATION);
+	this->simulation_types.push_back(SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION);
 
+	this->bridge_models.push_back(SampleDataModel::ROPE_BRIDGE);
+	this->bridge_models.push_back(SampleDataModel::SWING_BRIDGE);
+	this->bridge_models.push_back(SampleDataModel::PANDULUM_BRIDGE);
+	this->bridge_models.push_back(SampleDataModel::SQUARE_BRIDGE);
+	this->bridge_models.push_back(SampleDataModel::HEART_BRIDGE);
+	this->bridge_models.push_back(SampleDataModel::LINE_UP);
+	this->bridge_models.push_back(SampleDataModel::LINE_DIAGONAL);
+	this->bridge_models.push_back(SampleDataModel::TRIANGLE_GRID);
 }
 
 //-------------- Simulation Settings --------------
@@ -66,6 +78,10 @@ std::unique_ptr<SimulationModel> create_hundred_time_factor() {
 	return simulation_model;
 }
 
+
+const std::vector<std::string>& SampleDataModel::get_simulation_types() const {
+	return this->simulation_types;
+}
 
 std::unique_ptr<SimulationModel> SampleDataModel::load_simulation_model(std::string model_name) {
 	if (model_name == SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION) {
@@ -248,6 +264,9 @@ std::unique_ptr<BridgeModel> create_triangle_grid() {
 	return bridge_model;
 }
 
+const std::vector<std::string>& SampleDataModel::get_bridge_models() const {
+	return this->bridge_models;
+}
 
 std::unique_ptr<BridgeModel> SampleDataModel::load_bridge_model(std::string model_name) {
 
