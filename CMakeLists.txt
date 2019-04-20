@@ -22,7 +22,6 @@ find_package(glfw3 CONFIG REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(Eigen3 3.3  REQUIRED NO_MODULE)
 find_package(OpenCV REQUIRED)
-find_package(cxxopts CONFIG REQUIRED)
 
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 
@@ -37,7 +36,6 @@ target_link_libraries(cpp_bridge_v5_app_library PRIVATE glfw)
 target_link_libraries(cpp_bridge_v5_app_library PRIVATE OpenGL)
 target_link_libraries (cpp_bridge_v5_app_library PRIVATE Eigen3::Eigen)
 target_link_libraries (cpp_bridge_v5_app_executable PRIVATE cpp_bridge_v5_app_library)
-target_link_libraries(cpp_bridge_v5_app_executable PRIVATE cxxopts::cxxopts)
 
 target_link_libraries(cpp_bridge_v5_app_executable PRIVATE ${GTEST_BOTH_LIBRARIES} ${PTHREAD_LIB_PATH})		
 
