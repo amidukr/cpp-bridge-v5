@@ -2,7 +2,7 @@
 
 #include "controller/command_line_controller.h"
 #include "model/aplication_configuration.h"
-#include "model/configuration/model_option.h"
+#include "model/configuration/simulation_option.h"
 #include "factory/simulation_context_factory.h"
 
 #include <memory>
@@ -145,88 +145,88 @@ TEST(CommandLineControllerTest, test_options) {
 
 	ASSERT_FALSE(application_configuration1->get_run_test_flag());
 	ASSERT_FALSE(application_configuration1->get_write_video_flag());
-	ASSERT_EQ(application_configuration1->get_model_options().size(), 1);
-	ASSERT_EQ(application_configuration1->get_model_options().at(0)->get_controllers().size(), 1);
-	ASSERT_EQ(application_configuration1->get_model_options().at(0)->get_maps().size(), 1);
-	ASSERT_EQ(application_configuration1->get_model_options().at(0)->get_options().size(), 1);
-	ASSERT_EQ(application_configuration1->get_model_options().at(0)->get_controllers().at(0), "controller");
-	ASSERT_EQ(application_configuration1->get_model_options().at(0)->get_maps().at(0), "map");
-	ASSERT_EQ(application_configuration1->get_model_options().at(0)->get_options().at(0), "option");
+	ASSERT_EQ(application_configuration1->get_simulation_options().size(), 1);
+	ASSERT_EQ(application_configuration1->get_simulation_options().at(0)->get_controller_types().size(), 1);
+	ASSERT_EQ(application_configuration1->get_simulation_options().at(0)->get_bridge_models().size(), 1);
+	ASSERT_EQ(application_configuration1->get_simulation_options().at(0)->get_simulatio_types().size(), 1);
+	ASSERT_EQ(application_configuration1->get_simulation_options().at(0)->get_controller_types().at(0), "controller");
+	ASSERT_EQ(application_configuration1->get_simulation_options().at(0)->get_bridge_models().at(0), "map");
+	ASSERT_EQ(application_configuration1->get_simulation_options().at(0)->get_simulatio_types().at(0), "option");
 	
 	ASSERT_FALSE(application_configuration2->get_run_test_flag());
 	ASSERT_FALSE(application_configuration2->get_write_video_flag());
-	ASSERT_EQ(application_configuration2->get_model_options().size(), 1);
-	ASSERT_EQ(application_configuration2->get_model_options().at(0)->get_controllers().size(), 1);
-	ASSERT_EQ(application_configuration2->get_model_options().at(0)->get_maps().size(), 1);
-	ASSERT_EQ(application_configuration2->get_model_options().at(0)->get_options().size(), 1);
-	ASSERT_EQ(application_configuration2->get_model_options().at(0)->get_controllers().at(0), "*");
-	ASSERT_EQ(application_configuration2->get_model_options().at(0)->get_maps().at(0), "map");
-	ASSERT_EQ(application_configuration2->get_model_options().at(0)->get_options().at(0), "*");
+	ASSERT_EQ(application_configuration2->get_simulation_options().size(), 1);
+	ASSERT_EQ(application_configuration2->get_simulation_options().at(0)->get_controller_types().size(), 1);
+	ASSERT_EQ(application_configuration2->get_simulation_options().at(0)->get_bridge_models().size(), 1);
+	ASSERT_EQ(application_configuration2->get_simulation_options().at(0)->get_simulatio_types().size(), 1);
+	ASSERT_EQ(application_configuration2->get_simulation_options().at(0)->get_controller_types().at(0), "*");
+	ASSERT_EQ(application_configuration2->get_simulation_options().at(0)->get_bridge_models().at(0), "map");
+	ASSERT_EQ(application_configuration2->get_simulation_options().at(0)->get_simulatio_types().at(0), "*");
 
 	ASSERT_FALSE(application_configuration3->get_run_test_flag());
 	ASSERT_FALSE(application_configuration3->get_write_video_flag());
-	ASSERT_EQ(application_configuration3->get_model_options().size(), 1);
-	ASSERT_EQ(application_configuration3->get_model_options().at(0)->get_controllers().size(), 2);
-	ASSERT_EQ(application_configuration3->get_model_options().at(0)->get_maps().size(), 1);
-	ASSERT_EQ(application_configuration3->get_model_options().at(0)->get_options().size(), 1);
-	ASSERT_EQ(application_configuration3->get_model_options().at(0)->get_controllers().at(0), "controller1");
-	ASSERT_EQ(application_configuration3->get_model_options().at(0)->get_controllers().at(1), "controller2");
-	ASSERT_EQ(application_configuration3->get_model_options().at(0)->get_maps().at(0), "map");
-	ASSERT_EQ(application_configuration3->get_model_options().at(0)->get_options().at(0), "option");
+	ASSERT_EQ(application_configuration3->get_simulation_options().size(), 1);
+	ASSERT_EQ(application_configuration3->get_simulation_options().at(0)->get_controller_types().size(), 2);
+	ASSERT_EQ(application_configuration3->get_simulation_options().at(0)->get_bridge_models().size(), 1);
+	ASSERT_EQ(application_configuration3->get_simulation_options().at(0)->get_simulatio_types().size(), 1);
+	ASSERT_EQ(application_configuration3->get_simulation_options().at(0)->get_controller_types().at(0), "controller1");
+	ASSERT_EQ(application_configuration3->get_simulation_options().at(0)->get_controller_types().at(1), "controller2");
+	ASSERT_EQ(application_configuration3->get_simulation_options().at(0)->get_bridge_models().at(0), "map");
+	ASSERT_EQ(application_configuration3->get_simulation_options().at(0)->get_simulatio_types().at(0), "option");
 
 	ASSERT_FALSE(application_configuration4->get_run_test_flag());
 	ASSERT_FALSE(application_configuration4->get_write_video_flag());
-	ASSERT_EQ(application_configuration4->get_model_options().size(), 1);
-	ASSERT_EQ(application_configuration4->get_model_options().at(0)->get_controllers().size(), 1);
-	ASSERT_EQ(application_configuration4->get_model_options().at(0)->get_maps().size(), 3);
-	ASSERT_EQ(application_configuration4->get_model_options().at(0)->get_options().size(), 1);
-	ASSERT_EQ(application_configuration4->get_model_options().at(0)->get_controllers().at(0), "controller");
-	ASSERT_EQ(application_configuration4->get_model_options().at(0)->get_maps().at(0), "map1");
-	ASSERT_EQ(application_configuration4->get_model_options().at(0)->get_maps().at(1), "map2");
-	ASSERT_EQ(application_configuration4->get_model_options().at(0)->get_maps().at(2), "map3");
-	ASSERT_EQ(application_configuration4->get_model_options().at(0)->get_options().at(0), "option");
+	ASSERT_EQ(application_configuration4->get_simulation_options().size(), 1);
+	ASSERT_EQ(application_configuration4->get_simulation_options().at(0)->get_controller_types().size(), 1);
+	ASSERT_EQ(application_configuration4->get_simulation_options().at(0)->get_bridge_models().size(), 3);
+	ASSERT_EQ(application_configuration4->get_simulation_options().at(0)->get_simulatio_types().size(), 1);
+	ASSERT_EQ(application_configuration4->get_simulation_options().at(0)->get_controller_types().at(0), "controller");
+	ASSERT_EQ(application_configuration4->get_simulation_options().at(0)->get_bridge_models().at(0), "map1");
+	ASSERT_EQ(application_configuration4->get_simulation_options().at(0)->get_bridge_models().at(1), "map2");
+	ASSERT_EQ(application_configuration4->get_simulation_options().at(0)->get_bridge_models().at(2), "map3");
+	ASSERT_EQ(application_configuration4->get_simulation_options().at(0)->get_simulatio_types().at(0), "option");
 
 	ASSERT_FALSE(application_configuration5->get_run_test_flag());
 	ASSERT_FALSE(application_configuration5->get_write_video_flag());
-	ASSERT_EQ(application_configuration5->get_model_options().size(), 1);
-	ASSERT_EQ(application_configuration5->get_model_options().at(0)->get_controllers().size(), 1);
-	ASSERT_EQ(application_configuration5->get_model_options().at(0)->get_maps().size(), 1);
-	ASSERT_EQ(application_configuration5->get_model_options().at(0)->get_options().size(), 2);
-	ASSERT_EQ(application_configuration5->get_model_options().at(0)->get_controllers().at(0), "controller");
-	ASSERT_EQ(application_configuration5->get_model_options().at(0)->get_maps().at(0), "map");
-	ASSERT_EQ(application_configuration5->get_model_options().at(0)->get_options().at(0), "option1");
-	ASSERT_EQ(application_configuration5->get_model_options().at(0)->get_options().at(1), "option2");
+	ASSERT_EQ(application_configuration5->get_simulation_options().size(), 1);
+	ASSERT_EQ(application_configuration5->get_simulation_options().at(0)->get_controller_types().size(), 1);
+	ASSERT_EQ(application_configuration5->get_simulation_options().at(0)->get_bridge_models().size(), 1);
+	ASSERT_EQ(application_configuration5->get_simulation_options().at(0)->get_simulatio_types().size(), 2);
+	ASSERT_EQ(application_configuration5->get_simulation_options().at(0)->get_controller_types().at(0), "controller");
+	ASSERT_EQ(application_configuration5->get_simulation_options().at(0)->get_bridge_models().at(0), "map");
+	ASSERT_EQ(application_configuration5->get_simulation_options().at(0)->get_simulatio_types().at(0), "option1");
+	ASSERT_EQ(application_configuration5->get_simulation_options().at(0)->get_simulatio_types().at(1), "option2");
 
 	ASSERT_FALSE(application_configuration6->get_run_test_flag());
 	ASSERT_FALSE(application_configuration6->get_write_video_flag());
-	ASSERT_EQ(application_configuration6->get_model_options().size(), 1);
-	ASSERT_EQ(application_configuration6->get_model_options().at(0)->get_controllers().size(), 1);
-	ASSERT_EQ(application_configuration6->get_model_options().at(0)->get_maps().size(), 2);
-	ASSERT_EQ(application_configuration6->get_model_options().at(0)->get_options().size(), 1);
-	ASSERT_EQ(application_configuration6->get_model_options().at(0)->get_controllers().at(0), "*");
-	ASSERT_EQ(application_configuration6->get_model_options().at(0)->get_maps().at(0), "rope");
-	ASSERT_EQ(application_configuration6->get_model_options().at(0)->get_maps().at(1), "pandulum");
-	ASSERT_EQ(application_configuration6->get_model_options().at(0)->get_options().at(0), "100x");
+	ASSERT_EQ(application_configuration6->get_simulation_options().size(), 1);
+	ASSERT_EQ(application_configuration6->get_simulation_options().at(0)->get_controller_types().size(), 1);
+	ASSERT_EQ(application_configuration6->get_simulation_options().at(0)->get_bridge_models().size(), 2);
+	ASSERT_EQ(application_configuration6->get_simulation_options().at(0)->get_simulatio_types().size(), 1);
+	ASSERT_EQ(application_configuration6->get_simulation_options().at(0)->get_controller_types().at(0), "*");
+	ASSERT_EQ(application_configuration6->get_simulation_options().at(0)->get_bridge_models().at(0), "rope");
+	ASSERT_EQ(application_configuration6->get_simulation_options().at(0)->get_bridge_models().at(1), "pandulum");
+	ASSERT_EQ(application_configuration6->get_simulation_options().at(0)->get_simulatio_types().at(0), "100x");
 
 	ASSERT_TRUE(application_configuration7->get_run_test_flag());
 	ASSERT_FALSE(application_configuration7->get_write_video_flag());
-	ASSERT_EQ(application_configuration7->get_model_options().size(), 2);
+	ASSERT_EQ(application_configuration7->get_simulation_options().size(), 2);
 	{
-		ASSERT_EQ(application_configuration7->get_model_options().at(0)->get_controllers().size(), 1);
-		ASSERT_EQ(application_configuration7->get_model_options().at(0)->get_maps().size(), 1);
-		ASSERT_EQ(application_configuration7->get_model_options().at(0)->get_options().size(), 1);
-		ASSERT_EQ(application_configuration7->get_model_options().at(0)->get_controllers().at(0), "controller1");
-		ASSERT_EQ(application_configuration7->get_model_options().at(0)->get_maps().at(0), "map1");
-		ASSERT_EQ(application_configuration7->get_model_options().at(0)->get_options().at(0), "option1");
-		ASSERT_EQ(application_configuration7->get_model_options().at(0)->get_controllers().size(), 1);
+		ASSERT_EQ(application_configuration7->get_simulation_options().at(0)->get_controller_types().size(), 1);
+		ASSERT_EQ(application_configuration7->get_simulation_options().at(0)->get_bridge_models().size(), 1);
+		ASSERT_EQ(application_configuration7->get_simulation_options().at(0)->get_simulatio_types().size(), 1);
+		ASSERT_EQ(application_configuration7->get_simulation_options().at(0)->get_controller_types().at(0), "controller1");
+		ASSERT_EQ(application_configuration7->get_simulation_options().at(0)->get_bridge_models().at(0), "map1");
+		ASSERT_EQ(application_configuration7->get_simulation_options().at(0)->get_simulatio_types().at(0), "option1");
+		ASSERT_EQ(application_configuration7->get_simulation_options().at(0)->get_controller_types().size(), 1);
 	}
 	{
-		ASSERT_EQ(application_configuration7->get_model_options().at(1)->get_controllers().size(), 1);
-		ASSERT_EQ(application_configuration7->get_model_options().at(1)->get_maps().size(), 1);
-		ASSERT_EQ(application_configuration7->get_model_options().at(1)->get_options().size(), 1);
-		ASSERT_EQ(application_configuration7->get_model_options().at(1)->get_controllers().at(0), "controller2");
-		ASSERT_EQ(application_configuration7->get_model_options().at(1)->get_maps().at(0), "map2");
-		ASSERT_EQ(application_configuration7->get_model_options().at(1)->get_options().at(0), "option2");
+		ASSERT_EQ(application_configuration7->get_simulation_options().at(1)->get_controller_types().size(), 1);
+		ASSERT_EQ(application_configuration7->get_simulation_options().at(1)->get_bridge_models().size(), 1);
+		ASSERT_EQ(application_configuration7->get_simulation_options().at(1)->get_simulatio_types().size(), 1);
+		ASSERT_EQ(application_configuration7->get_simulation_options().at(1)->get_controller_types().at(0), "controller2");
+		ASSERT_EQ(application_configuration7->get_simulation_options().at(1)->get_bridge_models().at(0), "map2");
+		ASSERT_EQ(application_configuration7->get_simulation_options().at(1)->get_simulatio_types().at(0), "option2");
 	}
 }
 

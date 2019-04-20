@@ -5,19 +5,19 @@
 #include <vector>
 #include <memory>
 
-class ModelOption;
+class SimulationOption;
 
 class ApplicationConfiguration
 {
 	bool write_video_flag = false;
 	bool run_test_flag = false;
-	std::vector<std::shared_ptr<ModelOption>> model_options;
+	std::vector<std::shared_ptr<SimulationOption>> simulation_options;
 
 public:
 	ApplicationConfiguration();
 
-	void add_model_option(std::shared_ptr<ModelOption> model_option);
-	const std::vector<std::shared_ptr<ModelOption>>& get_model_options() const;
+	void add_simulation_option(std::shared_ptr<SimulationOption> simulation_option);
+	const std::vector<std::shared_ptr<SimulationOption>>& get_simulation_options() const;
 
 	bool get_write_video_flag() const;
 	void set_write_video_flag(bool write_video_flag);

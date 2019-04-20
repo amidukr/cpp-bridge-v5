@@ -12,7 +12,7 @@ class CommandLineController
 	std::shared_ptr<ApplicationConfiguration> application_configuration;
 	std::shared_ptr<SimulationContextFactory> simulation_context_factory;
 
-	int parse_models(const std::vector<std::string>& models);
+	int parse_simulations(const std::vector<std::string>& simulations);
 	void print_simulation_help();
 
 public:

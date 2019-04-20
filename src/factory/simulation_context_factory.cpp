@@ -8,7 +8,7 @@
 #include "context/bridge_simulation_context.h"
 
 #include "model/aplication_configuration.h"
-#include "model/configuration/model_option.h"
+#include "model/configuration/simulation_option.h"
 
 SimulationContextFactory::SimulationContextFactory(std::shared_ptr<ApplicationConfiguration> application_configuration) {
 	this->application_configuration = application_configuration;
@@ -57,29 +57,29 @@ void SimulationContextFactory::demo_simulations(std::vector<std::shared_ptr<Brid
 }
 
 int SimulationContextFactory::build_from_configuration(std::vector<std::shared_ptr<BridgeSimulationContext>>& simulations) {
-	for (auto model : this->application_configuration->get_model_options()) {
-		std::vector<std::string> controllers = model->get_controllers();
-		std::vector<std::string> maps = model->get_maps();
-		std::vector<std::string> options = model->get_options();
+	for (auto option : this->application_configuration->get_simulation_options()) {
+		std::vector<std::string> controllers = option->get_controller_types();
+		std::vector<std::string> bridge_models = option->get_bridge_models();
+		std::vector<std::string> simulation_types = option->get_simulatio_types();
 		
 		if (controllers.size() == 1 && controllers.at(0) == "*") {
 			controllers = this->get_controller_types();
 		}
 
-		if (maps.size() == 1 && maps.at(0) == "*") {
-			maps = this->get_bridge_models();
+		if (bridge_models.size() == 1 && bridge_models.at(0) == "*") {
+			bridge_models = this->get_bridge_models();
 		}
 
-		if (options.size() == 1 && options.at(0) == "*") {
-			options = this->get_simulation_types();
+		if (simulation_types.size() == 1 && simulation_types.at(0) == "*") {
+			simulation_types = this->get_simulation_types();
 		}
 
 		for (auto controller : controllers) {
-			for (auto map : maps) {
-				for (auto option : options) {
+			for (auto bridge_model : bridge_models) {
+				for (auto simulation_type : simulation_types) {
 
 					try {
-						this->add_simulation(simulations, controller, map, option);
+						this->add_simulation(simulations, controller, bridge_model, simulation_type);
 					} catch (...) {
 						return 1;
 					}
@@ -92,7 +92,7 @@ int SimulationContextFactory::build_from_configuration(std::vector<std::shared_p
 }
 
 int SimulationContextFactory::build_simulation_context(std::vector<std::shared_ptr<BridgeSimulationContext>>& result) {
-	if (this->application_configuration->get_model_options().size() == 0) {
+	if (this->application_configuration->get_simulation_options().size() == 0) {
 		this->demo_simulations(result);
 	} else {
 		if (this->build_from_configuration(result)) return 1;

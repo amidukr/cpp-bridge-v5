@@ -4,12 +4,12 @@ ApplicationConfiguration::ApplicationConfiguration()
 {
 }
 
-const std::vector<std::shared_ptr<ModelOption>>& ApplicationConfiguration::get_model_options() const {
-	return this->model_options;
+const std::vector<std::shared_ptr<SimulationOption>>& ApplicationConfiguration::get_simulation_options() const {
+	return this->simulation_options;
 }
 
-void ApplicationConfiguration::add_model_option(std::shared_ptr<ModelOption> model_option) {
-	this->model_options.push_back(model_option);
+void ApplicationConfiguration::add_simulation_option(std::shared_ptr<SimulationOption> model_option) {
+	this->simulation_options.push_back(model_option);
 }
 
 bool ApplicationConfiguration::get_write_video_flag() const {

@@ -1,7 +1,7 @@
 #include "controller/command_line_controller.h"
 
 #include "model/aplication_configuration.h"
-#include "model/configuration/model_option.h"
+#include "model/configuration/simulation_option.h"
 #include "factory/simulation_context_factory.h"
 
 #include <iostream>
@@ -19,10 +19,10 @@ void CommandLineController::print_simulation_help() {
 	std::cout << std::endl;
 	std::cout << "  cpp-bridge-v5.exe [models...] {OPTIONS}" << std::endl;
 	std::cout << std::endl;
-	std::cout << "  Format for 'models' option: {list-of-contollers}:{list-of-maps}:{list-of-options}" << std::endl;
-	std::cout << "     Format for 'list-of-contollers'   - controller1[,controller1,..] | *" << std::endl;
-	std::cout << "     Format for 'list-of-maps'         - map1[,map2,..] | *" << std::endl;
-	std::cout << "     Format for 'list-of-options'      - option1[,option2,..] | *" << std::endl;
+	std::cout << "  Format for 'models' option: {contollers}:{bridges}:{simulation-types}" << std::endl;
+	std::cout << "     Format for 'contollers'       - controller1[,controller1,..] | *" << std::endl;
+	std::cout << "     Format for 'bridges'          - bridge1[,bridge2,..] | *" << std::endl;
+	std::cout << "     Format for 'simulation-types' - type1[,type2,..] | *" << std::endl;
 	std::cout << std::endl;
 	std::cout << "  Example: *:rope,pandulum:100x" << std::endl;
 	std::cout << std::endl;
@@ -33,13 +33,13 @@ void CommandLineController::print_simulation_help() {
 	}
 	std::cout << std::endl;
 
-	std::cout << "  Maps:" << std::endl;
+	std::cout << "  Bridges:" << std::endl;
 	for (auto bridge_model: this->simulation_context_factory->get_bridge_models()) {
 		std::cout << "    " << bridge_model << std::endl;
 	}
 	std::cout << std::endl;
 
-	std::cout << "  Optons:" << std::endl;
+	std::cout << "  Simulation types:" << std::endl;
 	for (auto simulation_type : this->simulation_context_factory->get_simulation_types()) {
 		std::cout << "    " << simulation_type << std::endl;
 	}
@@ -69,72 +69,72 @@ int split_comma_string(const std::string& string, std::vector<std::string>& resu
 	return 0;
 }
 
-int parse_controllers(std::shared_ptr<ModelOption> model_option, const std::string& string_value) {
+int parse_controllers(std::shared_ptr<SimulationOption> model_option, const std::string& string_value) {
 	std::vector<std::string> vector;
 	if (split_comma_string(string_value, vector)) return 1;
 
 	for (const auto value : vector) {
-		model_option->add_controller(value);
+		model_option->add_controller_type(value);
 	}
 
 	return 0;
 }
 
-int parse_maps(std::shared_ptr<ModelOption> model_option, const std::string string_value) {
+int parse_bridge_models(std::shared_ptr<SimulationOption> model_option, const std::string string_value) {
 	std::vector<std::string> vector;
 	if (split_comma_string(string_value, vector)) return 1;
 
 	for (const auto value : vector) {
-		model_option->add_map(value);
+		model_option->add_bridge_model(value);
 	}
 
 	return 0;
 }
 
-int parse_options(std::shared_ptr<ModelOption> model_option, const std::string string_value) {
+int parse_simulation_types(std::shared_ptr<SimulationOption> model_option, const std::string string_value) {
 	std::vector<std::string> vector;
 	if (split_comma_string(string_value, vector)) return 1;
 
 	for (const auto value : vector) {
-		model_option->add_option(value);
+		model_option->add_simulation_type(value);
 	}
 
 	return 0;
 }
 
-int CommandLineController::parse_models(const std::vector<std::string>& models) {
+int CommandLineController::parse_simulations(const std::vector<std::string>& simulations) {
 	
-	for (const auto model : models) {
+	for (const auto simulation : simulations) {
 
-		std::stringstream model_stream(model);
+		std::stringstream stream(simulation);
 
-		std::string controller;
-		std::string map;
-		std::string model;
+		std::string controller_types;
+		std::string bridge_model;
+		std::string simulatio_type;
 
-		if (model_stream.eof()) return 1;
-		std::getline(model_stream, controller, ':');
+		if (stream.eof()) return 1;
+		std::getline(stream, controller_types, ':');
 
-		if (model_stream.eof()) return 1;
-		std::getline(model_stream, map, ':');
+		if (stream.eof()) return 1;
+		std::getline(stream, bridge_model, ':');
 
-		if (model_stream.eof()) return 1;
-		std::getline(model_stream, model);
+		if (stream.eof()) return 1;
+		std::getline(stream, simulatio_type);
 
-		std::shared_ptr<ModelOption> model_option(new ModelOption());
+		std::shared_ptr<SimulationOption> simulation_option(new SimulationOption());
 
-		if (parse_controllers(model_option, controller)) return 1;
-		if (parse_maps(model_option, map)) return 1;
-		if (parse_options(model_option, model)) return 1;
+		if (parse_controllers(simulation_option, controller_types)) return 1;
+		if (parse_bridge_models(simulation_option, bridge_model)) return 1;
+		if (parse_simulation_types(simulation_option, simulatio_type)) return 1;
 
-		this->application_configuration->add_model_option(model_option);
+		this->application_configuration->add_simulation_option(simulation_option);
 	}
 
 	return 0;
 }
 
 int CommandLineController::parse_arguments(int argc, const char* const argv[]) {
-	args::ArgumentParser parser("Bridge Model Simulation", "Application tha demonstates soft-body dynamics modeling.");
+	args::ArgumentParser parser("Bridge Model Simulation", "Application that demonstates soft-body dynamics modeling.");
 	args::HelpFlag help(parser, "help", "Display this help menu", { 'h', "help" });
 	args::Flag simulation_help(parser, "help-simulation", "Display help for simulation commands", { 's', "help-simulation" });
 	args::CompletionFlag completion(parser, { "complete" });
@@ -143,7 +143,7 @@ int CommandLineController::parse_arguments(int argc, const char* const argv[]) {
 	args::ValueFlag<std::string> gtest_flag(parser, "gtest_filter", "Run self-testing scenarios", { "gtest_filter" });
 	args::Flag video_flag(parser, "video", "Write simulation to video file", { 'v', "video" });
 
-	args::PositionalList<std::string> models(parser, "models", "Simulation model, use help ");
+	args::PositionalList<std::string> simulations(parser, "simulations", "Simulation models, use help-simulation for more information ");
 
 	try
 	{
@@ -171,7 +171,7 @@ int CommandLineController::parse_arguments(int argc, const char* const argv[]) {
 		return CommandLineController::HELP;
 	}
 
-	if (this->parse_models(args::get(models))) {
+	if (this->parse_simulations(args::get(simulations))) {
 		std::cout << "Wrong model argument" << std::endl;
 
 		return CommandLineController::ERROR;
