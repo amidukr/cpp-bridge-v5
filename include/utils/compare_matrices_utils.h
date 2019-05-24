@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-template <class M> bool compare_matrices(M& actual, M& expected) {
+template <class M> bool compare_matrices(const M& actual, const M& expected) {
 
 	bool approx = actual.rows() == expected.rows() && actual.cols() == expected.cols();
 	approx = approx && actual.isApprox(expected, 0.00001);

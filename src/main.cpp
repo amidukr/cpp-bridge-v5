@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <thread>
+#include <cmath>
 
 #include <GL/glew.h>
 
@@ -24,22 +25,15 @@ int parse_arguments(ApplicationContext& context) {
 }
 
 int run_test(ApplicationContext& context) {
-	ApplicationConfiguration& application_configuration = *context.get_application_configuration();
-
-	if (application_configuration.get_run_test_flag()) {
-		try {
-			int args = context.get_argc();
-			::testing::InitGoogleTest(&args, context.get_argv());
-			RUN_ALL_TESTS();
-		}
-		catch (...) {
-			fprintf(stderr, "Exception during unit test run\n");
-		}
-
+	try {
+		int args = context.get_argc();
+		::testing::InitGoogleTest(&args, context.get_argv());
+		return RUN_ALL_TESTS();
+	}
+	catch (...) {
+		fprintf(stderr, "Exception during unit test run\n");
 		return 1;
 	}
-
-	return 0;
 }
 
 int init_gl() {
@@ -132,9 +126,14 @@ int main(int argc, char* argv[]) {
 	ApplicationContext context{ argc, argv };
 
 	if (parse_arguments(context)) return 1;
-	if (run_test(context)) return 0;
-	if (init_gl()) return 1;
+	
+	ApplicationConfiguration& application_configuration = *context.get_application_configuration();
+	
+	if (application_configuration.get_run_test_flag()) {
+		return run_test(context);
+	}
 
+	if (init_gl()) return 1;
 	if (create_simulations(context)) return 1;
 	layout_windows(context);
 	start_simulation(context);

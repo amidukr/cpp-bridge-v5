@@ -16,7 +16,7 @@ TEST(CommandLineControllerTest, test_defaults) {
 	std::shared_ptr<SimulationContextFactory> simulation_context_factory;
 	CommandLineController command_line_controller{ application_configuration, simulation_context_factory };
 
-	char* arguments[] = { "/command-executable"};
+	const char* arguments[] = { "/command-executable"};
 
 	command_line_controller.parse_arguments(1, arguments);
 
@@ -40,12 +40,12 @@ TEST(CommandLineControllerTest, test_flags) {
 	CommandLineController command_line_controller5{ application_configuration5, simulation_context_factory };
 	CommandLineController command_line_controller6{ application_configuration6, simulation_context_factory };
 
-	char* arguments1[] = { "/command-executable", "-t", "-v" };
-	char* arguments2[] = { "/command-executable", "--test", "--video" };
-	char* arguments3[] = { "/command-executable", "-t" };
-	char* arguments4[] = { "/command-executable", "-v" };
-	char* arguments5[] = { "/command-executable", "--test" };
-	char* arguments6[] = { "/command-executable", "--video" };
+	const char* arguments1[] = { "/command-executable", "-t", "-v" };
+	const char* arguments2[] = { "/command-executable", "--test", "--video" };
+	const char* arguments3[] = { "/command-executable", "-t" };
+	const char* arguments4[] = { "/command-executable", "-v" };
+	const char* arguments5[] = { "/command-executable", "--test" };
+	const char* arguments6[] = { "/command-executable", "--video" };
 
 	ASSERT_EQ(command_line_controller1.parse_arguments(3, arguments1), CommandLineController::SUCCESS);
 	ASSERT_EQ(command_line_controller2.parse_arguments(3, arguments2), CommandLineController::SUCCESS);
@@ -86,10 +86,10 @@ TEST(CommandLineControllerTest, test_help) {
 	CommandLineController command_line_controller3{ application_configuration3, simulation_context_factory };
 	CommandLineController command_line_controller4{ application_configuration4, simulation_context_factory };
 	
-	char* arguments1[] = { "/command-executable", "-h" };
-	char* arguments2[] = { "/command-executable", "--help" };
-	char* arguments3[] = { "/command-executable", "-s" };
-	char* arguments4[] = { "/command-executable", "--help-simulation" };
+	const char* arguments1[] = { "/command-executable", "-h" };
+	const char* arguments2[] = { "/command-executable", "--help" };
+	const char* arguments3[] = { "/command-executable", "-s" };
+	const char* arguments4[] = { "/command-executable", "--help-simulation" };
 
 	ASSERT_EQ(command_line_controller1.parse_arguments(2, arguments1), CommandLineController::HELP);
 	ASSERT_EQ(command_line_controller2.parse_arguments(2, arguments2), CommandLineController::HELP);
@@ -127,13 +127,13 @@ TEST(CommandLineControllerTest, test_options) {
 	CommandLineController command_line_controller6{ application_configuration6, simulation_context_factory };
 	CommandLineController command_line_controller7{ application_configuration7, simulation_context_factory };
 
-	char* arguments1[] = { "/command-executable", "controller:map:option" };
-	char* arguments2[] = { "/command-executable", "*:map:*" };
-	char* arguments3[] = { "/command-executable", "controller1,controller2:map:option" };
-	char* arguments4[] = { "/command-executable", "controller:map1,map2,map3:option" };
-	char* arguments5[] = { "/command-executable", "controller:map:option1,option2" };
-	char* arguments6[] = { "/command-executable", "*:rope,pandulum:100x" };
-	char* arguments7[] = { "/command-executable", "-t", "controller1:map1:option1", "controller2:map2:option2" };
+	const char* arguments1[] = { "/command-executable", "controller:map:option" };
+	const char* arguments2[] = { "/command-executable", "*:map:*" };
+	const char* arguments3[] = { "/command-executable", "controller1,controller2:map:option" };
+	const char* arguments4[] = { "/command-executable", "controller:map1,map2,map3:option" };
+	const char* arguments5[] = { "/command-executable", "controller:map:option1,option2" };
+	const char* arguments6[] = { "/command-executable", "*:rope,pandulum:100x" };
+	const char* arguments7[] = { "/command-executable", "-t", "controller1:map1:option1", "controller2:map2:option2" };
 	
 	ASSERT_EQ(command_line_controller1.parse_arguments(2, arguments1), CommandLineController::SUCCESS);
 	ASSERT_EQ(command_line_controller2.parse_arguments(2, arguments2), CommandLineController::SUCCESS);
@@ -257,17 +257,17 @@ TEST(CommandLineControllerTest, test_wrong_arguments) {
 	CommandLineController command_line_controller10{ application_configuration10, simulation_context_factory };
 	CommandLineController command_line_controller11{ application_configuration11, simulation_context_factory };
 	
-	char* arguments1[] = { "/command-executable", "-w" };
-	char* arguments2[] = { "/command-executable", "--wrong-argument"};
-	char* arguments3[] = { "/command-executable", "-t", "-w" };
-	char* arguments4[] = { "/command-executable", "controller" };
-	char* arguments5[] = { "/command-executable", "controller:" };
-	char* arguments6[] = { "/command-executable", "conntroller:map" };
-	char* arguments7[] = { "/command-executable", "conntroller:map:" };
-	char* arguments8[] = { "/command-executable", "conntroller::" };
-	char* arguments9[] = { "/command-executable", "conntroller,:map:option" };
-	char* arguments10[] = { "/command-executable", "conntroller,*:map:option" };
-	char* arguments11[] = { "/command-executable", "::" };
+	const char* arguments1[] = { "/command-executable", "-w" };
+	const char* arguments2[] = { "/command-executable", "--wrong-argument"};
+	const char* arguments3[] = { "/command-executable", "-t", "-w" };
+	const char* arguments4[] = { "/command-executable", "controller" };
+	const char* arguments5[] = { "/command-executable", "controller:" };
+	const char* arguments6[] = { "/command-executable", "conntroller:map" };
+	const char* arguments7[] = { "/command-executable", "conntroller:map:" };
+	const char* arguments8[] = { "/command-executable", "conntroller::" };
+	const char* arguments9[] = { "/command-executable", "conntroller,:map:option" };
+	const char* arguments10[] = { "/command-executable", "conntroller,*:map:option" };
+	const char* arguments11[] = { "/command-executable", "::" };
 
 	ASSERT_EQ(command_line_controller1.parse_arguments(3, arguments1), CommandLineController::ERROR);
 	ASSERT_EQ(command_line_controller2.parse_arguments(3, arguments2), CommandLineController::ERROR);

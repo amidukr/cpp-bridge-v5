@@ -7,6 +7,11 @@
 #include <iostream>
 #include <args.hxx>
 
+const int CommandLineController::SUCCESS = 0;
+const int CommandLineController::COMPLITION = 1;
+const int CommandLineController::HELP = 2;
+const int CommandLineController::ERROR = 3;
+
 
 CommandLineController::CommandLineController(std::shared_ptr<ApplicationConfiguration> application_configuration, std::shared_ptr<SimulationContextFactory> simulation_context_factory)
 {

@@ -16,10 +16,10 @@ class CommandLineController
 	void print_simulation_help();
 
 public:
-	static const int SUCCESS = 0;
-	static const int COMPLITION = 1;
-	static const int HELP = 2;
-	static const int ERROR = 3;
+	static const int SUCCESS;
+	static const int COMPLITION;
+	static const int HELP;
+	static const int ERROR;
 
 	CommandLineController(std::shared_ptr<ApplicationConfiguration> application_configuration, std::shared_ptr<SimulationContextFactory> simulation_context_factory);
 

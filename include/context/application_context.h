@@ -29,7 +29,7 @@ public:
 	char ** get_argv();
 
 	std::shared_ptr<CommandLineController> get_command_line_controller() const;
-	std::shared_ptr<SimulationContextFactory> ApplicationContext::get_simulation_context_factory() const;
+	std::shared_ptr<SimulationContextFactory> get_simulation_context_factory() const;
 	std::shared_ptr<ApplicationConfiguration> get_application_configuration() const;
 
 	std::vector<std::shared_ptr<BridgeSimulationContext>>& get_bridge_simulation_context();

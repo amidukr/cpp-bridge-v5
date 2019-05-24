@@ -25,10 +25,10 @@ find_package(OpenCV REQUIRED)
 
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 
-#include_directories( "/usr/include/opencv/" )
-#include_directories( "/usr/include/" )
+if (NOT WIN32)
+    set(PTHREAD_LIB_PATH -lpthread)
+endif (NOT WIN32)
 
-message (opencv-include = ${OpenCV_INCLUDE_DIRS} )
 
 target_link_libraries(cpp_bridge_v5_app_library PRIVATE ${OpenCV_LIBS} )
 target_link_libraries(cpp_bridge_v5_app_library PRIVATE GLEW::GLEW)
@@ -40,11 +40,7 @@ target_link_libraries (cpp_bridge_v5_app_executable PRIVATE cpp_bridge_v5_app_li
 target_link_libraries(cpp_bridge_v5_app_executable PRIVATE ${GTEST_BOTH_LIBRARIES} ${PTHREAD_LIB_PATH})		
 
 # Running unit tests with gtest
-file(GLOB TEST_SRC_FILES ${PROJECT_SOURCE_DIR}/test/*.cpp)
-
-if (NOT WIN32)
-    set(PTHREAD_LIB_PATH pthread)
-endif (NOT WIN32)
+file(GLOB_RECURSE TEST_SRC_FILES "test/*.cpp")
 
 # from list of files we'll create tests test_name.cpp -> test_name
 foreach(_test_file ${TEST_SRC_FILES})
@@ -57,7 +53,6 @@ endforeach()
 
 
 # Installing build artifacts
-set_target_properties(cpp_bridge_v5_app_library PROPERTIES PUBLIC_HEADER "include/myholderclass.hpp")
 install(TARGETS cpp_bridge_v5_app_library 
         DESTINATION lib 
 		EXPORT cpp_bridge_v5_app_library-targets
