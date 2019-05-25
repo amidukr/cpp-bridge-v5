@@ -7,7 +7,7 @@ compiler:
 before_script:
   - mkdir build
   - cd build
-  - sudo apt install -y --show-progress cmake libgtest-dev libgl-dev libglfw3-dev libglew-dev libeigen3-dev libopencv-dev
+  - sudo apt install -y --show-progress cmake libgtest-dev libgl1-mesa-dev libglfw3-dev libglew-dev libeigen3-dev libopencv-dev
 
 script: cmake .. && cmake --build .
 
