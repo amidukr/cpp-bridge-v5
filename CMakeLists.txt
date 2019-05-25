@@ -12,10 +12,10 @@ include_directories(./include)
 
 # Bulding and Compiling sources
 file(GLOB_RECURSE SOURCES "src/*.cpp")
+# Running unit tests with gtest
+file(GLOB_RECURSE TEST_SRC_FILES "test/*.cpp")
 
-add_library(cpp_bridge_v5_app_library ${SOURCES} )
 
-add_executable (cpp_bridge_v5_app_executable "src/main.cpp")
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
@@ -29,18 +29,22 @@ if (NOT WIN32)
     set(PTHREAD_LIB_PATH -lpthread)
 endif (NOT WIN32)
 
+add_library(cpp_bridge_v5_app_library ${SOURCES} )
+
+add_executable (cpp_bridge_v5_app_executable "src/main.cpp" ${TEST_SRC_FILES})
+
+
 
 target_link_libraries(cpp_bridge_v5_app_library PRIVATE ${OpenCV_LIBS} )
 target_link_libraries(cpp_bridge_v5_app_library PRIVATE GLEW::GLEW)
 target_link_libraries(cpp_bridge_v5_app_library PRIVATE glfw)
 target_link_libraries(cpp_bridge_v5_app_library PRIVATE OpenGL)
 target_link_libraries (cpp_bridge_v5_app_library PRIVATE Eigen3::Eigen)
+
 target_link_libraries (cpp_bridge_v5_app_executable PRIVATE cpp_bridge_v5_app_library)
 
 target_link_libraries(cpp_bridge_v5_app_executable PRIVATE ${GTEST_BOTH_LIBRARIES} ${PTHREAD_LIB_PATH})		
 
-# Running unit tests with gtest
-file(GLOB_RECURSE TEST_SRC_FILES "test/*.cpp")
 
 # from list of files we'll create tests test_name.cpp -> test_name
 foreach(_test_file ${TEST_SRC_FILES})
