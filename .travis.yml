@@ -1,15 +1,9 @@
 language: cpp
 
-dist: xenial
-
 compiler:
   - gcc
-  - clang
 
-before_script:
-  - mkdir build
-  - cd build
-  - sudo apt install -y --show-progress cmake3 libgtest-dev libgl1-mesa-dev libglfw3-dev libglew-dev libeigen3-dev libopencv-dev
-
-script: cmake .. && cmake --build .
+script:
+  - sudo docker ps -a
+  - sudo docker run --name cpp-bridge-v5 -v $(pwd):/root/cpp-bridge-v5 ubuntu:disco /root/cpp-bridge-v5/scripts/run-ci-docker.sh
 
