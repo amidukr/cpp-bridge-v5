@@ -4,12 +4,11 @@ dist: xenial
 
 compiler:
   - gcc
-  - clang
 
 before_script:
+  - ./scripts/configure-ubuntu.sh
   - mkdir build
   - cd build
-  - sudo apt install -y --show-progress cmake3 libgtest-dev libgl1-mesa-dev libglfw3-dev libglew-dev libeigen3-dev libopencv-dev
 
 script: cmake .. && cmake --build .
 
