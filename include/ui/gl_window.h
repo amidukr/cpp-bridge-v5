@@ -10,8 +10,8 @@ class GLWindow
 	GLFWwindow* window = 0;
 	bool active = false;
 
-	std::array<int, 2> position = { 100, 100 };
-	std::array<int, 2> size = { 1024, 768 };
+	std::array<int, 2> position;
+	std::array<int, 2> size;
 
 	std::string title;
 

@@ -1,5 +1,7 @@
 #include <utils/viewport_utils.h>
 
+#include<cmath>
+
 Viewport::Viewport(double point_size, std::array<double, 4> ortho_matrix, std::array<double, 4> viewport_matrix) {
 	this->point_size = point_size;
 	this->ortho_matrix = ortho_matrix;

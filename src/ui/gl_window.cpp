@@ -5,7 +5,10 @@
 
 #include "ui/gl_window.h"
 
-GLWindow::GLWindow() {
+GLWindow::GLWindow() 
+:position({100, 100}),
+ size({1024, 768})
+{
 
 }
 

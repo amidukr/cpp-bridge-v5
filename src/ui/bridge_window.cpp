@@ -44,7 +44,7 @@ void BridgeWindow::init() {
 
 		std::cout << "Started writting video to '" << filename << "'" << std::endl;
 
-		this->outputVideo.set(cv::VIDEOWRITER_PROP_QUALITY, 100.0);
+		//this->outputVideo.set(cv::VIDEOWRITER_PROP_QUALITY, 100.0);
 
 		//int fourcc = CV_FOURCC('M', 'S', 'V', 'C'); //Microspoft Video 1;
 		//int fourcc = CV_FOURCC('X', '2', '6', '4'); //Microspoft Video 1;
