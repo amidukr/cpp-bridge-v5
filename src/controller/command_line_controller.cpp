@@ -1,11 +1,13 @@
 #include "controller/command_line_controller.h"
 
-#include "model/aplication_configuration.h"
+#include "model/application_configuration.h"
 #include "model/configuration/simulation_option.h"
 #include "factory/simulation_context_factory.h"
 
 #include <iostream>
 #include <args.hxx>
+
+#include <stdio.h>
 
 const int CommandLineController::SUCCESS = 0;
 const int CommandLineController::COMPLITION = 1;
@@ -144,6 +146,7 @@ int CommandLineController::parse_arguments(int argc, const char* const argv[]) {
 	args::Flag simulation_help(parser, "help-simulation", "Display help for simulation commands", { 's', "help-simulation" });
 	args::CompletionFlag completion(parser, { "complete" });
 
+	args::Flag headless_flag(parser, "headless", "Run in headless mode", { 'l', "headless" });
 	args::Flag test_flag(parser, "test", "Run self-testing scenarios", { 't', "test" });
 	args::ValueFlag<std::string> gtest_flag(parser, "gtest_filter", "Run self-testing scenarios", { "gtest_filter" });
 	args::Flag video_flag(parser, "video", "Write simulation to video file", { 'v', "video" });
@@ -184,6 +187,7 @@ int CommandLineController::parse_arguments(int argc, const char* const argv[]) {
 
 	this->application_configuration->set_run_test_flag(test_flag);
 	this->application_configuration->set_write_video_flag(video_flag);
+	this->application_configuration->set_headless_mode_flag(headless_flag);
 
 	return CommandLineController::SUCCESS;
 }

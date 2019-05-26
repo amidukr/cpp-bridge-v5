@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "factory/simulation_context_factory.h"
-#include "model/aplication_configuration.h"
+#include "model/application_configuration.h"
 #include "model/configuration/simulation_option.h"
 
 #include "model/sample_data_model.h"

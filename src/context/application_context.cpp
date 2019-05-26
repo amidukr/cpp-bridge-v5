@@ -2,7 +2,7 @@
 
 #include "factory/simulation_context_factory.h"
 #include "controller/command_line_controller.h"
-#include "model/aplication_configuration.h"
+#include "model/application_configuration.h"
 
 
 ApplicationContext::ApplicationContext(int argc, char ** argv)

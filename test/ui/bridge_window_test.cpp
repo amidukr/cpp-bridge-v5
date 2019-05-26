@@ -7,7 +7,7 @@
 
 #include "ui/bridge_window.h"
 #include "model/bridge_model.h"
-#include "model/aplication_configuration.h"
+#include "model/application_configuration.h"
 
 
 class BridgeWindowTest : public ::testing::Test {

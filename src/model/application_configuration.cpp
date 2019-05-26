@@ -1,4 +1,4 @@
-#include "model/aplication_configuration.h"
+#include "model/application_configuration.h"
 
 ApplicationConfiguration::ApplicationConfiguration()
 {
@@ -28,4 +28,12 @@ void ApplicationConfiguration::set_write_video_flag(bool write_video_flag) {
 
 void ApplicationConfiguration::set_run_test_flag(bool run_test_flag) {
 	this->run_test_flag = run_test_flag;
+}
+
+void ApplicationConfiguration::set_headless_mode_flag(bool headless_mode) {
+	this->headless_mode_flag = headless_mode;
+}
+
+bool ApplicationConfiguration::get_headless_mode_flag() {
+	return this->headless_mode_flag;
 }

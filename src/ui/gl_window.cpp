@@ -2,11 +2,11 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-
+#include "model/global_vars.h"
 #include "ui/gl_window.h"
 
-GLWindow::GLWindow() {
-
+GLWindow::GLWindow()
+{
 }
 
 GLWindow::~GLWindow() {
@@ -18,18 +18,25 @@ bool GLWindow::create() {
 		return this->active;
 	}
 
-	glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
+	
+	if(!GlobalVars::get_headless_mode_flag()) {
+		glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
 
-	// Open a window and create its OpenGL context
-	this->window = glfwCreateWindow(this->size[0], this->size[1], this->title.c_str(), NULL, NULL);
-	glfwSetWindowPos(this->window, this->position[0], this->position[1]);
+		// Open a window and create its OpenGL context
+		this->window = glfwCreateWindow(this->size[0], this->size[1], this->title.c_str(), NULL, NULL);
+		glfwSetWindowPos(this->window, this->position[0], this->position[1]);
 
-	if (this->window == NULL) {
-		fprintf(stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n");
-		return false;
-	}
+		if (this->window == NULL) {
+			fprintf(stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n");
+			return false;
+		}
 
-	glfwMakeContextCurrent(this->window);
+		glfwMakeContextCurrent(this->window);
+	}else{
+		printf("mocking\n");
+		this->window = (GLFWwindow*)-1;
+	}	
+	
 	this->init();
 
 	this->active = true;
@@ -39,18 +46,25 @@ bool GLWindow::create() {
 bool GLWindow::update() {
 	if (!this->active) return false;
 
-	glfwMakeContextCurrent(this->window); // Initialize GLEW
+	if(!GlobalVars::get_headless_mode_flag()) {
 
-	// Ensure we can capture the escape key being pressed below
-	glfwSetInputMode(this->window, GLFW_STICKY_KEYS, GL_TRUE);
+		glfwMakeContextCurrent(this->window); // Initialize GLEW
+
+		// Ensure we can capture the escape key being pressed below
+		glfwSetInputMode(this->window, GLFW_STICKY_KEYS, GL_TRUE);
+	}
 
 	this->draw();
 
-	glfwSwapBuffers(this->window);
-	glfwPollEvents();
+	if(!GlobalVars::get_headless_mode_flag()) {
+		glfwSwapBuffers(this->window);
+		glfwPollEvents();
 
-	return glfwGetKey(this->window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
-		glfwWindowShouldClose(this->window) == 0;
+		return glfwGetKey(this->window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
+			glfwWindowShouldClose(this->window) == 0;
+	}
+
+	return true;
 }
 
 bool GLWindow::close() {

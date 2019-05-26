@@ -15,20 +15,34 @@
 #include "context/bridge_simulation_context.h"
 #include "factory/simulation_context_factory.h"
 #include "controller/command_line_controller.h"
-#include "model/aplication_configuration.h"
+#include "model/global_vars.h"
+#include "model/application_configuration.h"
 
 #include "ui/gl_window.h"
 
 
 int parse_arguments(ApplicationContext& context) {
-	return context.get_command_line_controller()->parse_arguments(context.get_argc(), context.get_argv());
+	bool result = context.get_command_line_controller()->parse_arguments(context.get_argc(), context.get_argv());
+
+	ApplicationConfiguration& application_configuration = *context.get_application_configuration();
+
+	GlobalVars::set_headless_mode_flag(application_configuration.get_headless_mode_flag());
+
+	return result;
 }
 
 int run_test(ApplicationContext& context) {
 	try {
 		int args = context.get_argc();
 		::testing::InitGoogleTest(&args, context.get_argv());
-		return RUN_ALL_TESTS();
+		bool result = RUN_ALL_TESTS();
+		
+		if(!result) {
+			printf("All tests executed succesfully\n");	
+		}
+
+		return result;
+
 	}
 	catch (...) {
 		fprintf(stderr, "Exception during unit test run\n");
@@ -122,6 +136,13 @@ void start_simulation(ApplicationContext& context) {
 }
 
 int main(int argc, char* argv[]) {
+
+printf("argc = %d\n", argc);
+for(int i=0;i<argc;i++) {
+	printf("%s ",argv[i]);
+}
+printf("\n");
+
 
 	ApplicationContext context{ argc, argv };
 

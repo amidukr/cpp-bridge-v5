@@ -17,8 +17,7 @@ class GLWindow
 
 protected:
 	virtual void init() = 0;
-	virtual void draw() = 0;
-	
+	virtual void draw() = 0;	
 
 public:
 	GLWindow();

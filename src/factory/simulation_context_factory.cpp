@@ -7,7 +7,7 @@
 #include "context/application_context.h"
 #include "context/bridge_simulation_context.h"
 
-#include "model/aplication_configuration.h"
+#include "model/application_configuration.h"
 #include "model/configuration/simulation_option.h"
 
 SimulationContextFactory::SimulationContextFactory(std::shared_ptr<ApplicationConfiguration> application_configuration) {

@@ -12,6 +12,7 @@ class ApplicationConfiguration
 	bool write_video_flag = false;
 	bool run_test_flag = false;
 	std::vector<std::shared_ptr<SimulationOption>> simulation_options;
+	bool headless_mode_flag = false;
 
 public:
 	ApplicationConfiguration();
@@ -24,6 +25,9 @@ public:
 
 	bool get_run_test_flag() const;
 	void set_run_test_flag(bool run_test_flag);
+
+	void set_headless_mode_flag(bool headless_mode);
+	bool get_headless_mode_flag();
 
 private:
 	// Disable copy constructor

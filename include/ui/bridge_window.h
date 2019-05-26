@@ -1,10 +1,11 @@
 #ifndef BRIDGE_WINDOW_H
 #define BRIDGE_WINDOW_H
 
-#include <memory>
 #include "ui/gl_window.h"
 
 #include "opencv2/opencv.hpp"
+
+#include <memory>
 
 class BridgeModel;
 class ApplicationConfiguration;

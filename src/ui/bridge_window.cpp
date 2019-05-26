@@ -7,7 +7,7 @@
 #include "ui/bridge_window.h"
 #include "model/bridge_model.h"
 
-#include "model/aplication_configuration.h"
+#include "model/application_configuration.h"
 
 #define DEG2RAD 3.14159/180.0
 
