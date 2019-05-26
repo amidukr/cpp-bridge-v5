@@ -4,6 +4,7 @@ compiler:
   - gcc
 
 script:
+  - eval $EVAL_CONFIG 2>/dev/null >/dev/null
   - sudo docker ps -a
-  - sudo docker run --name cpp-bridge-v5 -v $(pwd):/root/cpp-bridge-v5 amidukr/cpp-bridge-v5 /root/cpp-bridge-v5/scripts/run-ci-docker.sh
+  - sudo docker run $DOCKER_ARGUMENTS -v $(pwd):/root/cpp-bridge-v5 amidukr/cpp-bridge-v5 /root/cpp-bridge-v5/scripts/run-ci-docker.sh
 
