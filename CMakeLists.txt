@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 2.6.4)
 
 project(cpp-bridge-v5)
 
+#SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+#SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+#SET(CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage")
+
 #use CMAKE_PREFIX_PATH environment variable to specify path location wtih all necessary dependencies
 find_package(GTest REQUIRED)
 enable_testing()
@@ -44,17 +48,6 @@ target_link_libraries (cpp_bridge_v5_app_library PRIVATE Eigen3::Eigen)
 target_link_libraries (cpp_bridge_v5_app_executable PRIVATE cpp_bridge_v5_app_library)
 
 target_link_libraries(cpp_bridge_v5_app_executable PRIVATE ${GTEST_BOTH_LIBRARIES} ${PTHREAD_LIB_PATH})		
-
-
-# from list of files we'll create tests test_name.cpp -> test_name
-foreach(_test_file ${TEST_SRC_FILES})
-    get_filename_component(_test_name ${_test_file} NAME_WE)
-    add_executable(${_test_name} ${_test_file})
-    target_link_libraries(${_test_name} ${GTEST_BOTH_LIBRARIES} cpp_bridge_v5_app_library ${PTHREAD_LIB_PATH})
-    add_test(${_test_name} ${_test_name})
-    set_tests_properties(${_test_name} PROPERTIES TIMEOUT 5)
-endforeach()
-
 
 # Installing build artifacts
 install(TARGETS cpp_bridge_v5_app_library 
