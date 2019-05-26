@@ -2,9 +2,13 @@ cmake_minimum_required(VERSION 2.6.4)
 
 project(cpp-bridge-v5)
 
-#SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
-#SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
-#SET(CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage")
+if(DEFINED ENV{CMAKE_GCOV_ENABLED})
+	SET(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage")
+ 	SET(CMAKE_C_FLAGS "-fprofile-arcs -ftest-coverage")
+	SET(CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage")
+endif()
+
+
 
 #use CMAKE_PREFIX_PATH environment variable to specify path location wtih all necessary dependencies
 find_package(GTest REQUIRED)
