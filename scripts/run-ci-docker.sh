@@ -11,5 +11,5 @@ cd build
 
 cmake .. && cmake --build .
 
-./cpp_bridge_v5_app_executable -t
+./cpp_bridge_v5_app_executable -tl
 
