@@ -3,9 +3,9 @@
 #include "controller/simulation/matrix_elastic_controller.h"
 #include "controller/simulation/matrix_bridge_controller.h"
 
-const std::string BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER = "elastic-bridge-controller";
-const std::string BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER = "matrix-elastic-bridge-controller";
-const std::string BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER = "matrix-bridge-controller";
+const std::string BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER = "elastic";
+const std::string BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER = "matrix-elastic";
+const std::string BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER = "matrix";
 
 BridgeControllerFactory::BridgeControllerFactory() {
 	this->controller_types.push_back(BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER);
