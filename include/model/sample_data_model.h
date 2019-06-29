@@ -17,6 +17,7 @@ public:
 	static const std::string TEN_TIME_LOW_DUMPING;
 	static const std::string TEN_TIME_FACTOR_SIMULATION;
 	static const std::string HUNDRED_TIME_FACTOR_SIMULATION;
+	static const std::string HUNDRED_TIME_FACTOR_DAMP_SIMULATION;
 	
 	static const std::string ROPE_BRIDGE;
 	static const std::string SWING_BRIDGE;

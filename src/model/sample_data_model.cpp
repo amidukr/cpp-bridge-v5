@@ -4,9 +4,10 @@
 #include "model/sample_data_model.h"
 
 const std::string SampleDataModel::OPTIMAL_WITH_DELAY_SIMULATION = "optimal";
-const std::string SampleDataModel::TEN_TIME_LOW_DUMPING = "10x-low-dumping";
+const std::string SampleDataModel::TEN_TIME_LOW_DUMPING = "10x-low-damping";
 const std::string SampleDataModel::TEN_TIME_FACTOR_SIMULATION = "10x";
 const std::string SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION = "100x";
+const std::string SampleDataModel::HUNDRED_TIME_FACTOR_DAMP_SIMULATION = "100x-high-damping";
 
 const std::string SampleDataModel::ROPE_BRIDGE = "rope";
 const std::string SampleDataModel::SWING_BRIDGE = "swing";
@@ -25,6 +26,8 @@ SampleDataModel::SampleDataModel() {
 	this->simulation_types.push_back(SampleDataModel::TEN_TIME_LOW_DUMPING);
 	this->simulation_types.push_back(SampleDataModel::TEN_TIME_FACTOR_SIMULATION);
 	this->simulation_types.push_back(SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION);
+	this->simulation_types.push_back(SampleDataModel::HUNDRED_TIME_FACTOR_DAMP_SIMULATION);
+
 
 	this->bridge_models.push_back(SampleDataModel::ROPE_BRIDGE);
 	this->bridge_models.push_back(SampleDataModel::SWING_BRIDGE);
@@ -78,6 +81,13 @@ std::unique_ptr<SimulationModel> create_hundred_time_factor() {
 	return simulation_model;
 }
 
+std::unique_ptr<SimulationModel> create_hundred_time_damp_factor() {
+	std::unique_ptr<SimulationModel> simulation_model = create_hundred_time_factor();
+
+	simulation_model->set_dumping_ratio(0.6);
+
+	return simulation_model;
+}
 
 const std::vector<std::string>& SampleDataModel::get_simulation_types() const {
 	return this->simulation_types;
@@ -98,6 +108,10 @@ std::unique_ptr<SimulationModel> SampleDataModel::load_simulation_model(std::str
 
 	if (model_name == SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION) {
 		return create_hundred_time_factor();
+	}
+
+	if (model_name == SampleDataModel::HUNDRED_TIME_FACTOR_DAMP_SIMULATION) {
+		return create_hundred_time_damp_factor();
 	}
 
 	throw "simulation setting not found";
