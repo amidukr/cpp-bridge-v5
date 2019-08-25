@@ -78,7 +78,7 @@ void layout_windows(ApplicationContext& context) {
 	int work_area_width = mode->width - 200;
 	int work_area_height = mode->height - 200;
 
-	int columns = (int)sqrt(simulations.size());
+	int columns = (int)std::sqrt(simulations.size());
 
 	if (columns*columns != simulations.size()) {
 		columns++;
@@ -136,13 +136,6 @@ void start_simulation(ApplicationContext& context) {
 }
 
 int main(int argc, char* argv[]) {
-
-printf("argc = %d\n", argc);
-for(int i=0;i<argc;i++) {
-	printf("%s ",argv[i]);
-}
-printf("\n");
-
 
 	ApplicationContext context{ argc, argv };
 

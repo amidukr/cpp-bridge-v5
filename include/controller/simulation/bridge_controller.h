@@ -1,5 +1,5 @@
-#ifndef BRIDGE_CONTROLLER_H
-#define BRIDGE_CONTROLLER_H
+#ifndef __BRIDGE_CONTROLLER_H
+#define __BRIDGE_CONTROLLER_H
 
 #include<memory>
 
@@ -27,11 +27,13 @@ public:
 
 	virtual void update(ControllerAction& controller_action) = 0;
 
+	virtual ~BridgeController();
+
 private:
 	// Disable copy constructor
 	BridgeController(const BridgeController&); // no implementation 
 	BridgeController& operator=(const BridgeController&); // no implementation
 };
 
-#endif // ! CONTROLLER_H
+#endif // __BRIDGE_CONTROLLER_H
 

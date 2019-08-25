@@ -77,7 +77,10 @@ bool GLWindow::close() {
 	}
 
 	this->active = false;
-	glfwDestroyWindow(this->window);
+	if(this->window != (GLFWwindow*)-1) {
+		glfwDestroyWindow(this->window);
+	}
+
 	return true;
 }
 
