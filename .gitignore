@@ -18,3 +18,8 @@
 /cmake-build
 /recordings
 /nbproject
+CTestTestfile.cmake
+Makefile
+cmake_install.cmake
+cpp_bridge_v5_app_executable
+libcpp_bridge_v5_app_library.a
