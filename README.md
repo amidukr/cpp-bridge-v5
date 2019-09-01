@@ -375,9 +375,9 @@ Matrix Elastic looks natural and aesthetically, while matrix modeling prooved th
 To get a help please use -h flag for the application:
 
 ```text
-./cpp_bridge_v5_app_executable [simulations...] {OPTIONS}
+  ./cpp_bridge_v5_app_executable [simulations...] {OPTIONS}
 
-    Bridge Model Simulation
+    Application that demonstates soft-body dynamics modeling.
 
   OPTIONS:
 
@@ -391,9 +391,6 @@ To get a help please use -h flag for the application:
                                         for more information
       "--" can be used to terminate flag options and force all following
       arguments to be treated as positional options
-
-    Application that demonstates soft-body dynamics modeling.
-
 ```
 
 ## Build Instruction

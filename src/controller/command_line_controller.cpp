@@ -141,7 +141,7 @@ int CommandLineController::parse_simulations(const std::vector<std::string>& sim
 }
 
 int CommandLineController::parse_arguments(int argc, const char* const argv[]) {
-	args::ArgumentParser parser("Bridge Model Simulation", "Application that demonstates soft-body dynamics modeling.");
+	args::ArgumentParser parser("Application that demonstates soft-body dynamics modeling.", "");
 	args::HelpFlag help(parser, "help", "Display this help menu", { 'h', "help" });
 	args::Flag simulation_help(parser, "help-simulation", "Display help for simulation commands", { 's', "help-simulation" });
 	args::CompletionFlag completion(parser, { "complete" });
