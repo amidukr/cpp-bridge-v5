@@ -9,16 +9,18 @@ The intention of this project is to prove that use of system of linear equation 
 
 ## Goal
 
-The goal for modeling is to create least elsatic dyanmic algorithms that with harder connected mesh which will give steady and accurate result on large simulation intervals.
+The goal for modeling is to create soft-body dyanmic algorithms with hardest connected mesh which will give steady and accurate result on large simulation intervals.
+
+Matrix-Elastic model is considered as most advanced algorithm used in this study, and it is a target to be proove that it will give better result than just plain Elastic model.
+
 
 # Modeling
 
-Application can run in 3 different mathematic modeling mode to simulate dyanmic process in mesh model. Each of this model is combination of different algorithm presented bellow. Matrix is most advanced and the purpose of this project.
+Application can run in 3 different mathematic modeling mode to simulate dyanmic process in mesh model.
 
-Application mathematic modeling modes:
-- Elastic - uses Elastic and Minimum Energy algorithm
-- Matrix Elastic - uses Matrix and Minimum Energy algorithm. This is most advanced mathematic modeling mode in this series.
-- Matrix - just a Matrix
+- Matrix - assumes that model is stiff and uses system of linear equation to calculate Force distribution considering bridge model as whole system. This modeling is syntesis of two algorithms: Matrix and Kinematics/Dynamics.
+- Elastic - assume that model is elastic. This modeling is syntesis of two algorithms: Kinematics/Dynamicsa and Principle of minimum energy, while gravity shifting the positions of the model.
+- Matrix-Elastic - combination of Matix and Elastic algorithm to get best results. This modeling is syntesis of three algorithms: Matrix, Principle of minimum energy and Kinematics/Dynamics.
 
 ## Bridge Model Mesh
 
@@ -42,11 +44,9 @@ Expectation that mesh model will be dynamically in motion according to physics l
 Expected behaviour for the sample above is that mass junction P1, P2, P3, P5 will be in falling and rotation around fixed point P4.
 
 # Algorithms
+## Kinematics and Dynamics
 
-## Elastic
-
-Elastic algorith is most classic algorithm for soft-body modeling, and used as baseline for comparision. Elastic algorithm is based on the assumption that mesh model is set of junction connected with elastic spring connection, that behaves according to 
-[Hooke's law](https://en.wikipedia.org/wiki/Hooke%27s_law).
+Dynamic for soft-body modeling makes an assumption that body presented as set of junction connected with elastic springs, that behaves according to [Hooke's law](https://en.wikipedia.org/wiki/Hooke%27s_law).
 
 Every floating junction is accelerated based on applied force that is gravity and spring tension forces.
 
@@ -80,12 +80,14 @@ Example bellow illustrates force applied to Junction P3
 
 ![F3 Formula](media/elastic-math/F_3_formula.gif)
 
-Spring tension force is calculated according to [Hooke's law](https://en.wikipedia.org/wiki/Hooke%27s_law). Illustration bellow demonstrates Hooke's law.
+## Hook's Law
+Spring tension force is calculated according to [Hooke's law](https://en.wikipedia.org/wiki/Hooke%27s_law). Illustration bellow demonstrates Hooke's law. However direct definition of Hoke's law is not used in this application, because Minimum Energy algorithm is enough to simulate elastic model.
 
 - ![P3](media/elastic-math/P_3.gif) is commpressed state of spring.
 - ![P3'](media/elastic-math/P_3_next.gif) is relaxed state of spring.
 
 ![Single spring](media/bridge-model-signle-spring.png)
+
 
 Spring tension force can be calculated with following formula
 - ![F13 Formua](media/elastic-math/F_13_formula.gif); according to 
@@ -97,7 +99,6 @@ Spring tension force can be calculated with following formula
 
 In soft-body simulation model simulation case internal energy is spring tension, and iterative algorithm searchs for the equilibrium state with minimum tension and minimum internal energy.
 
-This algorithm improves accuracy drastically of both simulations: Elastic and Matrix.
 
 Algorithm that implements principle of minimum energy is illustrated on the image bellow.
 
@@ -231,25 +232,27 @@ Here are two cases to review rotation of girder over fixed junction, and free ro
 
 # Simulation Configurations
 
-Optimal - 
-10x - 
-100x - 
+Simulation configuration provides an option to run modeling with different time factor factor.
+
+- Optimal - provide most accurate simulation resul
+- 10x - time factor set to 10x 
+- 100x - time factor set to 100x 
 
 # Video Recordings
 
 ## Pandulum - 100x
 
-| Modeling       | Aesthetically | Firnmess | Friction | Accuracy | Total |
+| Modeling       | Aesthetics    | Firnmess | Friction | Accuracy | Total |
 |----------------|---------------|----------|----------|----------|-------|
 | Matrix Elastic | 1             | 1        | 1        | 2        | 3     |
 | Elastic        | 0             | 1        | 0        | 1        | 1     |
-| Matrix         | 1             | 1        | 1        | 2        | 3    |
+| Matrix         | 1             | 1        | 1        | 2        | 3     |
 
 [![Pandulum 100x](https://img.youtube.com/vi/CZ_dfPfVO-M/mqdefault.jpg)](https://youtu.be/CZ_dfPfVO-M "Pandulum 100x")
 
 ## Line - 100x
 
-| Modeling       | Aesthetically | Firnmess | Friction | Accuracy | Total |
+| Modeling       | Aesthetics    | Firnmess | Friction | Accuracy | Total |
 |----------------|---------------|----------|----------|----------|-------|
 | Matrix Elastic | 2             | 2        | 2        | 4        | 6     |
 | Elastic        | 1             | 1        | 1        | 2        | 3     |
@@ -259,7 +262,7 @@ Optimal -
 
 ## Line - 10x
 
-| Modeling       | Aesthetically | Firnmess | Friction | Accuracy | Total |
+| Modeling       | Aesthetics    | Firnmess | Friction | Accuracy | Total |
 |----------------|---------------|----------|----------|----------|-------|
 | Matrix Elastic | 2             | 2        | 3        | 5        | 7     |
 | Elastic        | 2             | 1        | 2        | 3        | 5     |
@@ -269,7 +272,7 @@ Optimal -
 
 ## Line - Optimal
 
-| Modeling       | Aesthetically | Firnmess | Friction | Accuracy | Total |
+| Modeling       | Aesthetics    | Firnmess | Friction | Accuracy | Total |
 |----------------|---------------|----------|----------|----------|-------|
 | Matrix Elastic | 3             | 1        | 1        | 2        | 5     |
 | Elastic        | 2             | 1        | 1        | 2        | 4     |
@@ -280,22 +283,22 @@ Optimal -
 
 ## Triangle Grid - Optimal
 
-| Modeling       | Aesthetically | Firnmess | Friction | Accuracy | Total |
+| Modeling       | Aesthetics    | Firnmess | Friction | Accuracy | Total |
 |----------------|---------------|----------|----------|----------|-------|
 | Matrix Elastic | 1             | 1        | 2        | 3        | 4     |
 | Elastic        | 1             | 1        | 1        | 2        | 3     |
-| Matrix         | 2             | 1        | 3        | 4        | 6     |
+| Matrix         | 1             | 1        | 3        | 4        | 5     |
 
 [![Triangle Grid Optimal](https://img.youtube.com/vi/r9zhTKDoSyk/mqdefault.jpg)](https://youtu.be/r9zhTKDoSyk "Triangle Grid Optimal")
 
 
 ## Triangle Grid - 10x
 
-| Modeling       | Aesthetically | Firnmess | Friction | Accuracy | Total |
+| Modeling       | Aesthetics    | Firnmess | Friction | Accuracy | Total |
 |----------------|---------------|----------|----------|----------|-------|
 | Matrix Elastic | 1             | 1        | 1        | 2        | 3     |
 | Elastic        | 0             | 0        | 0        | 0        | 0     |
-| Matrix         | 2             | 1        | 2        | 3        | 5     |
+| Matrix         | 1             | 1        | 2        | 3        | 4     |
 
 
 [![Triangle Grid 10x](https://img.youtube.com/vi/ru1z6gKe6f0/mqdefault.jpg)](https://youtu.be/ru1z6gKe6f0 "Triangle Grid 10x")
@@ -303,7 +306,7 @@ Optimal -
 
 ## Triangle Grid - 100x
 
-| Modeling       | Aesthetically | Firnmess | Friction | Accuracy | Total |
+| Modeling       | Aesthetics    | Firnmess | Friction | Accuracy | Total |
 |----------------|---------------|----------|----------|----------|-------|
 | Matrix Elastic | 2             | 2        | 1        | 3        | 5     |
 | Elastic        | 0             | 0        | 0        | 0        | 0     |
@@ -316,7 +319,7 @@ Optimal -
 
 Matrix is winner in this test, the reason for that  Matrix keeps energy in best ways - what means that iterative calculation is most accurate, second place takes  Matrix Elastic. Elastic losses energy pretty fast, because of frictionsc cuased by  inefficiency of classical  elastic algorithm.
 
-| Modeling       | Aesthetically | Firnmess | Friction | Accuracy | Total |
+| Modeling       | Aesthetics    | Firnmess | Friction | Accuracy | Total |
 |----------------|---------------|----------|----------|----------|-------|
 | Matrix Elastic | 1             | 1        | 2        | 3        | 4     |
 | Elastic        | 1             | 1        | 1        | 2        | 3     |
@@ -327,7 +330,7 @@ Matrix is winner in this test, the reason for that  Matrix keeps energy in best 
 
 ## Rope - 10x
 
-| Modeling       | Aesthetically | Firnmess | Friction | Accuracy | Total |
+| Modeling       | Aesthetics    | Firnmess | Friction | Accuracy | Total |
 |----------------|---------------|----------|----------|----------|-------|
 | Matrix Elastic | 2             | 2        | 1        | 3        | 5     |
 | Elastic        | 1             | 1        | 2        | 3        | 4     |
@@ -337,27 +340,80 @@ Matrix is winner in this test, the reason for that  Matrix keeps energy in best 
 
 ## Total
 
-| Modeling       | Aesthetically | Firnmess | Friction | Accuracy | Total |
+| Modeling       | Aesthetics    | Firnmess | Friction | Accuracy | Total |
 |----------------|---------------|----------|----------|----------|-------|
 | Matrix Elastic | 15            | 13       | 14        | 27      | 42    |
 | Elastic        | 8             | 7        | 8         | 15      | 23    |
-| Matrix         | 8             | 7        | 13        | 20      | 28    |
+| Matrix         | 6             | 7        | 13        | 20      | 26    |
+
+# Analysis
+
+## Scoring
+
+Scoing on presented vide samples are provided in 3 categories:
+- Aesthetics - general impression if the simulation looks natural and smooth.
+- Acuracy - combination of Firmness and Friction, technical evaluation if modeling fits to the goals.
+  - Firmness - less deformation is better. Object that will keep original size of connection will get extra score.
+  - Friction - less frictions is better. Object that will swing to base position will get extra score.
+
+## Conclusion
+
+Matrix-Elastic prove that it performs better in both scorings Aesthetical and Accuracy, while Elastic looks more natural Matrix has smaller frictions.
+
+For Triangle Grid model which is closer to simulation plane surface elastic model failed the test completely, while Matrix Elastic looks natural.
 
 
-# TODO:
-- Project Overview
-  - Matrix
-  - Presented Models
-- Models
-  - Elastic Model
-  - Matrix Model
-  - Elastic Matrix Model
-- Video Recordings
-- Conclusion and Analysis
-- Application Usage Manual
-  - Command Line Help
-  - Build Instruction
-- Contacts
+## Possible improvement
 
- 
-  
+Matrix Elastic looks natural and aesthetically, while matrix modeling prooved that it can be used for accurate force calcualtion, however there are still exist possibilities to improve simulation:
+1. More accurately Matrix does a calculation for force momentum rather than just a force, because junction is connected to another junction, and can move only with cirucal curve around other junction it connected to, so to improve simulation, model positions should be constrained to the original connection length, which also can be presetned as system of equations: sqrt((Pi + dPi) - (Pj + dPj)) = relaxed_spring_length(Pi, Pj), while force momentum is already calculated.
+2. Matrix general pattern is also looks natural and smooth, while junction point are vibrating around accurate position, for this reason presented junction point can be averaged using position of previouse steps.
+
+# Application Usage Manual
+## Command Line Help
+
+To get a help please use -h flag for the application:
+
+```text
+./cpp_bridge_v5_app_executable [simulations...] {OPTIONS}
+
+    Bridge Model Simulation
+
+  OPTIONS:
+
+      -h, --help                        Display this help menu
+      -s, --help-simulation             Display help for simulation commands
+      -l, --headless                    Run in headless mode
+      -t, --test                        Run self-testing scenarios
+      --gtest_filter=[gtest_filter]     Run self-testing scenarios
+      -v, --video                       Write simulation to video file
+      simulations...                    Simulation models, use help-simulation
+                                        for more information
+      "--" can be used to terminate flag options and force all following
+      arguments to be treated as positional options
+
+    Application that demonstates soft-body dynamics modeling.
+
+```
+
+## Build Instruction
+
+CMake is used to build the project.
+
+1. Consider that all necessary depdenencies are installed in the system
+2. Than run following cmake command from projet source folder:
+   ```bash
+   mkdir build
+   cd build
+   cmake -S .. -B .
+   cmake --build .
+   ```
+3. Run tests to check that application is build properly
+   ```
+   ./cpp_bridge_v5_app_executable -t
+   ```
+
+# Contacts
+
+For any questions please contact amid.ukr@gmail.com
+
