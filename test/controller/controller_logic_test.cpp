@@ -1,4 +1,6 @@
-#include <gtest/gtest.h>
+#include <controller/simulation/elastic/elastic_controller.h>
+#include <controller/simulation/matrix/matrix_elastic_controller.h>
+#include "controller/simulation/matrix/matrix_controller.h"
 
 #include "utils/compare_matrices_utils.h"
 
@@ -8,9 +10,7 @@
 
 #include "controller/simulation/arguments/controller_action.h"
 
-#include "controller/simulation/elastic_controller.h"
-#include "controller/simulation/matrix_bridge_controller.h"
-#include "controller/simulation/matrix_elastic_controller.h"
+#include <gtest/gtest.h>
 
 std::shared_ptr<BridgeModel> create_free_fall_bridge_model() {
 	std::shared_ptr<BridgeModel> bridge_model{ new BridgeModel{} };
@@ -33,7 +33,7 @@ std::shared_ptr<SimulationModel> create_simulation_model() {
 TEST(ControllerLogicTest, free_fall_test) {
 	ElasticController elastic_controller;
 	MatrixElasticController matrix_elastic_controller;
-	MatrixBridgeController matrix_bridge_controller;
+	MatrixController matrix_bridge_controller;
 
 	elastic_controller.set_bridge_model(create_free_fall_bridge_model());
 	elastic_controller.set_simulation_model(create_simulation_model());

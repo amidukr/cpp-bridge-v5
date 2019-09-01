@@ -1,4 +1,4 @@
-#include "controller/simulation/matrix_bridge_controller.h"
+#include "controller/simulation/matrix/matrix_controller.h"
 
 #include <chrono>
 #include <thread>
@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-void MatrixBridgeController::update(ControllerAction& action) {
+void MatrixController::update(ControllerAction& action) {
 	BridgeModel& bridge_model = this->get_bridge_model();
 	SimulationModel& simulation_model = this->get_simulation_model();
 

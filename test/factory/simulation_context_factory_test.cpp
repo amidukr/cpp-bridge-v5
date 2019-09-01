@@ -25,7 +25,7 @@ TEST(SimulationContextFactoryTest, test_single) {
 
 	std::shared_ptr<SimulationOption> model_option (new SimulationOption());
 
-	model_option->add_controller_type(BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER);
+	model_option->add_controller_type(BridgeControllerFactory::MATRIX_CONTROLLER);
 	model_option->add_bridge_model(SampleDataModel::PANDULUM_BRIDGE);
 	model_option->add_simulation_type(SampleDataModel::TEN_TIME_FACTOR_SIMULATION);
 
@@ -79,7 +79,7 @@ TEST(SimulationContextFactoryTest, test_map_asteriks) {
 
 	std::shared_ptr<SimulationOption> model_option(new SimulationOption());
 
-	model_option->add_controller_type(BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER);
+	model_option->add_controller_type(BridgeControllerFactory::MATRIX_CONTROLLER);
 	model_option->add_bridge_model("*");
 	model_option->add_simulation_type(SampleDataModel::TEN_TIME_FACTOR_SIMULATION);
 
@@ -97,7 +97,7 @@ TEST(SimulationContextFactoryTest, test_option_asteriks) {
 
 	std::shared_ptr<SimulationOption> model_option(new SimulationOption());
 
-	model_option->add_controller_type(BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER);
+	model_option->add_controller_type(BridgeControllerFactory::MATRIX_CONTROLLER);
 	model_option->add_bridge_model(SampleDataModel::PANDULUM_BRIDGE);
 	model_option->add_simulation_type("*");
 
@@ -115,7 +115,7 @@ TEST(SimulationContextFactoryTest, test_two_models) {
 
 	std::shared_ptr<SimulationOption> model_option1(new SimulationOption());
 
-	model_option1->add_controller_type(BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER);
+	model_option1->add_controller_type(BridgeControllerFactory::MATRIX_CONTROLLER);
 	model_option1->add_bridge_model(SampleDataModel::PANDULUM_BRIDGE);
 	model_option1->add_simulation_type(SampleDataModel::TEN_TIME_FACTOR_SIMULATION);
 
@@ -123,7 +123,7 @@ TEST(SimulationContextFactoryTest, test_two_models) {
 
 	std::shared_ptr<SimulationOption> model_option2(new SimulationOption());
 
-	model_option2->add_controller_type(BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER);
+	model_option2->add_controller_type(BridgeControllerFactory::MATRIX_ELASTIC_CONTROLLER);
 	model_option2->add_bridge_model(SampleDataModel::ROPE_BRIDGE);
 	model_option2->add_simulation_type(SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION);
 
@@ -141,8 +141,8 @@ TEST(SimulationContextFactoryTest, test_two_maps_two_controllers) {
 
 	std::shared_ptr<SimulationOption> model_option(new SimulationOption());
 
-	model_option->add_controller_type(BridgeControllerFactory::MATRIX_BRIDGE_CONTROLLER);
-	model_option->add_controller_type(BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER);
+	model_option->add_controller_type(BridgeControllerFactory::MATRIX_CONTROLLER);
+	model_option->add_controller_type(BridgeControllerFactory::MATRIX_ELASTIC_CONTROLLER);
 	model_option->add_bridge_model(SampleDataModel::PANDULUM_BRIDGE);
 	model_option->add_bridge_model(SampleDataModel::ROPE_BRIDGE);
 	model_option->add_simulation_type(SampleDataModel::TEN_TIME_FACTOR_SIMULATION);

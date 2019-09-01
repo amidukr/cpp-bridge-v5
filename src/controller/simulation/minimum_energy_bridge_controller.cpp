@@ -1,5 +1,4 @@
-#include "controller/simulation/base_elastic_bridge_controller.h"
-
+#include <controller/simulation/minimum_energy_bridge_controller.h>
 #include <chrono>
 #include <thread>
 
@@ -8,7 +7,7 @@
 #include"controller/simulation/arguments/controller_action.h"
 
 
-void BaseElasticBridgeController::update(ControllerAction& action) {
+void MinimumEnergyBridgeController::update(ControllerAction& action) {
 
 	BridgeModel& bridge_model = this->get_bridge_model();
 	SimulationModel& simulation_model = this->get_simulation_model();

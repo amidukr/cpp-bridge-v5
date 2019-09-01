@@ -1,11 +1,11 @@
+#include <controller/simulation/minimum_energy_bridge_controller.h>
 #include <gtest/gtest.h>
 
 #include "model/simulation_model.h"
 #include "model/bridge_model.h"
-#include "controller/simulation/base_elastic_bridge_controller.h"
 #include "controller/simulation/arguments/controller_action.h"
 
-class MockedElasticBridgeController : public BaseElasticBridgeController {
+class MockedElasticBridgeController : public MinimumEnergyBridgeController {
 double last_elapsed_time_seconds = -1;
 bool update_invoked = false;
 protected:

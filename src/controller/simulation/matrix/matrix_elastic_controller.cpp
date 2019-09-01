@@ -1,5 +1,4 @@
-#include "controller/simulation/matrix_elastic_controller.h"
-
+#include <controller/simulation/matrix/matrix_elastic_controller.h>
 #include "model/bridge_model.h"
 #include "model/bridge/junction.h"
 #include "service/bridge_matrix_service.h"

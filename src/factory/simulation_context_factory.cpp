@@ -49,11 +49,11 @@ void SimulationContextFactory::add_simulation(std::vector<std::shared_ptr<Bridge
 }
 
 void SimulationContextFactory::demo_simulations(std::vector<std::shared_ptr<BridgeSimulationContext>>& simulations) {
-	this->add_simulation(simulations, BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION);
-	this->add_simulation(simulations, BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION);
+	this->add_simulation(simulations, BridgeControllerFactory::ELASTIC_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION);
+	this->add_simulation(simulations, BridgeControllerFactory::MATRIX_ELASTIC_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::HUNDRED_TIME_FACTOR_SIMULATION);
 
-	this->add_simulation(simulations, BridgeControllerFactory::ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::TEN_TIME_FACTOR_SIMULATION);
-	this->add_simulation(simulations, BridgeControllerFactory::MATRIX_ELASTIC_BRIDGE_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::TEN_TIME_FACTOR_SIMULATION);
+	this->add_simulation(simulations, BridgeControllerFactory::ELASTIC_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::TEN_TIME_FACTOR_SIMULATION);
+	this->add_simulation(simulations, BridgeControllerFactory::MATRIX_ELASTIC_CONTROLLER, SampleDataModel::LINE_DIAGONAL, SampleDataModel::TEN_TIME_FACTOR_SIMULATION);
 }
 
 int SimulationContextFactory::build_from_configuration(std::vector<std::shared_ptr<BridgeSimulationContext>>& simulations) {

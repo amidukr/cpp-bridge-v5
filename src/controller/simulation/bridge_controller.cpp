@@ -4,10 +4,6 @@ BridgeController::BridgeController() {
 	
 }
 
-BridgeController::~BridgeController() {
-
-}
-
 void BridgeController::set_bridge_model(std::shared_ptr<BridgeModel> bridge_model) {
 	this->bridge_model = bridge_model;
 }
@@ -22,4 +18,8 @@ void BridgeController::set_simulation_model(std::shared_ptr<SimulationModel> sim
 
 SimulationModel& BridgeController::get_simulation_model() {
 	return *this->simulation_model;
+}
+
+BridgeController::~BridgeController() {
+
 }

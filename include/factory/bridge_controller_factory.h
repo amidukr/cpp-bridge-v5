@@ -11,9 +11,9 @@ class BridgeControllerFactory {
 	std::vector<std::string> controller_types;
 
 public:
-	static const std::string ELASTIC_BRIDGE_CONTROLLER;
-	static const std::string MATRIX_ELASTIC_BRIDGE_CONTROLLER;
-	static const std::string MATRIX_BRIDGE_CONTROLLER;
+	static const std::string ELASTIC_CONTROLLER;
+	static const std::string MATRIX_ELASTIC_CONTROLLER;
+	static const std::string MATRIX_CONTROLLER;
 	
 	BridgeControllerFactory();
 

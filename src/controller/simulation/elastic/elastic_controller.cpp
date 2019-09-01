@@ -1,4 +1,4 @@
-#include "controller/simulation/elastic_controller.h"
+#include "controller/simulation/elastic/elastic_controller.h"
 #include "model/bridge_model.h"
 #include "model/simulation_model.h"
 
