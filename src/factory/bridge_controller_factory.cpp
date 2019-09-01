@@ -33,3 +33,4 @@ std::unique_ptr<BridgeController> BridgeControllerFactory::create_controller(std
 
 	throw "Bridge Controller for given name not found";
 }
+

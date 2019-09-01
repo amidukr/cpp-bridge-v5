@@ -1,13 +1,9 @@
 #ifndef __MINIMUM_ENERGY_BRIDGE_CONTROLLER_H
 #define __MINIMUM_ENERGY_BRIDGE_CONTROLLER_H
 
-#include "controller/simulation/bridge_controller.h"
+#include "controller/simulation/kinematic_bridge_controller.h"
 
-class MinimumEnergyBridgeController : public BridgeController {
-
-protected:
-	virtual void updateJunctionsVelocity(double elapsed_time) = 0;
-
+class MinimumEnergyBridgeController : public KinematicBridgeController {
 public:
 	void update(ControllerAction& controller_action) override;
 };

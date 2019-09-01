@@ -1,11 +1,8 @@
 #include <controller/simulation/minimum_energy_bridge_controller.h>
-#include <chrono>
-#include <thread>
 
 #include"model/bridge_model.h"
 #include "model/simulation_model.h"
 #include"controller/simulation/arguments/controller_action.h"
-
 
 void MinimumEnergyBridgeController::update(ControllerAction& action) {
 
@@ -14,15 +11,8 @@ void MinimumEnergyBridgeController::update(ControllerAction& action) {
 
 	double elapsed_time = action.get_elapsed_time_seconds() * simulation_model.get_time_factor();
 
-	const Eigen::Vector2d G = simulation_model.get_gravity();
-	const double K = simulation_model.get_spring_characteristic();
-	double Q = simulation_model.get_dumping_ratio();
-	
 	const std::vector<Junction*>& junctions = bridge_model.get_floating_junctions();
-	const std::vector<Girder*>& girders = bridge_model.get_floating_girders();
-
 	int junctions_len = junctions.size();
-	int girder_len = girders.size();
 
 	std::vector<Eigen::Vector2d> old_pos(junctions_len);
 
@@ -30,13 +20,10 @@ void MinimumEnergyBridgeController::update(ControllerAction& action) {
 		old_pos[i] = junctions.at(i)->get_coordinate();
 	}
 
-	this->updateJunctionsVelocity(elapsed_time);
+	KinematicBridgeController::update(action);
 
-	for (int i = 0; i < junctions_len; i++) {
-		Junction& junction = *junctions.at(i);
-
-		junction.set_coordinate(junction.get_coordinate() + elapsed_time * junction.get_velocity() * Q);
-	}
+	const std::vector<Girder*>& girders = bridge_model.get_floating_girders();
+	int girder_len = girders.size();
 	for (int n = 0; n < 5; n++) {
 
 		for (int i = 0; i < girder_len; i++) {

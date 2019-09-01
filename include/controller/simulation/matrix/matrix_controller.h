@@ -1,11 +1,11 @@
 #ifndef __MATRIX_CONTROLLER_H
 #define __MATRIX_CONTROLLER_H
 
-#include "controller/simulation/bridge_controller.h"
+#include "controller/simulation/kinematic_bridge_controller.h"
 
-class MatrixController : public BridgeController {
+class MatrixController : public KinematicBridgeController {
 public:
-	void update(ControllerAction& controller_action) override;
+	void updateJunctionsVelocity(double elapsed_time) override;
 };
 
 #endif // __MATRIX_CONTROLLER_H
