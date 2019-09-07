@@ -232,7 +232,7 @@ Here are two cases to review rotation of girder over fixed junction, and free ro
 
 # Simulation Configurations
 
-Simulation configuration provides an option to run modeling with different time factor factor.
+Simulation configuration provides an option to run modeling with different time factor.
 
 - Optimal - provide most accurate simulation resul
 - 10x - time factor set to 10x 
@@ -317,8 +317,6 @@ Simulation configuration provides an option to run modeling with different time 
 
 ## Swing - Optimal
 
-Matrix is winner in this test, the reason for that  Matrix keeps energy in best ways - what means that iterative calculation is most accurate, second place takes  Matrix Elastic. Elastic losses energy pretty fast, because of frictionsc cuased by  inefficiency of classical  elastic algorithm.
-
 | Modeling       | Aesthetics    | Firnmess | Friction | Accuracy | Total |
 |----------------|---------------|----------|----------|----------|-------|
 | Matrix Elastic | 1             | 1        | 2        | 3        | 4     |
@@ -350,7 +348,7 @@ Matrix is winner in this test, the reason for that  Matrix keeps energy in best 
 
 ## Scoring
 
-Scoing on presented vide samples are provided in 3 categories:
+Scoing on presented video samples are provided in 3 categories:
 - Aesthetics - general impression if the simulation looks natural and smooth.
 - Acuracy - combination of Firmness and Friction, technical evaluation if modeling fits to the goals.
   - Firmness - less deformation is better. Object that will keep original size of connection will get extra score.
