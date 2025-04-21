@@ -3,13 +3,13 @@
 
 # Project Overview
 
-This project is sample implementation for matrix based soft-body dynamic modeling for mesh.
+This project is sample implementation for matrix based soft-body dynamic modeling for mesh with infinite stiffness.
 
 The intention of this project is to prove that use of system of linear equation (Elastic Matrix model) for calcualation of force strength distribution accross soft-body model will give better accuracy than classical elastic model on larger simulation time interval
 
 ## Goal
 
-The goal for modeling is to create soft-body dyanmic algorithms with hardest connected mesh which will give steady and accurate result on large simulation intervals.
+The goal for modeling is to create soft-body dyanmic algorithms with infinitly hard connected mesh which will give steady and accurate result on large simulation intervals.
 
 Matrix-Elastic model is considered as most advanced algorithm used in this study, and it is a target to be proove that it will give better result than just plain Elastic model.
 
